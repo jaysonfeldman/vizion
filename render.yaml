@@ -4,8 +4,8 @@ services:
     runtime: python
     plan: free
     rootDir: .
-    buildCommand: pip install uv && uv sync --frozen
-    startCommand: uv run uvicorn api:app --host 0.0.0.0 --port $PORT
+    buildCommand: pip install uv && UV_PYTHON=3.12 uv sync --frozen
+    startCommand: UV_PYTHON=3.12 uv run uvicorn api:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     envVars:
       - key: OPENAI_API_KEY
@@ -22,3 +22,5 @@ services:
         value: "0"
       - key: PYTHON_VERSION
         value: "3.12.8"
+      - key: UV_PYTHON
+        value: "3.12"
