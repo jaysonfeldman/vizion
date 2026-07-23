@@ -1,24 +1,94 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Tuple
 import os
+import json
+import time
+import hashlib
+import asyncio
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from analytics import (
-    load_and_process_experiment_results, 
+    load_and_process_experiment_results,
     load_multiple_experiment_files,
     SearchAnalytics,
-    analyze_experiment_results
 )
+from domain_utils import normalize_domain
+from fanout import run_fanout_experiments
+from chatgpt_search import run_chatgpt_fanout
+from visibility_score import build_visibility_report
+from quota_errors import QuotaExhaustedError
+
+# Directory where live analysis experiment results are cached (per domain + prompts).
+ANALYSIS_CACHE_DIR = os.path.join(".cache", "analysis")
+ANALYSIS_CACHE_TTL_SECONDS = int(os.getenv("ANALYSIS_CACHE_TTL_SECONDS", str(24 * 3600)))
+# ChatGPT + web_search (primary); Gemini grounding as fallback
+FANOUT_VERSION = "v19-gpt4o-mini-flashlite"
+
+
+def _experiments_have_signal(experiments: List[Dict[str, Any]]) -> bool:
+    """True if any subquery returned at least one domain (citation or mention)."""
+    for exp in experiments or []:
+        results = exp.get("results") or {}
+        for runs in results.values():
+            for run in runs or []:
+                web = run.get("web_searches") or {}
+                for domains in web.values():
+                    if isinstance(domains, dict) and domains:
+                        return True
+    return False
+
+
+def _analysis_cache_path(target_domain: str, prompts: List[str]) -> str:
+    key_source = (
+        FANOUT_VERSION
+        + "|"
+        + normalize_domain(target_domain)
+        + "|"
+        + "\n".join(sorted(prompts))
+    )
+    digest = hashlib.md5(key_source.encode("utf-8")).hexdigest()
+    return os.path.join(ANALYSIS_CACHE_DIR, f"{digest}.json")
+
+
+def _read_analysis_cache(cache_path: str) -> Optional[List[Dict[str, Any]]]:
+    try:
+        if not os.path.exists(cache_path):
+            return None
+        if (time.time() - os.path.getmtime(cache_path)) > ANALYSIS_CACHE_TTL_SECONDS:
+            return None
+        with open(cache_path, "r") as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+
+def _write_analysis_cache(cache_path: str, experiments: List[Dict[str, Any]]) -> None:
+    try:
+        os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+        with open(cache_path, "w") as f:
+            json.dump(experiments, f, indent=2)
+    except Exception as e:
+        print(f"Failed to write analysis cache {cache_path}: {e}")
+
 
 app = FastAPI(
     title="Search Analytics API",
-    description="API for analyzing search performance and domain citations in AI-powered search results",
-    version="1.0.0"
+    description="AI visibility analysis via ChatGPT (with Gemini fallback)",
+    version="3.2.0",
 )
 
+
 class AnalysisRequest(BaseModel):
-    prompts: List[str] = []  # Ignored for now as mentioned
+    prompts: List[str] = []
     target_domain: str
-    experiment_files: Optional[List[str]] = None  # Optional list of experiment files to analyze
+    experiment_files: Optional[List[str]] = None
+    # optional map of prompt -> category from the frontend
+    prompt_categories: Optional[Dict[str, str]] = None
+
 
 class AnalysisResponse(BaseModel):
     success: bool
@@ -26,237 +96,331 @@ class AnalysisResponse(BaseModel):
     error: Optional[str] = None
     metadata: Optional[Dict[str, Any]] = None
 
+
 @app.get("/")
 async def root():
     return {
         "message": "Search Analytics API",
-        "version": "1.0.0",
+        "version": "3.2.0",
         "endpoints": {
-            "analyze": "POST /analyze - Analyze domain performance",
-            "health": "GET /health - Health check"
-        }
+            "analyze": "POST /analyze - ChatGPT AI visibility analysis",
+            "health": "GET /health - Health check",
+        },
     }
+
 
 @app.get("/health")
 async def health():
-    return {"status": "healthy", "service": "search-analytics-api"}
+    return {
+        "status": "healthy",
+        "service": "search-analytics-api",
+        "version": "3.2.0",
+        "provider": "chatgpt",
+        "fallback": "gemini",
+        "has_openai_api": bool(os.getenv("OPENAI_API_KEY")),
+        "has_gemini_api": bool(os.getenv("GEMINI_API_KEY")),
+    }
+
+
+def _run_live_fanout(
+    prompts: List[str],
+    target_domain: str,
+    *,
+    has_openai: bool,
+    has_gemini: bool,
+) -> Tuple[List[Dict[str, Any]], Dict[str, List[str]], str, str]:
+    """Blocking ChatGPT/Gemini fan-out — must run off the asyncio event loop."""
+    experiments = None
+    topic_to_subs: Dict[str, List[str]] = {}
+    provider_used = "chatgpt"
+    data_source = "live_chatgpt_fanout"
+    last_err: Optional[Exception] = None
+    openai_quota = False
+    gemini_quota = False
+
+    if has_openai:
+        try:
+            experiments, topic_to_subs = run_chatgpt_fanout(
+                prompts,
+                target_domain=target_domain,
+            )
+            if not _experiments_have_signal(experiments):
+                print("ChatGPT returned no domains; trying Gemini")
+                experiments = None
+        except QuotaExhaustedError as e:
+            openai_quota = True
+            last_err = e
+            print(f"OpenAI quota exhausted, trying Gemini: {e}")
+            experiments = None
+        except Exception as e:  # noqa: BLE001
+            last_err = e
+            print(f"ChatGPT fan-out failed, trying Gemini: {e}")
+            experiments = None
+
+    if experiments is None and has_gemini:
+        provider_used = "gemini"
+        data_source = "live_gemini_fanout"
+        try:
+            experiments, topic_to_subs = run_fanout_experiments(
+                prompts,
+                target_domain=target_domain,
+            )
+        except QuotaExhaustedError as e:
+            gemini_quota = True
+            if openai_quota:
+                raise RuntimeError(
+                    "OpenAI and Gemini API credits are both depleted. "
+                    "Add billing credits for at least one provider, then try again."
+                ) from e
+            raise RuntimeError(str(e)) from e
+        except Exception as e:  # noqa: BLE001
+            raise RuntimeError(
+                f"ChatGPT failed ({last_err}); Gemini also failed: {e}"
+                if last_err
+                else f"Live Gemini analysis failed: {e}"
+            ) from e
+
+    if experiments is None:
+        if openai_quota and not has_gemini:
+            raise RuntimeError(str(last_err) if last_err else "OpenAI API credits are depleted.")
+        if openai_quota and gemini_quota:
+            raise RuntimeError(
+                "OpenAI and Gemini API credits are both depleted. "
+                "Add billing credits for at least one provider, then try again."
+            )
+        raise RuntimeError(
+            f"Live ChatGPT analysis failed: {last_err}"
+            if last_err
+            else "Analysis returned no AI search sources or mentions."
+        )
+
+    if not _experiments_have_signal(experiments):
+        raise RuntimeError(
+            "Analysis returned no AI search sources or mentions. "
+            "Try again in a moment, or use fewer prompts."
+        )
+
+    return experiments, topic_to_subs, provider_used, data_source
+
 
 @app.post("/analyze", response_model=AnalysisResponse)
 async def analyze_domain_performance(request: AnalysisRequest):
     """
-    Analyze domain performance in search results
-    
-    Args:
-        request: Contains target_domain and optionally experiment_files
-        
-    Returns:
-        Comprehensive analysis results including:
-        - Domain statistics (retrieval rate, usage rate, citation rank)
-        - Query analysis
-        - Performance insights
-        - Recommendations
-        - Gemini AI-powered competitive analysis
+    Analyze domain AI visibility with ChatGPT (+ web search).
+
+    Falls back to Gemini + Google Search grounding if ChatGPT fails or
+    returns no usable mentions/sources.
     """
     try:
-        # Determine which experiment files to use
+        target_domain = normalize_domain(request.target_domain)
+        if not target_domain:
+            raise HTTPException(status_code=400, detail="target_domain is required")
+
+        experiment_files: List[str] = []
+        data_source = "default_file"
+        cache_hit = False
+        topic_to_subs: Dict[str, List[str]] = {}
+        provider_used = "chatgpt"
+        experiments: Optional[List[Dict[str, Any]]] = None
+
+        # Priority 1: explicitly provided experiment files.
         if request.experiment_files:
-            # Use provided experiment files
             experiment_files = request.experiment_files
-            # Validate that files exist
             for file_path in experiment_files:
                 if not os.path.exists(file_path):
                     raise HTTPException(
-                        status_code=400, 
-                        detail=f"Experiment file not found: {file_path}"
+                        status_code=400,
+                        detail=f"Experiment file not found: {file_path}",
                     )
+            data_source = "experiment_files"
+            if len(experiment_files) == 1:
+                search_data, response_chunks = await asyncio.to_thread(
+                    load_and_process_experiment_results, experiment_files[0]
+                )
+            else:
+                search_data, response_chunks = await asyncio.to_thread(
+                    load_multiple_experiment_files, experiment_files
+                )
+
+        # Priority 2: live ChatGPT fan-out (Gemini fallback).
+        elif request.prompts:
+            has_openai = bool(os.getenv("OPENAI_API_KEY"))
+            has_gemini = bool(os.getenv("GEMINI_API_KEY"))
+            if not has_openai and not has_gemini:
+                raise HTTPException(
+                    status_code=500,
+                    detail=(
+                        "Set OPENAI_API_KEY (preferred) or GEMINI_API_KEY "
+                        "in the backend .env and restart."
+                    ),
+                )
+
+            data_source = "live_chatgpt_fanout"
+            provider_used = "chatgpt"
+            cache_path = _analysis_cache_path(target_domain, request.prompts)
+            experiments = _read_analysis_cache(cache_path)
+
+            if experiments is not None and not _experiments_have_signal(experiments):
+                experiments = None
+
+            if experiments is not None:
+                cache_hit = True
+                for exp in experiments:
+                    topic = exp.get("prompt")
+                    results = exp.get("results") or {}
+                    runs = results.get("chatgpt") or results.get("gemini") or []
+                    if topic and runs:
+                        topic_to_subs[topic] = runs[0].get("fanout_subqueries") or list(
+                            (runs[0].get("web_searches") or {}).keys()
+                        )
+                    if results.get("gemini") and not results.get("chatgpt"):
+                        provider_used = "gemini"
+                        data_source = "live_gemini_fanout"
+            else:
+                try:
+                    (
+                        experiments,
+                        topic_to_subs,
+                        provider_used,
+                        data_source,
+                    ) = await asyncio.to_thread(
+                        _run_live_fanout,
+                        request.prompts,
+                        target_domain,
+                        has_openai=has_openai,
+                        has_gemini=has_gemini,
+                    )
+                except RuntimeError as e:
+                    raise HTTPException(status_code=502, detail=str(e)) from e
+
+                _write_analysis_cache(cache_path, experiments)
+
+            experiment_files = [cache_path]
+            if not os.path.exists(cache_path):
+                _write_analysis_cache(cache_path, experiments)
+            search_data, response_chunks = await asyncio.to_thread(
+                load_and_process_experiment_results, cache_path
+            )
+
+        # Priority 3: fall back to the bundled default experiment file.
         else:
-            # Use default experiment file
             default_file = "gemini_experiment_results.json"
             if not os.path.exists(default_file):
                 raise HTTPException(
                     status_code=404,
-                    detail=f"Default experiment file not found: {default_file}. Either provide experiment_files or ensure {default_file} exists."
+                    detail=(
+                        f"Default experiment file not found: {default_file}. "
+                        "Provide prompts or experiment_files."
+                    ),
                 )
             experiment_files = [default_file]
-        
-        # Load and process experiment data
-        if len(experiment_files) == 1:
-            search_data, response_chunks = load_and_process_experiment_results(experiment_files[0])
-        else:
-            search_data, response_chunks = load_multiple_experiment_files(experiment_files)
-        
+            search_data, response_chunks = await asyncio.to_thread(
+                load_and_process_experiment_results, default_file
+            )
+
         if not search_data:
             raise HTTPException(
                 status_code=400,
-                detail="No valid search data found in the experiment files"
+                detail="No valid search data found for this analysis",
             )
-        
-        # Initialize analytics
+
         analytics = SearchAnalytics(search_data, response_chunks)
-        
-        # Generate comprehensive report (now includes Gemini analysis automatically)
-        report = analytics.generate_comprehensive_report(request.target_domain)
-        
-        # Add additional analysis specific to the domain
-        domain_stats = analytics.calculate_domain_stats(request.target_domain)
-        intersecting_queries = analytics.analyze_intersecting_queries()
-        
-        # Extract Gemini analysis from the comprehensive report
-        gemini_analysis_from_report = report.get('gemini_analysis', {})
-        
-        # Format Gemini analysis for API response
+
+        # Legacy report (still used for Gemini poor-performance insights)
+        report = analytics.generate_comprehensive_report(target_domain)
+        gemini_analysis_from_report = report.get("gemini_analysis", {})
         gemini_analysis = {
             "poor_performance_analysis": gemini_analysis_from_report,
             "has_poor_performance": len(gemini_analysis_from_report) > 0,
-            "total_poor_performance_cases": len(gemini_analysis_from_report)
+            "total_poor_performance_cases": len(gemini_analysis_from_report),
         }
-        
-        # Add notes about availability of features
-        if not response_chunks:
-            gemini_analysis["note"] = "No AI response chunks available for detailed Gemini analysis"
-        elif not os.getenv('GEMINI_API_KEY'):
-            gemini_analysis["note"] = "GEMINI_API_KEY not set - Gemini analysis may contain error messages"
-        
-        # Prepare metadata
-        metadata = {
-            "target_domain": request.target_domain,
-            "experiment_files": experiment_files,
-            "total_prompts_analyzed": len(search_data),
-            "has_gemini_api": bool(os.getenv('GEMINI_API_KEY')),
-            "has_response_chunks": bool(response_chunks),
-            "analysis_timestamp": None  # Could add timestamp if needed
-        }
-        
-        # Enhanced response with additional insights including Gemini analysis
+
+        visibility = build_visibility_report(
+            search_data,
+            target_domain,
+            topic_categories=request.prompt_categories or {},
+            gemini_insights=gemini_analysis,
+        )
+
+        # Keep legacy fields for any old UI bits, but front the new visibility block.
+        domain_stats = analytics.calculate_domain_stats(target_domain)
         enhanced_report = {
             **report,
+            "visibility": visibility,
             "domain_detailed_stats": domain_stats,
-            "intersecting_queries": intersecting_queries,
+            "fanout": {
+                "enabled": data_source.startswith("live_"),
+                "subqueries_by_topic": topic_to_subs,
+                "provider": provider_used,
+            },
             "gemini_analysis": gemini_analysis,
-            "recommendations": generate_recommendations(domain_stats, report, gemini_analysis),
-            "competitive_insights": generate_competitive_insights(analytics, request.target_domain)
+            "recommendations": [
+                r.get("insight") for r in visibility.get("recommendations", []) if r.get("insight")
+            ],
+            "competitive_insights": {
+                "market_position": visibility.get("verdict"),
+                "key_competitors": [
+                    {"domain": c["domain"], "frequency": c["citations"]}
+                    for c in visibility.get("competitors", [])[:5]
+                ],
+                "competitive_advantages": [],
+                "improvement_areas": [],
+            },
         }
-        
-        return AnalysisResponse(
-            success=True,
-            data=enhanced_report,
-            metadata=metadata
-        )
-        
+
+        metadata = {
+            "target_domain": target_domain,
+            "input_domain": request.target_domain,
+            "domain_suggestion": visibility.get("domain_suggestion"),
+            "experiment_files": experiment_files,
+            "total_prompts_analyzed": len(search_data),
+            "sample_size": visibility.get("kpis", {}).get("sample_size"),
+            "data_source": data_source,
+            "cache_hit": cache_hit,
+            "has_openai_api": bool(os.getenv("OPENAI_API_KEY")),
+            "has_gemini_api": bool(os.getenv("GEMINI_API_KEY")),
+            "has_response_chunks": bool(response_chunks),
+            "fanout_version": FANOUT_VERSION,
+            "provider": provider_used,
+        }
+
+        return AnalysisResponse(success=True, data=enhanced_report, metadata=metadata)
+
     except HTTPException:
-        # Re-raise HTTP exceptions
         raise
     except Exception as e:
-        # Handle unexpected errors
         raise HTTPException(
             status_code=500,
-            detail=f"Internal server error during analysis: {str(e)}"
+            detail=f"Internal server error during analysis: {str(e)}",
         )
 
-def generate_recommendations(domain_stats: Dict[str, Any], report: Dict[str, Any], gemini_analysis: Dict[str, Any]) -> List[str]:
-    """Generate actionable recommendations based on Gemini analysis of poor performers"""
-    recommendations = []
-    
-    # Only include Gemini AI-powered analysis recommendations for poor performers
-    if gemini_analysis.get('has_poor_performance', False):
-        poor_performance_analysis = gemini_analysis.get('poor_performance_analysis', {})
-        
-        # Extract specific recommendations from Gemini analysis
-        for query, analysis in poor_performance_analysis.items():
-            if isinstance(analysis, dict) and 'gemini_analysis' in analysis:
-                # Extract actionable insights from the Gemini analysis text
-                analysis_text = analysis['gemini_analysis']
-                if analysis_text and not analysis_text.startswith('ERROR'):
-                    # Truncate query for readability
-                    recommendations.append(analysis_text)
-            elif isinstance(analysis, str) and not analysis.startswith('ERROR'):
-                recommendations.append(analysis)
-    
-    if not recommendations:
-        recommendations.append("No poor performance cases identified by Gemini analysis")
-    
-    return recommendations
-
-def generate_competitive_insights(analytics: SearchAnalytics, target_domain: str) -> Dict[str, Any]:
-    """Generate competitive insights"""
-    insights = {
-        "market_position": "unknown",
-        "key_competitors": [],
-        "competitive_advantages": [],
-        "improvement_areas": []
-    }
-    
-    try:
-        # Analyze competitive landscape
-        domain_stats = analytics.calculate_domain_stats(target_domain)
-        
-        # Determine market position
-        retrieval_rate = domain_stats.get('retrieval_rate', 0)
-        usage_rate = domain_stats.get('usage_rate', 0)
-        avg_rank = domain_stats.get('avg_citation_rank', float('inf'))
-        
-        if retrieval_rate > 0.8 and usage_rate > 0.8 and avg_rank < 2:
-            insights["market_position"] = "market_leader"
-        elif retrieval_rate > 0.6 and usage_rate > 0.6 and avg_rank < 3:
-            insights["market_position"] = "strong_competitor"
-        elif retrieval_rate > 0.4 and usage_rate > 0.4:
-            insights["market_position"] = "moderate_presence"
-        else:
-            insights["market_position"] = "emerging_player"
-        
-        # Identify key competitors (domains that appear frequently)
-        competitor_frequency = {}
-        for prompt, queries in analytics.data.items():
-            for query, domains in queries.items():
-                for domain in domains.keys():
-                    if domain != target_domain:
-                        competitor_frequency[domain] = competitor_frequency.get(domain, 0) + 1
-        
-        # Get top competitors
-        top_competitors = sorted(competitor_frequency.items(), key=lambda x: x[1], reverse=True)[:5]
-        insights["key_competitors"] = [{"domain": domain, "frequency": freq} for domain, freq in top_competitors]
-        
-        # Generate competitive advantages and improvement areas
-        if avg_rank < 2.5:
-            insights["competitive_advantages"].append("Strong citation positioning")
-        if usage_rate > 0.7:
-            insights["competitive_advantages"].append("High citation conversion rate")
-        if retrieval_rate > 0.7:
-            insights["competitive_advantages"].append("Broad search visibility")
-        
-        if avg_rank > 3:
-            insights["improvement_areas"].append("Citation ranking optimization needed")
-        if usage_rate < 0.5:
-            insights["improvement_areas"].append("Content authority enhancement required")
-        if retrieval_rate < 0.5:
-            insights["improvement_areas"].append("Search visibility expansion needed")
-            
-    except Exception as e:
-        insights["error"] = f"Could not generate competitive insights: {str(e)}"
-    
-    return insights
 
 @app.get("/experiment-files")
 async def list_experiment_files():
     """List available experiment files in the current directory"""
     try:
         files = []
-        for file in os.listdir('.'):
-            if file.endswith('.json') and 'experiment' in file.lower():
-                files.append({
-                    "filename": file,
-                    "path": file,
-                    "size": os.path.getsize(file)
-                })
-        
+        for file in os.listdir("."):
+            if file.endswith(".json") and "experiment" in file.lower():
+                files.append(
+                    {
+                        "filename": file,
+                        "path": file,
+                        "size": os.path.getsize(file),
+                    }
+                )
+
         return {
             "available_files": files,
             "default_file": "gemini_experiment_results.json",
-            "default_exists": os.path.exists("gemini_experiment_results.json")
+            "default_exists": os.path.exists("gemini_experiment_results.json"),
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error listing files: {str(e)}")
 
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=True)
+
+    port = int(os.getenv("PORT", "8000"))
+    uvicorn.run("api:app", host="0.0.0.0", port=port, reload=os.getenv("UVICORN_RELOAD", "0") == "1")

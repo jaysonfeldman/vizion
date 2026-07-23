@@ -1,40 +1,33 @@
 from collections import defaultdict, Counter
-from typing import Dict, List, Tuple, Any
+from typing import Dict, List, Tuple, Any, Optional
 import json
 import os
 import requests
 from urllib.parse import urlparse
 
+from domain_utils import (
+    domains_match,
+    find_matching_domain,
+    normalize_domain,
+)
+
 
 def extract_domain_from_url(url: str) -> str:
-    """
-    Extract domain name from a URL.
-    
-    Args:
-        url: Full URL (e.g., "https://radwelt.berlin/fahrrad-kaufen/gebrauchte-fahrraeder-berlin")
-        
-    Returns:
-        Domain name (e.g., "radwelt.berlin")
-    """
-    try:
-        if not url:
-            return ""
-        
-        # Handle URLs that don't have a scheme
-        if not url.startswith(('http://', 'https://')):
-            url = 'https://' + url
-        
-        parsed = urlparse(url)
-        domain = parsed.netloc.lower()
-        
-        # Remove www. prefix if present
-        if domain.startswith('www.'):
-            domain = domain[4:]
-        
-        return domain
-    except Exception:
-        # If URL parsing fails, return the original URL cleaned up
-        return url.replace('https://', '').replace('http://', '').replace('www.', '').split('/')[0].lower()
+    """Extract a normalized domain name from a URL or hostname."""
+    return normalize_domain(url)
+
+
+def _domain_entry(domains: Dict[str, Any], target: str) -> Tuple[Optional[str], Dict[str, Any]]:
+    """Find the matching domain key + data for a target (www/TLD tolerant)."""
+    matched = find_matching_domain(target, domains.keys())
+    if not matched:
+        return None, {}
+    if matched in domains:
+        return matched, domains[matched] or {}
+    for key, data in domains.items():
+        if domains_match(key, matched):
+            return normalize_domain(key), data or {}
+    return matched, {}
 
 
 def load_and_process_experiment_results(file_path: str) -> Tuple[Dict[str, Dict[str, Dict[str, Dict[str, Any]]]], Dict[str, Dict[str, List[str]]]]:
@@ -68,7 +61,11 @@ def load_and_process_experiment_results(file_path: str) -> Tuple[Dict[str, Dict[
                 search_analytics_data[prompt] = {}
             
             # Aggregate searches for this specific prompt only
-            prompt_searches = defaultdict(lambda: defaultdict(lambda: {'citations': [], 'contents': []}))
+            prompt_searches = defaultdict(
+                lambda: defaultdict(
+                    lambda: {"citations": [], "contents": [], "urls": [], "titles": []}
+                )
+            )
             
             for model_name, model_runs in results.items():
                 for run_result in model_runs:
@@ -87,10 +84,23 @@ def load_and_process_experiment_results(file_path: str) -> Tuple[Dict[str, Dict[
                                             # New format: {"citations": [...], "contents": [...]}
                                             citations = citations_data.get('citations', [])
                                             contents = citations_data.get('contents', [])
+                                            urls = citations_data.get('urls') or []
+                                            titles = citations_data.get('titles') or []
+                                            primary_url = citations_data.get('url') or ""
+                                            if primary_url:
+                                                urls = [primary_url] + list(urls)
                                             if isinstance(citations, list):
                                                 prompt_searches[query][domain]['citations'].extend(citations)
                                             if isinstance(contents, list):
                                                 prompt_searches[query][domain]['contents'].extend(contents)
+                                            for u in urls:
+                                                if u and u not in prompt_searches[query][domain]['urls']:
+                                                    prompt_searches[query][domain]['urls'].append(u)
+                                            for t in titles:
+                                                if t and t not in prompt_searches[query][domain]['titles']:
+                                                    prompt_searches[query][domain]['titles'].append(t)
+                                            if citations_data.get('text_mention'):
+                                                prompt_searches[query][domain]['text_mention'] = True
                                         elif isinstance(citations_data, list):
                                             # Old format: just a list of citations
                                             prompt_searches[query][domain]['citations'].extend(citations_data)
@@ -104,7 +114,9 @@ def load_and_process_experiment_results(file_path: str) -> Tuple[Dict[str, Dict[
                     if domain not in search_analytics_data[prompt][query]:
                         search_analytics_data[prompt][query][domain] = {
                             'citations': [],
-                            'contents': []
+                            'contents': [],
+                            'urls': [],
+                            'titles': [],
                         }
                     
                     # Remove duplicates and sort citations
@@ -113,6 +125,12 @@ def load_and_process_experiment_results(file_path: str) -> Tuple[Dict[str, Dict[
                     
                     # Add contents (may have duplicates, but that's okay for analysis)
                     search_analytics_data[prompt][query][domain]['contents'] = citation_data['contents']
+                    search_analytics_data[prompt][query][domain]['urls'] = citation_data.get('urls') or []
+                    search_analytics_data[prompt][query][domain]['titles'] = citation_data.get('titles') or []
+                    if citation_data.get('urls'):
+                        search_analytics_data[prompt][query][domain]['url'] = citation_data['urls'][0]
+                    if citation_data.get('text_mention'):
+                        search_analytics_data[prompt][query][domain]['text_mention'] = True
         
         # Clean up duplicates in final result (already done above, but keeping for consistency)
         for prompt_data in search_analytics_data.values():
@@ -411,12 +429,13 @@ class SearchAnalytics:
             for query, domains in queries.items():
                 total_queries += 1
                 
-                if domain_of_interest in domains:
+                matched, entry = _domain_entry(domains, domain_of_interest)
+                if matched:
                     queries_with_domain += 1
                     domain_in_prompt = True
                     stats['query_appearances'].append(query)
                     
-                    citations = domains[domain_of_interest]['citations']
+                    citations = entry.get('citations') or []
                     if citations:  # If domain was actually cited
                         queries_with_citations += 1
                         stats['total_citations'] += len(citations)
@@ -534,10 +553,11 @@ class SearchAnalytics:
                 query_analysis[query]['total_sources'] += len(domains)
                 query_analysis[query]['all_domains'].update(domains.keys())
                 
-                # Check if target domain was retrieved
-                if domain_of_interest in domains:
+                # Check if target domain was retrieved (normalized match)
+                matched, entry = _domain_entry(domains, domain_of_interest)
+                if matched:
                     query_analysis[query]['target_domain_retrieved'] = True
-                    citations = domains[domain_of_interest]['citations']
+                    citations = entry.get('citations') or []
                     query_analysis[query]['target_domain_citations'].extend(citations)
                     
                     # Check if target domain was actually cited
@@ -795,51 +815,39 @@ class SearchAnalytics:
     
     def call_gemini_analysis(self, prompt: str, domain_of_interest: str, competitor_info: List[str]) -> str:
         """
-        Call Gemini API to analyze why competitors ranked higher
+        Call Gemini to analyze why competitors ranked higher.
         """
         api_key = os.getenv('GEMINI_API_KEY')
         if not api_key:
             return "ERROR: GEMINI_API_KEY not found in environment variables"
-        
-        # Prepare the analysis prompt for Gemini
-        analysis_prompt = f"""
-        Analyze why competing domains ranked higher than {domain_of_interest} in AI search results.
 
-        User Query/Prompt: {prompt}
+        analysis_prompt = f"""Analyze why competing domains ranked higher than {domain_of_interest} in AI search results.
 
-        Competitor information (showing what content made them get cited):
-        {chr(10).join(f"- {info}" for info in competitor_info)}
+User Query/Prompt: {prompt}
 
-        Based on the competitor content shown above, explain in one sentence what specific content or information the {domain_of_interest} likely lacked that made the competitors preferable citations for this query.
+Competitor information (showing what content made them get cited):
+{chr(10).join(f"- {info}" for info in competitor_info)}
 
-        Focus on actionable insights about content gaps that could help improve {domain_of_interest}'s ranking.
-        
-        Avoid giving generic advice like "{domain_of_interest} should improve their SEO."
-        """
-        
+Based on the competitor content shown above, explain in one sentence what specific content or information {domain_of_interest} likely lacked that made the competitors preferable citations for this query.
+
+Focus on actionable insights about content gaps that could help improve {domain_of_interest}'s ranking. Avoid giving generic advice like "{domain_of_interest} should improve their SEO." Respond with a single sentence."""
+
         try:
-            # Use the same genai library approach as in main.py
             from google import genai
             from google.genai import types
-            
-            client = genai.Client()
-            
-            # Configure generation settings (no grounding needed for analysis)
-            config = types.GenerateContentConfig(
-                max_output_tokens=1024,
-                thinking_config=types.ThinkingConfig(
-                    thinking_budget=0
-                ),  # Disable thinking for speed
-            )
-            
+
+            model = os.getenv('GEMINI_MODEL', 'gemini-flash-latest')
+            client = genai.Client(api_key=api_key)
+
+            config = types.GenerateContentConfig(max_output_tokens=1024)
             response = client.models.generate_content(
-                model="gemini-2.5-flash", 
-                contents=analysis_prompt, 
-                config=config
+                model=model,
+                contents=analysis_prompt,
+                config=config,
             )
-            
-            return response.text
-            
+
+            return (response.text or "").strip()
+
         except Exception as e:
             return f"ERROR: Gemini API call failed - {str(e)}"
     
@@ -860,9 +868,10 @@ class SearchAnalytics:
             
             # Check all queries in this prompt for the target domain
             for query, domains in queries.items():
-                if domain_of_interest in domains:
+                matched, entry = _domain_entry(domains, domain_of_interest)
+                if matched:
                     domain_appeared = True
-                    citations = domains[domain_of_interest]['citations']
+                    citations = entry.get('citations') or []
                     all_citations.extend(citations)
             
             if domain_appeared:

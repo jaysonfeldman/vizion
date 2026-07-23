@@ -2,1337 +2,1682 @@
   "success": true,
   "data": {
     "overview": {
-      "total_prompts": 5,
-      "total_queries": 22,
-      "total_unique_domains": 56
+      "total_prompts": 6,
+      "total_queries": 6,
+      "total_unique_domains": 48
     },
     "query_frequency_stats": {
-      "total_queries": 22,
-      "unique_queries": 22,
+      "total_queries": 6,
+      "unique_queries": 6,
       "query_details": {
-        "cheapest bicycle Berlin": {
+        "How can I get API access to build custom applications with Claude AI?": {
           "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
+          "frequency_rate": 0.16666666666666666,
           "prompts": [
-            "cheapest bicycle to buy in berlin"
+            "How can I get API access to build custom applications with Claude AI?"
           ],
           "unique_prompts": 1
         },
-        "used bicycles Berlin": {
+        "Are there official tutorials or courses to learn prompt engineering for Claude?": {
           "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
+          "frequency_rate": 0.16666666666666666,
           "prompts": [
-            "cheapest bicycle to buy in berlin"
+            "Are there official tutorials or courses to learn prompt engineering for Claude?"
           ],
           "unique_prompts": 1
         },
-        "budget bikes Berlin": {
+        "Which AI research companies specialize in AI safety, alignment science, and Constitutional AI?": {
           "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
+          "frequency_rate": 0.16666666666666666,
           "prompts": [
-            "cheapest bicycle to buy in berlin"
+            "Which AI research companies specialize in AI safety, alignment science, and Constitutional AI?"
           ],
           "unique_prompts": 1
         },
-        "affordable bikes Berlin": {
+        "How does Anthropic's Claude compare to OpenAI's ChatGPT for enterprise business applications?": {
           "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
+          "frequency_rate": 0.16666666666666666,
           "prompts": [
-            "cheapest bicycle to buy in berlin"
+            "How does Anthropic's Claude compare to OpenAI's ChatGPT for enterprise business applications?"
           ],
           "unique_prompts": 1
         },
-        "Fahrradgeschäfte Deutschland Rennrad": {
+        "What is the best AI tool for summarizing massive legal documents and technical PDFs accurately?": {
           "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
+          "frequency_rate": 0.16666666666666666,
           "prompts": [
-            "cycling good, where to buy cycling machine deutschalnd to ride on roads and helmet"
+            "What is the best AI tool for summarizing massive legal documents and technical PDFs accurately?"
           ],
           "unique_prompts": 1
         },
-        "Fahrradgeschäfte Deutschland Fahrradhelm": {
+        "What are the best enterprise-grade AI models for handling complex reasoning, long documents, and coding with high safety standards?": {
           "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
+          "frequency_rate": 0.16666666666666666,
           "prompts": [
-            "cycling good, where to buy cycling machine deutschalnd to ride on roads and helmet"
-          ],
-          "unique_prompts": 1
-        },
-        "Fahrradhändler Deutschland": {
-          "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
-          "prompts": [
-            "cycling good, where to buy cycling machine deutschalnd to ride on roads and helmet"
-          ],
-          "unique_prompts": 1
-        },
-        "best bicycles for Berlin cycling": {
-          "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
-          "prompts": [
-            "best bikes for cycling in Berlin"
-          ],
-          "unique_prompts": 1
-        },
-        "types of bikes suitable for Berlin": {
-          "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
-          "prompts": [
-            "best bikes for cycling in Berlin"
-          ],
-          "unique_prompts": 1
-        },
-        "Berlin cycling conditions bike recommendations": {
-          "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
-          "prompts": [
-            "best bikes for cycling in Berlin"
-          ],
-          "unique_prompts": 1
-        },
-        "best bikes for cycling in Berlin": {
-          "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
-          "prompts": [
-            "best bikes for cycling in Berlin"
-          ],
-          "unique_prompts": 1
-        },
-        "road cycling routes Berlin": {
-          "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
-          "prompts": [
-            "best bikes for cycling in Berlin"
-          ],
-          "unique_prompts": 1
-        },
-        "gravel cycling routes Berlin": {
-          "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
-          "prompts": [
-            "best bikes for cycling in Berlin"
-          ],
-          "unique_prompts": 1
-        },
-        "touring cycling routes Berlin": {
-          "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
-          "prompts": [
-            "best bikes for cycling in Berlin"
-          ],
-          "unique_prompts": 1
-        },
-        "fast city bikes Berlin": {
-          "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
-          "prompts": [
-            "cycle fast; city bikes; berlin"
-          ],
-          "unique_prompts": 1
-        },
-        "Berlin bike shops fast city bikes": {
-          "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
-          "prompts": [
-            "cycle fast; city bikes; berlin"
-          ],
-          "unique_prompts": 1
-        },
-        "high-performance city bikes Berlin": {
-          "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
-          "prompts": [
-            "cycle fast; city bikes; berlin"
-          ],
-          "unique_prompts": 1
-        },
-        "best touring bikes for Europe": {
-          "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
-          "prompts": [
-            "best bikes for cycling in Europe"
-          ],
-          "unique_prompts": 1
-        },
-        "best road bikes for Europe": {
-          "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
-          "prompts": [
-            "best bikes for cycling in Europe"
-          ],
-          "unique_prompts": 1
-        },
-        "best hybrid bikes for Europe": {
-          "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
-          "prompts": [
-            "best bikes for cycling in Europe"
-          ],
-          "unique_prompts": 1
-        },
-        "best gravel bikes for Europe": {
-          "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
-          "prompts": [
-            "best bikes for cycling in Europe"
-          ],
-          "unique_prompts": 1
-        },
-        "bike packing Europe bike recommendations": {
-          "frequency": 1,
-          "frequency_rate": 0.045454545454545456,
-          "prompts": [
-            "best bikes for cycling in Europe"
+            "What are the best enterprise-grade AI models for handling complex reasoning, long documents, and coding with high safety standards?"
           ],
           "unique_prompts": 1
         }
       },
       "most_common_queries": [
         [
-          "cheapest bicycle Berlin",
+          "How can I get API access to build custom applications with Claude AI?",
           1
         ],
         [
-          "used bicycles Berlin",
+          "Are there official tutorials or courses to learn prompt engineering for Claude?",
           1
         ],
         [
-          "budget bikes Berlin",
+          "Which AI research companies specialize in AI safety, alignment science, and Constitutional AI?",
           1
         ],
         [
-          "affordable bikes Berlin",
+          "How does Anthropic's Claude compare to OpenAI's ChatGPT for enterprise business applications?",
           1
         ],
         [
-          "Fahrradgeschäfte Deutschland Rennrad",
+          "What is the best AI tool for summarizing massive legal documents and technical PDFs accurately?",
           1
         ],
         [
-          "Fahrradgeschäfte Deutschland Fahrradhelm",
-          1
-        ],
-        [
-          "Fahrradhändler Deutschland",
-          1
-        ],
-        [
-          "best bicycles for Berlin cycling",
-          1
-        ],
-        [
-          "types of bikes suitable for Berlin",
-          1
-        ],
-        [
-          "Berlin cycling conditions bike recommendations",
+          "What are the best enterprise-grade AI models for handling complex reasoning, long documents, and coding with high safety standards?",
           1
         ]
       ]
     },
     "prompt_stats": {
-      "cheapest bicycle to buy in berlin": {
-        "total_queries": 4,
+      "How can I get API access to build custom applications with Claude AI?": {
+        "total_queries": 1,
+        "unique_domains": 7,
+        "total_citations": 37,
+        "domains_with_citations": 7,
+        "avg_citations_per_query": 37
+      },
+      "Are there official tutorials or courses to learn prompt engineering for Claude?": {
+        "total_queries": 1,
         "unique_domains": 11,
-        "total_citations": 108,
+        "total_citations": 48,
         "domains_with_citations": 11,
-        "avg_citations_per_query": 27
+        "avg_citations_per_query": 48
       },
-      "cycling good, where to buy cycling machine deutschalnd to ride on roads and helmet": {
-        "total_queries": 3,
-        "unique_domains": 10,
-        "total_citations": 57,
-        "domains_with_citations": 10,
-        "avg_citations_per_query": 19
-      },
-      "best bikes for cycling in Berlin": {
-        "total_queries": 7,
-        "unique_domains": 16,
-        "total_citations": 283,
-        "domains_with_citations": 16,
-        "avg_citations_per_query": 40.42857142857143
-      },
-      "cycle fast; city bikes; berlin": {
-        "total_queries": 3,
+      "Which AI research companies specialize in AI safety, alignment science, and Constitutional AI?": {
+        "total_queries": 1,
         "unique_domains": 11,
-        "total_citations": 39,
+        "total_citations": 42,
         "domains_with_citations": 11,
-        "avg_citations_per_query": 13
+        "avg_citations_per_query": 42
       },
-      "best bikes for cycling in Europe": {
-        "total_queries": 5,
-        "unique_domains": 15,
-        "total_citations": 475,
-        "domains_with_citations": 15,
-        "avg_citations_per_query": 95
+      "How does Anthropic's Claude compare to OpenAI's ChatGPT for enterprise business applications?": {
+        "total_queries": 1,
+        "unique_domains": 6,
+        "total_citations": 32,
+        "domains_with_citations": 6,
+        "avg_citations_per_query": 32
+      },
+      "What is the best AI tool for summarizing massive legal documents and technical PDFs accurately?": {
+        "total_queries": 1,
+        "unique_domains": 9,
+        "total_citations": 31,
+        "domains_with_citations": 9,
+        "avg_citations_per_query": 31
+      },
+      "What are the best enterprise-grade AI models for handling complex reasoning, long documents, and coding with high safety standards?": {
+        "total_queries": 1,
+        "unique_domains": 12,
+        "total_citations": 40,
+        "domains_with_citations": 12,
+        "avg_citations_per_query": 40
       }
     },
     "domain_analysis": {
-      "total_appearances": 7,
-      "total_citations": 7,
-      "retrieval_rate": 0.3181818181818182,
+      "total_appearances": 2,
+      "total_citations": 10,
+      "retrieval_rate": 0.3333333333333333,
       "usage_rate": 1,
-      "avg_citation_rank": 9.142857142857142,
-      "min_citation_rank": 8,
+      "avg_citation_rank": 8.4,
+      "min_citation_rank": 1,
       "prompt_appearances": [
-        "cheapest bicycle to buy in berlin",
-        "cycle fast; city bikes; berlin"
+        "Are there official tutorials or courses to learn prompt engineering for Claude?",
+        "Which AI research companies specialize in AI safety, alignment science, and Constitutional AI?"
       ],
       "query_appearances": [
-        "cheapest bicycle Berlin",
-        "used bicycles Berlin",
-        "budget bikes Berlin",
-        "affordable bikes Berlin",
-        "fast city bikes Berlin",
-        "Berlin bike shops fast city bikes",
-        "high-performance city bikes Berlin"
+        "Are there official tutorials or courses to learn prompt engineering for Claude?",
+        "Which AI research companies specialize in AI safety, alignment science, and Constitutional AI?"
       ],
       "citation_positions": [
-        10,
-        10,
-        10,
-        10,
-        8,
-        8,
-        8
+        1,
+        17,
+        21,
+        24,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
       ]
     },
     "query_analysis": {
-      "cheapest bicycle Berlin": {
+      "How can I get API access to build custom applications with Claude AI?": {
+        "target_domain_retrieved": false,
+        "target_domain_cited": false,
+        "total_sources": 7,
+        "prompts_using_query": [
+          "How can I get API access to build custom applications with Claude AI?"
+        ],
+        "all_domains": [
+          "amazon.com",
+          "google.com",
+          "skilljar.com",
+          "medium.com",
+          "claude.com",
+          "reddit.com",
+          "youtube.com"
+        ],
+        "target_domain_citations": [],
+        "prompt_count": 1,
+        "unique_prompts": 1,
+        "total_unique_sources": 7,
+        "avg_sources_per_prompt": 7,
+        "best_citation_rank": null,
+        "avg_citation_rank": null,
+        "total_citations": 0
+      },
+      "Are there official tutorials or courses to learn prompt engineering for Claude?": {
         "target_domain_retrieved": true,
         "target_domain_cited": true,
         "total_sources": 11,
         "prompts_using_query": [
-          "cheapest bicycle to buy in berlin"
+          "Are there official tutorials or courses to learn prompt engineering for Claude?"
         ],
         "all_domains": [
-          "nextbike.de",
-          "berlin.de",
+          "pluralsight.com",
+          "coursera.org",
+          "workshops.aws",
+          "skilljar.com",
+          "anthropic.com",
+          "i-programmer.info",
+          "caneraras.com",
+          "claude.com",
           "reddit.com",
-          "just-bikes.de",
-          "bikeawayberlin.de",
-          "101bikerentals.com",
-          "bikeopia.com",
-          "nomadandinlove.com",
-          "fietsenboerse.de",
-          "visitberlin.de",
-          "allaboutberlin.com"
+          "theaihorizon.org",
+          "github.com"
         ],
         "target_domain_citations": [
-          10
+          1,
+          17,
+          21,
+          24
         ],
         "prompt_count": 1,
         "unique_prompts": 1,
         "total_unique_sources": 11,
         "avg_sources_per_prompt": 11,
-        "best_citation_rank": 10,
-        "avg_citation_rank": 10,
-        "total_citations": 1
+        "best_citation_rank": 1,
+        "avg_citation_rank": 15.75,
+        "total_citations": 4
       },
-      "used bicycles Berlin": {
+      "Which AI research companies specialize in AI safety, alignment science, and Constitutional AI?": {
         "target_domain_retrieved": true,
         "target_domain_cited": true,
         "total_sources": 11,
         "prompts_using_query": [
-          "cheapest bicycle to buy in berlin"
+          "Which AI research companies specialize in AI safety, alignment science, and Constitutional AI?"
         ],
         "all_domains": [
-          "nextbike.de",
-          "berlin.de",
-          "reddit.com",
-          "just-bikes.de",
-          "bikeawayberlin.de",
-          "101bikerentals.com",
-          "bikeopia.com",
-          "nomadandinlove.com",
-          "fietsenboerse.de",
-          "visitberlin.de",
-          "allaboutberlin.com"
+          "safe.ai",
+          "far.ai",
+          "golden.com",
+          "anthropic.com",
+          "arxiv.org",
+          "openai.com",
+          "aisecurityandsafety.org",
+          "bisi.org.uk",
+          "futureoflife.org",
+          "constitutional.ai",
+          "github.com"
         ],
         "target_domain_citations": [
-          10
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
         ],
         "prompt_count": 1,
         "unique_prompts": 1,
         "total_unique_sources": 11,
         "avg_sources_per_prompt": 11,
-        "best_citation_rank": 10,
-        "avg_citation_rank": 10,
-        "total_citations": 1
+        "best_citation_rank": 1,
+        "avg_citation_rank": 3.5,
+        "total_citations": 6
       },
-      "budget bikes Berlin": {
-        "target_domain_retrieved": true,
-        "target_domain_cited": true,
-        "total_sources": 11,
+      "How does Anthropic's Claude compare to OpenAI's ChatGPT for enterprise business applications?": {
+        "target_domain_retrieved": false,
+        "target_domain_cited": false,
+        "total_sources": 6,
         "prompts_using_query": [
-          "cheapest bicycle to buy in berlin"
+          "How does Anthropic's Claude compare to OpenAI's ChatGPT for enterprise business applications?"
         ],
         "all_domains": [
-          "nextbike.de",
-          "berlin.de",
+          "aismartventures.com",
+          "layer3labs.io",
+          "intuitionlabs.ai",
+          "pertamapartners.com",
+          "zapier.com",
+          "sonomos.ai"
+        ],
+        "target_domain_citations": [],
+        "prompt_count": 1,
+        "unique_prompts": 1,
+        "total_unique_sources": 6,
+        "avg_sources_per_prompt": 6,
+        "best_citation_rank": null,
+        "avg_citation_rank": null,
+        "total_citations": 0
+      },
+      "What is the best AI tool for summarizing massive legal documents and technical PDFs accurately?": {
+        "target_domain_retrieved": false,
+        "target_domain_cited": false,
+        "total_sources": 9,
+        "prompts_using_query": [
+          "What is the best AI tool for summarizing massive legal documents and technical PDFs accurately?"
+        ],
+        "all_domains": [
+          "hebbia.com",
+          "smallpdf.com",
+          "deepknit.ai",
+          "studley.ai",
+          "atlasworkspace.ai",
+          "getjarvis.eu",
           "reddit.com",
-          "just-bikes.de",
-          "bikeawayberlin.de",
-          "101bikerentals.com",
-          "bikeopia.com",
-          "nomadandinlove.com",
-          "fietsenboerse.de",
-          "visitberlin.de",
-          "allaboutberlin.com"
-        ],
-        "target_domain_citations": [
-          10
-        ],
-        "prompt_count": 1,
-        "unique_prompts": 1,
-        "total_unique_sources": 11,
-        "avg_sources_per_prompt": 11,
-        "best_citation_rank": 10,
-        "avg_citation_rank": 10,
-        "total_citations": 1
-      },
-      "affordable bikes Berlin": {
-        "target_domain_retrieved": true,
-        "target_domain_cited": true,
-        "total_sources": 11,
-        "prompts_using_query": [
-          "cheapest bicycle to buy in berlin"
-        ],
-        "all_domains": [
-          "nextbike.de",
-          "berlin.de",
-          "reddit.com",
-          "just-bikes.de",
-          "bikeawayberlin.de",
-          "101bikerentals.com",
-          "bikeopia.com",
-          "nomadandinlove.com",
-          "fietsenboerse.de",
-          "visitberlin.de",
-          "allaboutberlin.com"
-        ],
-        "target_domain_citations": [
-          10
-        ],
-        "prompt_count": 1,
-        "unique_prompts": 1,
-        "total_unique_sources": 11,
-        "avg_sources_per_prompt": 11,
-        "best_citation_rank": 10,
-        "avg_citation_rank": 10,
-        "total_citations": 1
-      },
-      "Fahrradgeschäfte Deutschland Rennrad": {
-        "target_domain_retrieved": false,
-        "target_domain_cited": false,
-        "total_sources": 10,
-        "prompts_using_query": [
-          "cycling good, where to buy cycling machine deutschalnd to ride on roads and helmet"
-        ],
-        "all_domains": [
-          "boc24.de",
-          "hibike.de",
-          "shop.zweirad-stadler.de",
-          "bikesnboards.de",
-          "fahrrad.de",
-          "fahrrad-xxl.de",
-          "lucky-bike.de",
-          "decathlon.de",
-          "rabe-bike.de",
-          "das-radhaus.de"
+          "fastscribe.io",
+          "mindstudio.ai"
         ],
         "target_domain_citations": [],
         "prompt_count": 1,
         "unique_prompts": 1,
-        "total_unique_sources": 10,
-        "avg_sources_per_prompt": 10,
+        "total_unique_sources": 9,
+        "avg_sources_per_prompt": 9,
         "best_citation_rank": null,
         "avg_citation_rank": null,
         "total_citations": 0
       },
-      "Fahrradgeschäfte Deutschland Fahrradhelm": {
+      "What are the best enterprise-grade AI models for handling complex reasoning, long documents, and coding with high safety standards?": {
         "target_domain_retrieved": false,
         "target_domain_cited": false,
-        "total_sources": 10,
+        "total_sources": 12,
         "prompts_using_query": [
-          "cycling good, where to buy cycling machine deutschalnd to ride on roads and helmet"
+          "What are the best enterprise-grade AI models for handling complex reasoning, long documents, and coding with high safety standards?"
         ],
         "all_domains": [
-          "boc24.de",
-          "hibike.de",
-          "shop.zweirad-stadler.de",
-          "bikesnboards.de",
-          "fahrrad.de",
-          "fahrrad-xxl.de",
-          "lucky-bike.de",
-          "decathlon.de",
-          "rabe-bike.de",
-          "das-radhaus.de"
+          "alicelabs.ai",
+          "agilesoftlabs.com",
+          "amazon.com",
+          "dev.to",
+          "stackspend.app",
+          "medium.com",
+          "aicomparison.ai",
+          "kalviumlabs.ai",
+          "aiporate.com",
+          "simupro.nl",
+          "katory.net",
+          "datasofttechnologies.com"
         ],
         "target_domain_citations": [],
         "prompt_count": 1,
         "unique_prompts": 1,
-        "total_unique_sources": 10,
-        "avg_sources_per_prompt": 10,
-        "best_citation_rank": null,
-        "avg_citation_rank": null,
-        "total_citations": 0
-      },
-      "Fahrradhändler Deutschland": {
-        "target_domain_retrieved": false,
-        "target_domain_cited": false,
-        "total_sources": 10,
-        "prompts_using_query": [
-          "cycling good, where to buy cycling machine deutschalnd to ride on roads and helmet"
-        ],
-        "all_domains": [
-          "boc24.de",
-          "hibike.de",
-          "shop.zweirad-stadler.de",
-          "bikesnboards.de",
-          "fahrrad.de",
-          "fahrrad-xxl.de",
-          "lucky-bike.de",
-          "decathlon.de",
-          "rabe-bike.de",
-          "das-radhaus.de"
-        ],
-        "target_domain_citations": [],
-        "prompt_count": 1,
-        "unique_prompts": 1,
-        "total_unique_sources": 10,
-        "avg_sources_per_prompt": 10,
-        "best_citation_rank": null,
-        "avg_citation_rank": null,
-        "total_citations": 0
-      },
-      "best bicycles for Berlin cycling": {
-        "target_domain_retrieved": false,
-        "target_domain_cited": false,
-        "total_sources": 8,
-        "prompts_using_query": [
-          "best bikes for cycling in Berlin"
-        ],
-        "all_domains": [
-          "sustainablecities.travel",
-          "originalberlintours.com",
-          "welcome-center-germany.com",
-          "xjd.com",
-          "bikesurf.org",
-          "bicycleinfrastructuremanuals.com",
-          "meininger-hotels.com",
-          "allaboutberlin.com"
-        ],
-        "target_domain_citations": [],
-        "prompt_count": 1,
-        "unique_prompts": 1,
-        "total_unique_sources": 8,
-        "avg_sources_per_prompt": 8,
-        "best_citation_rank": null,
-        "avg_citation_rank": null,
-        "total_citations": 0
-      },
-      "types of bikes suitable for Berlin": {
-        "target_domain_retrieved": false,
-        "target_domain_cited": false,
-        "total_sources": 8,
-        "prompts_using_query": [
-          "best bikes for cycling in Berlin"
-        ],
-        "all_domains": [
-          "sustainablecities.travel",
-          "originalberlintours.com",
-          "welcome-center-germany.com",
-          "xjd.com",
-          "bikesurf.org",
-          "bicycleinfrastructuremanuals.com",
-          "meininger-hotels.com",
-          "allaboutberlin.com"
-        ],
-        "target_domain_citations": [],
-        "prompt_count": 1,
-        "unique_prompts": 1,
-        "total_unique_sources": 8,
-        "avg_sources_per_prompt": 8,
-        "best_citation_rank": null,
-        "avg_citation_rank": null,
-        "total_citations": 0
-      },
-      "Berlin cycling conditions bike recommendations": {
-        "target_domain_retrieved": false,
-        "target_domain_cited": false,
-        "total_sources": 8,
-        "prompts_using_query": [
-          "best bikes for cycling in Berlin"
-        ],
-        "all_domains": [
-          "sustainablecities.travel",
-          "originalberlintours.com",
-          "welcome-center-germany.com",
-          "xjd.com",
-          "bikesurf.org",
-          "bicycleinfrastructuremanuals.com",
-          "meininger-hotels.com",
-          "allaboutberlin.com"
-        ],
-        "target_domain_citations": [],
-        "prompt_count": 1,
-        "unique_prompts": 1,
-        "total_unique_sources": 8,
-        "avg_sources_per_prompt": 8,
-        "best_citation_rank": null,
-        "avg_citation_rank": null,
-        "total_citations": 0
-      },
-      "best bikes for cycling in Berlin": {
-        "target_domain_retrieved": false,
-        "target_domain_cited": false,
-        "total_sources": 10,
-        "prompts_using_query": [
-          "best bikes for cycling in Berlin"
-        ],
-        "all_domains": [
-          "bikemap.net",
-          "strava.com",
-          "sustainablecities.travel",
-          "cyclingthread.com",
-          "canyon.com",
-          "welcome-center-germany.com",
-          "gravelunion.cc",
-          "reddit.com",
-          "outdooractive.com",
-          "visitberlin.de"
-        ],
-        "target_domain_citations": [],
-        "prompt_count": 1,
-        "unique_prompts": 1,
-        "total_unique_sources": 10,
-        "avg_sources_per_prompt": 10,
-        "best_citation_rank": null,
-        "avg_citation_rank": null,
-        "total_citations": 0
-      },
-      "road cycling routes Berlin": {
-        "target_domain_retrieved": false,
-        "target_domain_cited": false,
-        "total_sources": 10,
-        "prompts_using_query": [
-          "best bikes for cycling in Berlin"
-        ],
-        "all_domains": [
-          "bikemap.net",
-          "strava.com",
-          "sustainablecities.travel",
-          "cyclingthread.com",
-          "canyon.com",
-          "welcome-center-germany.com",
-          "gravelunion.cc",
-          "reddit.com",
-          "outdooractive.com",
-          "visitberlin.de"
-        ],
-        "target_domain_citations": [],
-        "prompt_count": 1,
-        "unique_prompts": 1,
-        "total_unique_sources": 10,
-        "avg_sources_per_prompt": 10,
-        "best_citation_rank": null,
-        "avg_citation_rank": null,
-        "total_citations": 0
-      },
-      "gravel cycling routes Berlin": {
-        "target_domain_retrieved": false,
-        "target_domain_cited": false,
-        "total_sources": 10,
-        "prompts_using_query": [
-          "best bikes for cycling in Berlin"
-        ],
-        "all_domains": [
-          "bikemap.net",
-          "strava.com",
-          "sustainablecities.travel",
-          "cyclingthread.com",
-          "canyon.com",
-          "welcome-center-germany.com",
-          "gravelunion.cc",
-          "reddit.com",
-          "outdooractive.com",
-          "visitberlin.de"
-        ],
-        "target_domain_citations": [],
-        "prompt_count": 1,
-        "unique_prompts": 1,
-        "total_unique_sources": 10,
-        "avg_sources_per_prompt": 10,
-        "best_citation_rank": null,
-        "avg_citation_rank": null,
-        "total_citations": 0
-      },
-      "touring cycling routes Berlin": {
-        "target_domain_retrieved": false,
-        "target_domain_cited": false,
-        "total_sources": 10,
-        "prompts_using_query": [
-          "best bikes for cycling in Berlin"
-        ],
-        "all_domains": [
-          "bikemap.net",
-          "strava.com",
-          "sustainablecities.travel",
-          "cyclingthread.com",
-          "canyon.com",
-          "welcome-center-germany.com",
-          "gravelunion.cc",
-          "reddit.com",
-          "outdooractive.com",
-          "visitberlin.de"
-        ],
-        "target_domain_citations": [],
-        "prompt_count": 1,
-        "unique_prompts": 1,
-        "total_unique_sources": 10,
-        "avg_sources_per_prompt": 10,
-        "best_citation_rank": null,
-        "avg_citation_rank": null,
-        "total_citations": 0
-      },
-      "fast city bikes Berlin": {
-        "target_domain_retrieved": true,
-        "target_domain_cited": true,
-        "total_sources": 11,
-        "prompts_using_query": [
-          "cycle fast; city bikes; berlin"
-        ],
-        "all_domains": [
-          "nextbike.de",
-          "fahrradtouren-berlin.com",
-          "trekbikes.com",
-          "mod-bikes.com",
-          "bikepunkshop.com",
-          "just-bikes.de",
-          "theurbanmobilitystore.com",
-          "veloretti.com",
-          "swapfiets.de",
-          "bikeopia.com",
-          "fahrradstation.com"
-        ],
-        "target_domain_citations": [
-          8
-        ],
-        "prompt_count": 1,
-        "unique_prompts": 1,
-        "total_unique_sources": 11,
-        "avg_sources_per_prompt": 11,
-        "best_citation_rank": 8,
-        "avg_citation_rank": 8,
-        "total_citations": 1
-      },
-      "Berlin bike shops fast city bikes": {
-        "target_domain_retrieved": true,
-        "target_domain_cited": true,
-        "total_sources": 11,
-        "prompts_using_query": [
-          "cycle fast; city bikes; berlin"
-        ],
-        "all_domains": [
-          "nextbike.de",
-          "fahrradtouren-berlin.com",
-          "trekbikes.com",
-          "mod-bikes.com",
-          "bikepunkshop.com",
-          "just-bikes.de",
-          "theurbanmobilitystore.com",
-          "veloretti.com",
-          "swapfiets.de",
-          "bikeopia.com",
-          "fahrradstation.com"
-        ],
-        "target_domain_citations": [
-          8
-        ],
-        "prompt_count": 1,
-        "unique_prompts": 1,
-        "total_unique_sources": 11,
-        "avg_sources_per_prompt": 11,
-        "best_citation_rank": 8,
-        "avg_citation_rank": 8,
-        "total_citations": 1
-      },
-      "high-performance city bikes Berlin": {
-        "target_domain_retrieved": true,
-        "target_domain_cited": true,
-        "total_sources": 11,
-        "prompts_using_query": [
-          "cycle fast; city bikes; berlin"
-        ],
-        "all_domains": [
-          "nextbike.de",
-          "fahrradtouren-berlin.com",
-          "trekbikes.com",
-          "mod-bikes.com",
-          "bikepunkshop.com",
-          "just-bikes.de",
-          "theurbanmobilitystore.com",
-          "veloretti.com",
-          "swapfiets.de",
-          "bikeopia.com",
-          "fahrradstation.com"
-        ],
-        "target_domain_citations": [
-          8
-        ],
-        "prompt_count": 1,
-        "unique_prompts": 1,
-        "total_unique_sources": 11,
-        "avg_sources_per_prompt": 11,
-        "best_citation_rank": 8,
-        "avg_citation_rank": 8,
-        "total_citations": 1
-      },
-      "best touring bikes for Europe": {
-        "target_domain_retrieved": false,
-        "target_domain_cited": false,
-        "total_sources": 15,
-        "prompts_using_query": [
-          "best bikes for cycling in Europe"
-        ],
-        "all_domains": [
-          "templecycles.com",
-          "cyclingweekly.com",
-          "bikeradar.com",
-          "cyclingnews.com",
-          "bicycling.com",
-          "granfondo-cycling.com",
-          "tomsbiketrip.com",
-          "rosebikes.com",
-          "off.road.cc",
-          "fujibikes.eu",
-          "chriscrossinggermany.com",
-          "road.cc",
-          "reddit.com",
-          "tredz.co.uk",
-          "reallybigbikeride.com"
-        ],
-        "target_domain_citations": [],
-        "prompt_count": 1,
-        "unique_prompts": 1,
-        "total_unique_sources": 15,
-        "avg_sources_per_prompt": 15,
-        "best_citation_rank": null,
-        "avg_citation_rank": null,
-        "total_citations": 0
-      },
-      "best road bikes for Europe": {
-        "target_domain_retrieved": false,
-        "target_domain_cited": false,
-        "total_sources": 15,
-        "prompts_using_query": [
-          "best bikes for cycling in Europe"
-        ],
-        "all_domains": [
-          "templecycles.com",
-          "cyclingweekly.com",
-          "bikeradar.com",
-          "cyclingnews.com",
-          "bicycling.com",
-          "granfondo-cycling.com",
-          "tomsbiketrip.com",
-          "rosebikes.com",
-          "off.road.cc",
-          "fujibikes.eu",
-          "chriscrossinggermany.com",
-          "road.cc",
-          "reddit.com",
-          "tredz.co.uk",
-          "reallybigbikeride.com"
-        ],
-        "target_domain_citations": [],
-        "prompt_count": 1,
-        "unique_prompts": 1,
-        "total_unique_sources": 15,
-        "avg_sources_per_prompt": 15,
-        "best_citation_rank": null,
-        "avg_citation_rank": null,
-        "total_citations": 0
-      },
-      "best hybrid bikes for Europe": {
-        "target_domain_retrieved": false,
-        "target_domain_cited": false,
-        "total_sources": 15,
-        "prompts_using_query": [
-          "best bikes for cycling in Europe"
-        ],
-        "all_domains": [
-          "templecycles.com",
-          "cyclingweekly.com",
-          "bikeradar.com",
-          "cyclingnews.com",
-          "bicycling.com",
-          "granfondo-cycling.com",
-          "tomsbiketrip.com",
-          "rosebikes.com",
-          "off.road.cc",
-          "fujibikes.eu",
-          "chriscrossinggermany.com",
-          "road.cc",
-          "reddit.com",
-          "tredz.co.uk",
-          "reallybigbikeride.com"
-        ],
-        "target_domain_citations": [],
-        "prompt_count": 1,
-        "unique_prompts": 1,
-        "total_unique_sources": 15,
-        "avg_sources_per_prompt": 15,
-        "best_citation_rank": null,
-        "avg_citation_rank": null,
-        "total_citations": 0
-      },
-      "best gravel bikes for Europe": {
-        "target_domain_retrieved": false,
-        "target_domain_cited": false,
-        "total_sources": 15,
-        "prompts_using_query": [
-          "best bikes for cycling in Europe"
-        ],
-        "all_domains": [
-          "templecycles.com",
-          "cyclingweekly.com",
-          "bikeradar.com",
-          "cyclingnews.com",
-          "bicycling.com",
-          "granfondo-cycling.com",
-          "tomsbiketrip.com",
-          "rosebikes.com",
-          "off.road.cc",
-          "fujibikes.eu",
-          "chriscrossinggermany.com",
-          "road.cc",
-          "reddit.com",
-          "tredz.co.uk",
-          "reallybigbikeride.com"
-        ],
-        "target_domain_citations": [],
-        "prompt_count": 1,
-        "unique_prompts": 1,
-        "total_unique_sources": 15,
-        "avg_sources_per_prompt": 15,
-        "best_citation_rank": null,
-        "avg_citation_rank": null,
-        "total_citations": 0
-      },
-      "bike packing Europe bike recommendations": {
-        "target_domain_retrieved": false,
-        "target_domain_cited": false,
-        "total_sources": 15,
-        "prompts_using_query": [
-          "best bikes for cycling in Europe"
-        ],
-        "all_domains": [
-          "templecycles.com",
-          "cyclingweekly.com",
-          "bikeradar.com",
-          "cyclingnews.com",
-          "bicycling.com",
-          "granfondo-cycling.com",
-          "tomsbiketrip.com",
-          "rosebikes.com",
-          "off.road.cc",
-          "fujibikes.eu",
-          "chriscrossinggermany.com",
-          "road.cc",
-          "reddit.com",
-          "tredz.co.uk",
-          "reallybigbikeride.com"
-        ],
-        "target_domain_citations": [],
-        "prompt_count": 1,
-        "unique_prompts": 1,
-        "total_unique_sources": 15,
-        "avg_sources_per_prompt": 15,
+        "total_unique_sources": 12,
+        "avg_sources_per_prompt": 12,
         "best_citation_rank": null,
         "avg_citation_rank": null,
         "total_citations": 0
       }
     },
     "response_chunks_analysis": {
-      "cheapest bicycle to buy in berlin": {
+      "How can I get API access to build custom applications with Claude AI?": {
         "domain_mentions": [],
         "competitor_mentions": [
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "To find the cheapest bicycle in Berlin, consider these options: \n\n **1",
+            "sentence": "gemini_response",
+            "domain": "To get API access to build custom applications with Claude AI, you have **three main paths**, depending on whether you want to deal with Anthropic directly or host through an existing cloud enterprise account (AWS or Google Cloud)",
             "position": 1
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Used Bicycle Markets & Shops:** \n\n * **Fietsenbörse:** This is Berlin's largest bike market, held monthly at Winterfeldtplatz in Schöneberg",
+            "sentence": "gemini_response",
+            "domain": "---\n\n### Option 1: Direct Access via Anthropic Console (Most Common & Quickest)\nIf you are building an independent app, SaaS tool, or side project, getting API access directly from Anthropic is the fastest option",
             "position": 2
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "You can find over 600 second-hand bikes from private sellers and dealers, with prices and types varying widely",
+            "sentence": "gemini_response",
+            "domain": "1",
             "position": 3
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "You can test ride bikes and get independent advice",
+            "sentence": "gemini_response",
+            "domain": "**Create an Account:**\n   * Go to the **[Anthropic Console](https://console",
             "position": 4
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "* **Berliner Fahrradmarkt:** This market, which started as a small flea market, is now one of Berlin's largest platforms for used bicycles, with four locations in 2025: Kreuzkölln, Moabit, Prenzlauer Berg, and Neukölln",
+            "sentence": "gemini_response",
+            "domain": "anthropic",
             "position": 5
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "They offer a large selection of used bikes and provide free, independent purchasing advice",
+            "sentence": "gemini_response",
+            "domain": "com/)** (note: this is separate from a standard consumer Claude Pro subscription)",
             "position": 6
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "* **Bikeopia:** Located at Petersburger Str",
+            "sentence": "gemini_response",
+            "domain": "2",
             "position": 7
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "47, 10249 Berlin, Bikeopia specializes in quality used bikes, including vintage racers and city bikes",
+            "sentence": "gemini_response",
+            "domain": "**Add Billing / Purchase Credits:**\n   * Navigate to **Billing** and add a payment method",
             "position": 8
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Their prices range from 400 to 1500 Euros, and they offer a 6-month warranty on all bikes",
+            "sentence": "gemini_response",
+            "domain": "Anthropic uses a pre-paid credit system with low minimum funding limits to get started",
             "position": 9
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "* **BIKE A-WAY Berlin:** This shop salvages and fixes up used bikes, selling them at fair prices",
+            "sentence": "gemini_response",
+            "domain": "3",
             "position": 10
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "They also offer new single-speed, cross, urban, and city bikes, as well as used racers, all with a 1-year warranty",
+            "sentence": "gemini_response",
+            "domain": "**Generate an API Key:**\n   * Go to **Settings → API Keys** and click **Create Key**",
             "position": 11
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "* **Other Used Bike Shops:** Look for shops specializing in used bikes, such as Hashims gebräuchte Fahrräder",
+            "sentence": "gemini_response",
+            "domain": "* *Note:* Copy and securely store your key immediately (starts with `sk-ant-",
             "position": 12
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "* **Online Classifieds:** Websites like eBay Kleinanzeigen are good for finding used bikes directly from sellers",
+            "sentence": "gemini_response",
+            "domain": "`), as it will only be shown once",
             "position": 13
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "* **Flea Markets:** While some flea markets sell bicycles, be cautious as they can be old, overpriced, or even stolen",
+            "sentence": "gemini_response",
+            "domain": "4",
             "position": 14
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**2",
+            "sentence": "gemini_response",
+            "domain": "**Build & Test:**\n   * **Playground:** Use the interactive **Workbench** in the console to test system prompts, parameters (temperature, max tokens), and model behavior before writing code",
             "position": 15
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "New Budget-Friendly Bicycles:** \n\n * **Decathlon:** This large sports retailer is known for offering good value bikes",
+            "sentence": "gemini_response",
+            "domain": "* **SDKs & Libraries:** Install Anthropic’s official SDKs:\n     * **Python:** `pip install anthropic`\n     * **TypeScript/Node",
             "position": 16
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "* **Stadler:** You might find new bicycles for around €350 or less, especially if you don't need gears",
+            "sentence": "gemini_response",
+            "domain": "js:** `npm install @anthropic-ai/sdk`\n   * **Docs:** Refer to the **[Anthropic API Documentation](https://docs",
             "position": 17
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "* **Just Bikes:** They offer affordable city bikes for men and women from the brand Airtracks",
+            "sentence": "gemini_response",
+            "domain": "anthropic",
             "position": 18
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "* **Froschrad:** This local manufacturer in Kreuzberg used to have very affordable, solid-quality options",
+            "sentence": "gemini_response",
+            "domain": "com/)** for complete code examples using the **Messages API**",
             "position": 19
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**3",
+            "sentence": "gemini_response",
+            "domain": "---\n\n### Option 2: AWS Amazon Bedrock (Best for Enterprise & AWS Infrastructure)\nIf your application infrastructure is already on AWS and you need strict data residency, enterprise IAM permissions, or unified billing, accessing Claude via Amazon Bedrock is the ideal route",
             "position": 20
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Bicycle Rental/Sharing for Short-Term Needs:** \n\n If you only need a bike for a short period, consider these rental and sharing options: \n\n * **Nextbike:** Costs €1",
+            "sentence": "gemini_response",
+            "domain": "1",
             "position": 21
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "50 for the first 15 minutes, then €1",
+            "sentence": "gemini_response",
+            "domain": "**Enable Model Access:**\n   * Open the **[AWS Management Console](https://console",
             "position": 22
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "20 for the next 15 minutes, and €1 for each additional 15 minutes, with a maximum of €15 per 24 hours",
+            "sentence": "gemini_response",
+            "domain": "aws",
             "position": 23
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "It's one of the cheapest for trips under 30 minutes",
+            "sentence": "gemini_response",
+            "domain": "amazon",
             "position": 24
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "* **Donkey Republic:** Prices vary by duration, becoming cheaper the longer you rent",
+            "sentence": "gemini_response",
+            "domain": "com/bedrock/)** and navigate to **Amazon Bedrock**",
             "position": 25
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "For example, 4 hours can cost around €8",
+            "sentence": "gemini_response",
+            "domain": "* Go to **Model access** in the sidebar, select the **Anthropic Claude** models, fill out the quick use-case request form, and submit",
             "position": 26
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "50",
+            "sentence": "gemini_response",
+            "domain": "Access is usually granted immediately",
             "position": 27
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "* **Voi (e-bikes):** Costs €1 to unlock plus €0",
+            "sentence": "gemini_response",
+            "domain": "2",
             "position": 28
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "24 per minute",
+            "sentence": "gemini_response",
+            "domain": "**Setup IAM Permissions:**\n   * Ensure your AWS IAM role/user has permission to invoke Bedrock models (`bedrock:InvokeModel`)",
             "position": 29
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "They also offer a Day Pass for €8",
+            "sentence": "gemini_response",
+            "domain": "3",
             "position": 30
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "00, which includes unlimited unlocks and 100 minutes of riding over 24 hours",
+            "sentence": "gemini_response",
+            "domain": "**Integration:**\n   * Use the **AWS SDK (Boto3 for Python, AWS SDK for JS)** or Anthropic’s Bedrock client extension to interact with Claude through AWS endpoints",
             "position": 31
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "* **Call a Bike (Deutsche Bahn):** Available in the Berlin S-Bahn-Ring area, with bikes rentable through their app",
+            "sentence": "gemini_response",
+            "domain": "---\n\n### Option 3: Google Cloud Vertex AI (Best for GCP Stack)\nIf your app is hosted on Google Cloud Platform (GCP) or you want to utilize GCP credits, you can invoke Claude directly within your GCP project",
             "position": 32
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "* **Swapfiets:** Offers monthly bike rentals starting from €14",
+            "sentence": "gemini_response",
+            "domain": "1",
             "position": 33
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "90 for a city bike",
+            "sentence": "gemini_response",
+            "domain": "**Enable Claude in Model Garden:**\n   * Log into the **[Google Cloud Console](https://console",
             "position": 34
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**Tips for Buying a Used Bike:** \n\n * **Test Ride:** Always test the bike before buying to check brakes, gears, frame, and wheels",
+            "sentence": "gemini_response",
+            "domain": "cloud",
             "position": 35
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "* **Inspection:** Look for cracks in the frame and ensure the wheels are straight",
+            "sentence": "gemini_response",
+            "domain": "google",
             "position": 36
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "* **Warranty:** Some used bike shops, like Bikeopia and BIKE A-WAY, offer warranties on their second-hand bikes",
+            "sentence": "gemini_response",
+            "domain": "com/)** and navigate to **Vertex AI → Model Garden**",
             "position": 37
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "* **Independent Advice:** Markets like Fietsenbörse and Berliner Fahrradmarkt offer independent bike specialists who can provide advice",
+            "sentence": "gemini_response",
+            "domain": "* Search for **Claude** and enable access for your GCP project",
             "position": 38
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Remember that prices and availability can vary, so it's always a good idea to check current stock and compare options",
+            "sentence": "gemini_response",
+            "domain": "2",
             "position": 39
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "**Authentication:**\n   * Authenticate via Google Cloud Application Default Credentials (ADC) or Service Account keys",
+            "position": 40
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "3",
+            "position": 41
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "**SDK Integration:**\n   * Use Anthropic’s official Vertex SDK:\n     * **Python:** `pip install anthropic[vertex]`\n     * **Node",
+            "position": 42
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "js:** `npm install @anthropic-ai/vertex-sdk`\n\n---\n\n### Key Recommendations Before You Build\n* **Security First:** Never hardcode your API key (`sk-ant-",
+            "position": 43
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "`) directly into your client-side code or public GitHub repositories",
+            "position": 44
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Always store API keys in environment variables (`export ANTHROPIC_API_KEY=\"your-key\"`) or secret managers",
+            "position": 45
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Understand the Endpoint:** All model calls go through Anthropic's core **Messages API** (`/v1/messages`), which handles system prompts, user/assistant chat history, multi-modal image inputs, and tool/function calling",
+            "position": 46
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Start Small:** Start with lightweight models for simple tasks or intent classification, and reserve larger models for complex logic or coding tasks",
+            "position": 47
           }
         ],
         "domain_citations": 0,
-        "competitor_citations": 39,
-        "total_citations": 39,
+        "competitor_citations": 47,
+        "total_citations": 47,
         "domain_share": 0,
         "first_mention_position": null,
         "performance_rating": "absent"
       },
-      "cycling good, where to buy cycling machine deutschalnd to ride on roads and helmet": {
+      "Are there official tutorials or courses to learn prompt engineering for Claude?": {
         "domain_mentions": [],
         "competitor_mentions": [
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Es ist großartig, dass Sie mit dem Radfahren beginnen möchten! In Deutschland gibt es viele Möglichkeiten, Fahrräder und Helme zu kaufen, sowohl online als auch in physischen Geschäften",
+            "sentence": "gemini_response",
+            "domain": "Yes! Anthropic provides several **official, free tutorials and courses** designed to teach prompt engineering specifically tailored to Claude, ranging from beginner-friendly interactive guides to developer-focused workshops",
             "position": 1
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**Wo Sie Fahrräder (Rennräder) kaufen können:**\n\n*   **Große Fahrradhändler mit Filialen und Online-Shops:**\n    *   **Fahrrad XXL:** Bietet eine riesige Auswahl an Fahrrädern (über 300",
+            "sentence": "gemini_response",
+            "domain": "---\n\n### 1",
             "position": 2
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "000 sofort verfügbare Fahrräder von über 300 Marken) und hat Filialen in ganz Deutschland",
+            "sentence": "gemini_response",
+            "domain": "Anthropic’s Interactive Prompt Engineering Tutorial (GitHub / Google Sheets)\nThis is Anthropic's flagship hands-on prompt engineering course",
             "position": 3
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Sie können dort Rennräder kaufen",
+            "sentence": "gemini_response",
+            "domain": "It is available as a series of **Jupyter Notebooks** or as a **Google Sheets** extension",
             "position": 4
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Lucky Bike:** Hat über 35 Filialen in Deutschland und einen Online-Shop mit einer großen Auswahl an Markenrädern, darunter auch Rennräder",
+            "sentence": "gemini_response",
+            "domain": "* **Where to find it:** [Anthropic’s GitHub Repository (`anthropics/courses`)](https://github",
             "position": 5
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **B",
+            "sentence": "gemini_response",
+            "domain": "com/anthropics/courses) or search for *\"Anthropic Interactive Prompt Engineering Tutorial\"*",
             "position": 6
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "O",
+            "sentence": "gemini_response",
+            "domain": "* **Format:** Self-paced, interactive notebook exercises",
             "position": 7
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "C",
+            "sentence": "gemini_response",
+            "domain": "You run prompts directly against Claude (using Claude 3 Haiku or Sonnet) to see how small structural adjustments alter output quality",
             "position": 8
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": ":** Verfügt über 49 Filialen in Deutschland und einen Online-Shop mit einer großen Auswahl an Fahrrädern",
+            "sentence": "gemini_response",
+            "domain": "* **Key Topics Covered (9 Chapters):**\n  1",
             "position": 9
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Zweirad Stadler:** Eines der größten Zweirad-Center mit Standorten in Deutschland und einem umfangreichen Online-Shop, der Rennräder anbietet",
+            "sentence": "gemini_response",
+            "domain": "**Basic Prompt Structure & System Prompts**\n  2",
             "position": 10
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Das Radhaus:** Ein großer Fahrrad- und E-Bike-Händler im Großraum Berlin mit 8 Filialen und einem Online-Shop, der hochwertige Räder führt",
+            "sentence": "gemini_response",
+            "domain": "**Being Clear & Direct** (removing ambiguity)\n  3",
             "position": 11
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **RABE Bike:** Seit über 30 Jahren ein Kompetenzzentrum für hochwertige Fahrräder und E-Bikes mit 10 Standorten in Bayern und einem Online-Shop",
+            "sentence": "gemini_response",
+            "domain": "**Assigning Roles / Personas**\n  4",
             "position": 12
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Sie bieten Rennräder an und werben mit einer europaweiten Best-Preis-Garantie",
+            "sentence": "gemini_response",
+            "domain": "**Separating Data from Instructions using XML Tags** (a signature Claude prompting technique)\n  5",
             "position": 13
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Hibike",
+            "sentence": "gemini_response",
+            "domain": "**Formatting Output & \"Prefilling\" Claude’s Response**\n  6",
             "position": 14
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "de:** Ein Online-Shop für Fahrräder, E-Bikes, Zubehör und Bikewear, der seit 1994 aktiv ist",
+            "sentence": "gemini_response",
+            "domain": "**Precognition & Extended Thinking** (asking Claude to think step-by-step)\n  7",
             "position": 15
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Bikesnboards:** Ein Fahrradfachhändler, der Marken wie Cube, Specialized, Trek und Scott führt und Rennräder anbietet",
+            "sentence": "gemini_response",
+            "domain": "**Few-Shot Prompting** (providing concrete examples)\n  8",
             "position": 16
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Online-Shops:** Viele der oben genannten Händler bieten auch den Online-Kauf an, was eine bequeme Option sein kann, wenn Sie keine Filiale in Ihrer Nähe haben",
+            "sentence": "gemini_response",
+            "domain": "**Avoiding Hallucinations & Managing Uncertainty**\n  9",
             "position": 17
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**Wo Sie Fahrradhelme kaufen können:**\n\n*   **Fahrradfachgeschäfte:** Die meisten Fahrradgeschäfte, die Fahrräder verkaufen, führen auch eine große Auswahl an Helmen",
+            "sentence": "gemini_response",
+            "domain": "**Complex Prompts for Industry Use Cases** (legal, analysis, customer support)\n\n---\n\n### 2",
             "position": 18
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Sportgeschäfte:** Große Sportgeschäfte wie Decathlon bieten ebenfalls Fahrradhelme an",
+            "sentence": "gemini_response",
+            "domain": "Official Claude Documentation & Prompt Generator Tool\nAnthropic maintains extensive, up-to-date documentation on prompt engineering strategies on their developer portal",
             "position": 19
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Online-Shops:**\n    *   **Fahrrad XXL:** Bietet Fahrradhelme an",
+            "sentence": "gemini_response",
+            "domain": "* **Where to find it:** Go to the official Anthropic Documentation and look under **Prompt Engineering Overview**",
             "position": 20
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Zweirad Stadler:** Hat eine große Auswahl an Fahrradhelmen online",
+            "sentence": "gemini_response",
+            "domain": "* **What it offers:**\n  * **Claude-Specific Prompt Techniques:** Guidance on using `<xml_tags>`, system prompts, prefilling Claude's response, and setting temperature",
             "position": 21
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Fahrrad",
+            "sentence": "gemini_response",
+            "domain": "* **Anthropic Console Prompt Library & Generator:** In the Anthropic Developer Console, there is an interactive *Prompt Generator tool*",
             "position": 22
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "de:** Bietet eine Vielzahl von Fahrradhelmen an, darunter MTB-Helme, Rennradhelme, Trekking- und Cityhelme sowie E-Bike-Helme",
+            "sentence": "gemini_response",
+            "domain": "You describe a task, and Anthropic's official prompt generator crafts an optimized, production-grade prompt structured for Claude",
             "position": 23
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Decathlon:** Bietet Fahrradhelme für Damen, Herren und Kinder online an",
+            "sentence": "gemini_response",
+            "domain": "---\n\n### 3",
             "position": 24
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Hibike",
+            "sentence": "gemini_response",
+            "domain": "\"Building with the Claude API\" & Developer Courses\nIf you are a developer looking to integrate Claude into software applications, Anthropic hosts broader engineering courses alongside prompt engineering",
             "position": 25
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "de:** Führt auch Fahrradhelme",
+            "sentence": "gemini_response",
+            "domain": "* **Where to find it:** [Anthropic Academy / GitHub `anthropics/courses`](https://github",
             "position": 26
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**Wichtige Hinweise zum Kauf eines Helms:**\n\n*   **Passform:** Der Helm muss richtig passen, darf nicht drücken oder wackeln und sollte Stirn, Schläfen und Hinterkopf sicher abdecken",
+            "sentence": "gemini_response",
+            "domain": "com/anthropics/courses)",
             "position": 27
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Sicherheitsnormen:** Achten Sie darauf, dass der Helm die einschlägigen Sicherheitsnormen erfüllt und ein anerkanntes Prüfzeichen besitzt",
+            "sentence": "gemini_response",
+            "domain": "* **What it covers:** Beyond basic prompting, these modules teach:\n  * Prompt evaluation and automated testing frameworks",
             "position": 28
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Komfort:** Ein guter Helm sollte angenehm zu tragen sein, ein geringes Gewicht haben und eine optimale Belüftung bieten",
+            "sentence": "gemini_response",
+            "domain": "* Tool Calling / Function Calling with Claude",
             "position": 29
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Arten von Helmen:** Es gibt verschiedene Arten von Helmen für unterschiedliche Zwecke, z",
+            "sentence": "gemini_response",
+            "domain": "* Model Context Protocol (MCP) and Retrieval-Augmented Generation (RAG)",
             "position": 30
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "B",
+            "sentence": "gemini_response",
+            "domain": "---\n\n### 4",
             "position": 31
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "City-Helme, E-Bike-Helme, Mountainbike-Helme und Rennradhelme",
+            "sentence": "gemini_response",
+            "domain": "Official Cloud Partner Workshops\nIf you use Claude through cloud providers like Amazon Bedrock or Google Cloud Vertex AI, official step-by-step workshops are hosted on cloud platform training sites:\n\n* **AWS Workshop Studio – *Prompt Engineering with Anthropic Claude v3",
             "position": 32
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Für E-Bikes bis 25 km/h ist in Deutschland ein normaler Fahrradhelm ausreichend, spezielle E-Bike-Helme bieten jedoch oft eine größere Schutzfläche",
+            "sentence": "gemini_response",
+            "domain": "X*:** A hands-on, test-driven workshop covering prompt design, testing, and optimization using Python (Boto3 SDK) and Bedrock",
             "position": 33
           },
           {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Viel Spaß beim Radfahren!",
+            "sentence": "gemini_response",
+            "domain": "* **Coursera – *Claude AI and Prompting for Everyone*:** An introductory video-based course aimed at non-technical users and professionals learning day-to-day productivity prompting with Claude",
+            "position": 34
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Pluralsight – *Anthropic: Prompt Engineering for Developers*:** Targeted at software developers looking to build test cases, debug, and pair-program using Claude",
+            "position": 35
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "---\n\n### Recommended Starting Point\n\n1",
+            "position": 36
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "**Non-developers / Business Users:** Start with the **Google Sheets version** of the *Anthropic Interactive Prompt Engineering Tutorial* or read the official **Prompt Engineering Overview** in Anthropic's docs",
+            "position": 37
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "2",
+            "position": 38
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "**Developers / Engineers:** Clone the [Anthropic Courses GitHub repository](https://github",
+            "position": 39
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "com/anthropics/courses), open `01_Basic Prompt Structure",
+            "position": 40
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "ipynb`, and work through the 9 interactive chapters",
+            "position": 41
+          }
+        ],
+        "domain_citations": 0,
+        "competitor_citations": 41,
+        "total_citations": 41,
+        "domain_share": 0,
+        "first_mention_position": null,
+        "performance_rating": "absent"
+      },
+      "Which AI research companies specialize in AI safety, alignment science, and Constitutional AI?": {
+        "domain_mentions": [],
+        "competitor_mentions": [
+          {
+            "sentence": "gemini_response",
+            "domain": "When researching companies and labs focused on **AI safety**, **alignment science**, and **Constitutional AI**, the landscape is divided into **frontier labs** (which build state-of-the-art AI models with integrated safety research) and **specialized research institutes** (which focus exclusively on safety, evaluation, and theoretical alignment)",
+            "position": 1
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "---\n\n### 1",
+            "position": 2
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "The Pioneer of Constitutional AI & Frontier Safety\n* **Anthropic**\n  * **Specialization:** Structural AI alignment, mechanistic interpretability, scalable oversight, and Constitutional AI",
+            "position": 3
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Why They Stand Out:** Anthropic was founded by former OpenAI safety researchers explicitly to prioritize AI safety",
+            "position": 4
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "They **pioneered Constitutional AI (CAI)**—a technique where models self-critique and align their outputs using a set of written principles (a \"constitution\") rather than relying solely on human feedback (RLAIF vs",
+            "position": 5
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "RLHF)",
+            "position": 6
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Key Work/Products:** The *Claude* model family, Claude’s public Constitution, and groundbreaking research in dictionary learning/mechanistic interpretability",
+            "position": 7
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Website:** [anthropic",
+            "position": 8
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "com/research](https://www",
+            "position": 9
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "anthropic",
+            "position": 10
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "com/research)\n\n---\n\n### 2",
+            "position": 11
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Pure AI Alignment Labs & Frontier Pure-Play Safety\n* **Safe Superintelligence Inc",
+            "position": 12
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "(SSI)**\n  * **Specialization:** Unconditional focus on Safe Superintelligence",
+            "position": 13
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Why They Stand Out:** Founded by Ilya Sutskever (former OpenAI Chief Scientist), Daniel Levy, and Daniel Gross, SSI operates purely as a research company with a single goal: achieving safe superintelligence before releasing commercial products",
+            "position": 14
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Website:** [ssi",
+            "position": 15
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "inc](https://ssi",
+            "position": 16
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "inc)\n\n* **Redwood Research**\n  * **Specialization:** Applied AI safety, AI control, empirical alignment, and mechanistic interpretability",
+            "position": 17
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Why They Stand Out:** Redwood is a non-profit research lab focused on ensuring that advanced AI systems remain controllable even if they become far smarter than humans",
+            "position": 18
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "They actively study failure modes in large language models",
+            "position": 19
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Website:** [redwoodresearch",
+            "position": 20
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "org](https://www",
+            "position": 21
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "redwoodresearch",
+            "position": 22
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "org)\n\n* **Alignment Research Center (ARC)**\n  * **Specialization:** Theoretical AI alignment, ARC Evals, and scalable oversight",
+            "position": 23
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Why They Stand Out:** Founded by Paul Christiano (former lead of OpenAI’s alignment team), ARC focuses on formal theoretical frameworks (such as Eliciting Latent Knowledge) and empirical evaluation of dangerous capabilities in frontier models",
+            "position": 24
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Website:** [alignment",
+            "position": 25
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "org](https://www",
+            "position": 26
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "alignment",
+            "position": 27
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "org)\n\n* **FAR AI (Frontier Alignment Research)**\n  * **Specialization:** Empirical safety research, adversarial red-teaming, and model auditability",
+            "position": 28
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Why They Stand Out:** FAR AI is a non-profit institute building safety tools to evaluate whether frontier models possess hidden vulnerabilities or unsafe capabilities",
+            "position": 29
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Website:** [far",
+            "position": 30
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "ai](https://far",
+            "position": 31
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "ai)\n\n---\n\n### 3",
+            "position": 32
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Safety Units within Major AI Frontier Labs\n* **OpenAI (Alignment & Safety Divisions)**\n  * **Specialization:** Reinforcement Learning from Human Feedback (RLHF), Deliberative Alignment, and Model Specification frameworks",
+            "position": 33
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Key Contributions:** OpenAI popularized RLHF and introduced *Deliberative Alignment* (enabling models to reason directly over explicit safety rules during inference) and public *Model Specs*",
+            "position": 34
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Website:** [openai",
+            "position": 35
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "com/index/safety-and-alignment](https://openai",
+            "position": 36
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "com/index/safety-and-alignment)\n\n* **Google DeepMind (Scalable Alignment & AI Safety Team)**\n  * **Specialization:** Scalable oversight, game theory for multi-agent safety, robust evaluations, and mechanistic interpretability",
+            "position": 37
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Key Contributions:** DeepMind conducts foundational work on structural AI safety, agent alignment, and red-teaming",
+            "position": 38
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Website:** [deepmind",
+            "position": 39
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "google/discover/blog/category/ai-safety](https://deepmind",
+            "position": 40
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "google/discover/blog/category/ai-safety)\n\n---\n\n### 4",
+            "position": 41
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Public Interest & Benchmark Organizations\n* **Center for AI Safety (CAIS)**\n  * **Specialization:** Societal-scale AI risk reduction, safety benchmarks, and compute infrastructure for academic researchers",
+            "position": 42
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Key Products:** SafetyBench, ML Safety course materials, and societal-level policy research",
+            "position": 43
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Website:** [safe",
+            "position": 44
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "ai](https://www",
+            "position": 45
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "safe",
+            "position": 46
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "ai)\n\n* **EleutherAI**\n  * **Specialization:** Open-source AI interpretability and alignment datasets",
+            "position": 47
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Website:** [eleuther",
+            "position": 48
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "ai](https://www",
+            "position": 49
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "eleuther",
+            "position": 50
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "ai) [1",
+            "position": 51
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "2",
+            "position": 52
+          }
+        ],
+        "domain_citations": 0,
+        "competitor_citations": 52,
+        "total_citations": 52,
+        "domain_share": 0,
+        "first_mention_position": null,
+        "performance_rating": "absent"
+      },
+      "How does Anthropic's Claude compare to OpenAI's ChatGPT for enterprise business applications?": {
+        "domain_mentions": [],
+        "competitor_mentions": [
+          {
+            "sentence": "gemini_response",
+            "domain": "When choosing between **Anthropic’s Claude** and **OpenAI’s ChatGPT** for enterprise business applications, the decision largely depends on your company's primary workflows, cloud infrastructure, and tool ecosystem",
+            "position": 1
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "While both providers offer enterprise-grade plans with high-tier security, administrative controls, and zero data-retraining guarantees, their flagship products differ significantly in strengths and capabilities",
+            "position": 2
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "---\n\n### Executive Summary: Which fits your enterprise?\n\n*   **Choose Anthropic’s Claude Enterprise if:** Your primary needs revolve around heavy text analysis, long-document processing (e",
+            "position": 3
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "g",
+            "position": 4
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": ", 500+ page contracts, financial prospectuses), deep research, precise technical writing, or developer coding assistance",
+            "position": 5
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "*   **Choose OpenAI’s ChatGPT Enterprise if:** You need a versatile, all-in-one AI suite featuring built-in image generation, real-time web browsing, native voice mode, advanced data analytics (code execution environment), and tight integration with Microsoft/Azure environments",
+            "position": 6
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "---\n\n### Key Comparison Pillars\n\n#### 1",
+            "position": 7
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Core Model Performance & Primary Use Cases\n*   **Document Analysis & Writing (Advantage: Claude)**\n    *   **Claude:** Anthropic’s flagship models (such as Claude Sonnet and Opus) excel in long-context reasoning",
+            "position": 8
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "With standard context windows reaching **200,000+ tokens** (and up to 1M in specialized API setups), Claude can digest massive documents without requiring text chunking",
+            "position": 9
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Claude is widely praised for producing natural, nuanced business writing without overly repetitive or promotional phrasing",
+            "position": 10
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "*   **ChatGPT:** While GPT models handle large documents well, they rely heavily on search or retrieval-augmented generation (RAG) strategies for long documents",
+            "position": 11
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "*   **Coding & Software Development (Advantage: Claude)**\n    *   **Claude:** Claude has become a preferred AI for software engineers due to its strong performance on benchmarks like SWE-bench and developer features like **Claude Code** and **Artifacts** (which allow real-time rendering of code, UI components, and charts in a side-by-side window)",
+            "position": 12
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "*   **ChatGPT:** Strong at general code generation, particularly when using specialized reasoning models (like the o-series) or its built-in Python execution sandbox",
+            "position": 13
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "*   **Multimodal & General Productivity (Advantage: ChatGPT)**\n    *   **ChatGPT:** Unmatched in multimodal variety",
+            "position": 14
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Offers built-in image generation (via DALL-E), native real-time Web Browsing, Voice Mode for oral discussions, and an **Advanced Data Analysis** sandbox that writes and executes Python code directly to analyze uploaded CSVs or Excel spreadsheets",
+            "position": 15
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "*   **Claude:** Claude focuses primarily on text, document, and vision input (reading diagrams/charts)",
+            "position": 16
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "It does not natively generate images or provide voice mode",
+            "position": 17
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "---\n\n#### 2",
+            "position": 18
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Enterprise Workflow Features & Integrations\n*   **Claude Enterprise (via [Anthropic](https://www",
+            "position": 19
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "anthropic",
+            "position": 20
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "com)):**\n    *   **Projects & Knowledge Bases:** Allows teams to curate shared project spaces pre-loaded with internal documentation, style guides, and codebase context",
+            "position": 21
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "*   **Native Integrations:** Directly connects with platforms like **GitHub** for repository context, alongside connectors for tools like Google Workspace, Notion, and financial software",
+            "position": 22
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "*   **ChatGPT Enterprise (via [OpenAI](https://www",
+            "position": 23
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "openai",
+            "position": 24
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "com)):**\n    *   **Custom GPTs & Workspaces:** Enables admins and employees to build custom internal assistants pre-prompted with specific files and API actions",
+            "position": 25
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "*   **Ecosystem:** Boasts 60+ enterprise integrations including **Microsoft 365, Slack, Atlassian (Jira/Confluence), and Zapier**",
+            "position": 26
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "---\n\n#### 3",
+            "position": 27
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Enterprise Infrastructure & Cloud Availability\n*   **Claude Deployment:**\n    *   Anthropic provides enterprise deployment directly via [Anthropic Enterprise](https://www",
+            "position": 28
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "anthropic",
+            "position": 29
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "com/enterprise), but its biggest edge for multi-cloud enterprises is native availability via **[Amazon Bedrock (AWS)](https://aws",
+            "position": 30
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "amazon",
+            "position": 31
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "com/bedrock)** and **[Google Cloud Vertex AI](https://cloud",
+            "position": 32
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "google",
+            "position": 33
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "com/vertex-ai)**",
+            "position": 34
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "This allows organizations to run Claude models inside their existing cloud security boundaries, HIPAA environments, and enterprise spending agreements",
+            "position": 35
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "*   **ChatGPT Deployment:**\n    *   OpenAI provides [ChatGPT Enterprise](https://openai",
+            "position": 36
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "com/chatgpt/enterprise) directly, but for companies tied to Microsoft’s cloud ecosystem, deployment is heavily centered around **[Microsoft Azure OpenAI Service](https://azure",
+            "position": 37
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "microsoft",
+            "position": 38
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "com)**",
+            "position": 39
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "This provides deep compliance integration for companies already using Azure AD / Entra ID",
+            "position": 40
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "---\n\n#### 4",
+            "position": 41
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Security, Privacy, and Compliance\nBoth platforms offer",
+            "position": 42
+          }
+        ],
+        "domain_citations": 0,
+        "competitor_citations": 42,
+        "total_citations": 42,
+        "domain_share": 0,
+        "first_mention_position": null,
+        "performance_rating": "absent"
+      },
+      "What is the best AI tool for summarizing massive legal documents and technical PDFs accurately?": {
+        "domain_mentions": [],
+        "competitor_mentions": [
+          {
+            "sentence": "gemini_response",
+            "domain": "When dealing with massive legal documents, contracts, and technical PDFs, standard AI summary tools often fall short due to limited context length, inaccurate parsing, or hallucinations",
+            "position": 1
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "For high-accuracy requirements, the best tool depends on whether you need an accessible workspace, a specialized legal suite, or an enterprise due-diligence platform",
+            "position": 2
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "---\n\n### 1",
+            "position": 3
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Best Overall & Most Accessible: **Google NotebookLM**\n* **Best For:** Multi-document analysis, zero-hallucination grounding, and budget-friendly power",
+            "position": 4
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Why It’s a Top Pick:** Google’s **NotebookLM** allows you to upload up to 50 large PDF files per notebook",
+            "position": 5
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Built on Gemini’s massive context window, it excels at digesting hundreds of pages of legal text, technical manuals, and research papers simultaneously",
+            "position": 6
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Accuracy Feature:** Every summary point or answer to a follow-up prompt includes **exact click-to-view citations** that pinpoint the exact page and paragraph in your PDF source",
+            "position": 7
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Pricing:** Free for individual users",
+            "position": 8
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "---\n\n### 2",
+            "position": 9
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Best for High-Reasoning & Complex Legal Logic: **Claude (Projects / Workbench by Anthropic)**\n* **Best For:** Deep legal interpretation, finding hidden clauses, complex technical formulas, and nuanced reasoning",
+            "position": 10
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Why It’s a Top Pick:** Claude (via Claude Pro/Enterprise) is widely considered by legal and technical analysts to be the strongest large language model for raw reading comprehension",
+            "position": 11
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Its 200,000+ token context window easily ingests 200–300 page PDFs in a single prompt",
+            "position": 12
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "It handles dense legalese, conditional logic (“if/then” clauses), and technical edge cases with fewer hallucinations than standard AI models",
+            "position": 13
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Pricing:** $20/month (Claude Pro) or enterprise pricing",
+            "position": 14
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "---\n\n### 3",
+            "position": 15
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Best Enterprise Legal-Specific Tools: **Thomson Reuters CoCounsel & Harvey AI**\n* **Best For:** Law firms, corporate legal teams, and high-stakes contract due diligence",
+            "position": 16
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Why They're Top Picks:**\n  * **CoCounsel (formerly Casetext):** Powered by GPT-4 and built specifically on authoritative legal databases, CoCounsel performs contract review, matter-aware legal summarization, and key clause extraction with enterprise guardrails",
+            "position": 17
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Harvey AI:** Widely adopted by global law firms and corporate legal departments (like PwC and Allen & Overy), Harvey is optimized for mass litigation discovery, complex contract auditing, and multi-jurisdictional legal compliance",
+            "position": 18
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Pricing:** Enterprise / custom quote only (targeted at legal practices)",
+            "position": 19
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "---\n\n### 4",
+            "position": 20
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Best for Complex Financial & Technical Due Diligence: **Hebbia (Hebbia Matrix)**\n* **Best For:** Investment banking, private equity, complex engineering reports, and massive PDF audit sets",
+            "position": 21
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Why It’s a Top Pick:** Rather than giving a simple summary block, Hebbia extracts data across dozens or hundreds of massive PDFs into a structured matrix (spreadsheet format)",
+            "position": 22
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "It allows you to cross-reference technical specifications, financial tables, and compliance terms across giant document libraries simultaneously",
+            "position": 23
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Pricing:** Enterprise tier",
+            "position": 24
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "---\n\n### 5",
+            "position": 25
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Best Dedicated AI PDF Readers: **Humata AI & Atlas**\n* **Best For:** Individual researchers, technical analysts, and quick contract triage",
+            "position": 26
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Why They're Top Picks:**\n  * **Humata AI:** Designed specifically for dense technical manuals and scientific PDFs",
+            "position": 27
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "It handles optical character recognition (OCR) well for scanned documents, auto-references equations, and provides split-screen side-by-side reading",
+            "position": 28
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Atlas:** Focused specifically on cited legal review",
+            "position": 29
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "It treats AI summaries as triage outputs, surfacing citation badges so you can immediately inspect the original passage in the PDF before relying on the summary",
+            "position": 30
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Pricing:** Free tiers available; paid tiers around $15–$30/month",
+            "position": 31
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "---\n\n### Recommendations Summary: Which should you choose?\n\n1",
+            "position": 32
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "**If you want a free, powerful, and citation-backed workspace:** Go with **Google NotebookLM**",
+            "position": 33
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "2",
+            "position": 34
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "**If you need deep analytical precision on a single 100+ page contract or technical manual:** Use **Anthropic’s Claude**",
+            "position": 35
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "3",
+            "position": 36
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "**If you are a legal professional looking for enterprise-grade contract auditing:** Look into **Thomson Reuters CoCounsel** or **Harvey AI**",
+            "position": 37
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "4",
+            "position": 38
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "**If you need to extract specific technical metrics across 100s of PDFs:** Look into **Hebbia**",
+            "position": 39
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "*Note on Legal Accuracy:* No generative AI tool guarantees 100% legal accuracy",
+            "position": 40
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Always use AI summaries for **first-pass triage or research indexing** and verify critical obligations, definitions, and deadlines against the original text using the tool’s citation viewer",
+            "position": 41
+          }
+        ],
+        "domain_citations": 0,
+        "competitor_citations": 41,
+        "total_citations": 41,
+        "domain_share": 0,
+        "first_mention_position": null,
+        "performance_rating": "absent"
+      },
+      "What are the best enterprise-grade AI models for handling complex reasoning, long documents, and coding with high safety standards?": {
+        "domain_mentions": [],
+        "competitor_mentions": [
+          {
+            "sentence": "gemini_response",
+            "domain": "When evaluating enterprise-grade AI models for **complex reasoning, long documents, coding, and high safety standards**, performance cannot be judged by base benchmarks alone",
+            "position": 1
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Enterprise readiness requires evaluating both the **foundation model's capabilities** and the **cloud platform's security and compliance infrastructure** (e",
+            "position": 2
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "g",
+            "position": 3
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": ", zero-data retention, SOC 2/HIPAA compliance, and IAM governance)",
+            "position": 4
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "The best enterprise-grade AI models meet these demanding criteria across four key categories:\n\n---\n\n### 1",
+            "position": 5
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Anthropic Claude Family (Claude 3",
+            "position": 6
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "5 / 3",
+            "position": 7
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "7 / Opus)\n* **Best For:** Superior code quality, multi-file refactoring, nuanced reasoning, and safe outputs",
+            "position": 8
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Where to Deploy:** **AWS Amazon Bedrock**, **Google Cloud Vertex AI**, or **Anthropic Enterprise API**",
+            "position": 9
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Key Capabilities:**\n  * **Coding & Agents:** Broadly considered the gold standard for software engineering tasks, agentic workflows, and debugging complex codebases across multiple files (e",
+            "position": 10
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "g",
+            "position": 11
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": ", via *Claude Code*)",
+            "position": 12
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Long Documents:** Offers a 200,000+ token context window with minimal \"lost-in-the-middle\" issues, making it reliable for legal analysis, technical documentation, and complex contracts",
+            "position": 13
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Safety Standards:** Built on Anthropic’s **Constitutional AI** framework, which trains models to adhere to explicit safety guidelines",
+            "position": 14
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "When hosted via AWS Bedrock or Vertex AI, customer prompts and completions are strictly isolated, encrypted via Customer-Managed Keys (CMEK), and **never used for training base models**",
+            "position": 15
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "### 2",
+            "position": 16
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Google Gemini Pro Family (Gemini 1",
+            "position": 17
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "5 Pro / 2",
+            "position": 18
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "5 Pro / 3",
+            "position": 19
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "1 Pro)\n* **Best For:** Massive document context windows (entire codebases/libraries), multimodal reasoning, and data integration",
+            "position": 20
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Where to Deploy:** **Google Cloud Vertex AI**",
+            "position": 21
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Key Capabilities:**\n  * **Long Documents & Large Context:** Features a industry-leading **1 Million to 2 Million token context window**",
+            "position": 22
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "You can load an entire 10,000-line codebase, multi-hour video transcript, or thousands of pages of financial reports into a single query",
+            "position": 23
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Complex Reasoning:** Strong multimodal capability that reasons across architecture diagrams, text, code, audio, and video in parallel",
+            "position": 24
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Safety Standards:** Vertex AI provides VPC Service Controls, enterprise role-based access control (RBAC), BigQuery data integration, automated safety filtering, and compliance certifications including ISO/IEC 27001, SOC 1/2/3, and HIPAA",
+            "position": 25
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "### 3",
+            "position": 26
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "OpenAI Reasoning & Frontier Series (OpenAI o1 / o3 / GPT-4o / GPT-5)\n* **Best For:** Deep mathematical logic, complex algorithmic problem solving, and enterprise Microsoft ecosystem integration",
+            "position": 27
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Where to Deploy:** **Azure OpenAI Service / Azure AI Foundry** or **OpenAI Enterprise**",
+            "position": 28
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Key Capabilities:**\n  * **Complex Reasoning:** OpenAI’s reasoning-focused models (such as the *o1* and *o3* series) allocate dynamic \"inference-time compute\" (chain-of-thought processing) before generating an output",
+            "position": 29
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "This makes them exceptionally strong at advanced math, formal logic, and hard scientific reasoning",
+            "position": 30
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Coding & Terminal Execution:** Pairings with Codex and GPT-based models lead the way in terminal-heavy execution, API integrations, and code autocompletion",
+            "position": 31
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "* **Safety Standards:** Deploying via **Azure OpenAI Service** provides enterprise Microsoft Entra ID integration, private VNet endpoints, zero data retention (ZDR) options for sensitive workloads, and native **Azure AI Content Safety** guardrails for threat detection and PII redaction",
+            "position": 32
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "### 4",
+            "position": 33
+          },
+          {
+            "sentence": "gemini_response",
+            "domain": "Self-Hosted Open-Weight Models (DeepSeek-R1 / Meta Llama Series)\n* **Best For:** Strict air",
             "position": 34
           }
         ],
@@ -1342,905 +1687,101 @@
         "domain_share": 0,
         "first_mention_position": null,
         "performance_rating": "absent"
-      },
-      "best bikes for cycling in Berlin": {
-        "domain_mentions": [],
-        "competitor_mentions": [
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Berlin is a very cycling-friendly city, known for its flat terrain, extensive network of bike paths, and strong cycling culture",
-            "position": 1
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "When choosing a bike for Berlin, consider the city's conditions, which include both asphalt and cobblestone streets",
-            "position": 2
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Here are some of the best bike types for cycling in Berlin:\n\n**1",
-            "position": 3
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "City Bikes (Urban/Hybrid Bikes)**\n*   **Why they're great:** These are highly recommended for Berlin due to their comfort and efficiency for urban riding",
-            "position": 4
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "They typically have a few gears and medium-thickness tires, making them suitable for varied street surfaces, including cobblestones",
-            "position": 5
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Features:** Upright riding position, often come with mudguards, dynamo lights, and a rear rack, making them practical for daily use and commuting",
-            "position": 6
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Good for:** Commuting, exploring the city, and leisurely rides",
-            "position": 7
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**2",
-            "position": 8
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Trekking Bikes**\n*   **Why they're great:** These are very sturdy and can handle various conditions",
-            "position": 9
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "While they can be a bit heavy, their robust build makes them reliable for city cycling",
-            "position": 10
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Features:** Upright riding position (though sportier versions exist), usually fitted with mudguards, dynamo lights, and a rack",
-            "position": 11
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Good for:** Everyday use, carrying loads, and longer distances",
-            "position": 12
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**3",
-            "position": 13
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Dutch Bikes (Roadsters)**\n*   **Why they're great:** Offer a relaxed and upright riding position, making them very comfortable and easy to get on and off",
-            "position": 14
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Features:** Built-in mudguards, chain protectors, and sometimes integrated lights",
-            "position": 15
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Good for:** Casual rides, those new to cycling, and a comfortable, stress-free experience",
-            "position": 16
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**4",
-            "position": 17
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Racing Bikes (with considerations)**\n*   **Why they're great:** Light and fast, popular for quick commutes and long distances",
-            "position": 18
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Considerations:** Thin tires can be problematic on cobblestones and tram tracks, increasing the risk of buckling or losing grip in wet conditions",
-            "position": 19
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Single-speed or fixed-gear racing bikes are best for experienced riders",
-            "position": 20
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**5",
-            "position": 21
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Folding Bikes**\n*   **Why they're great:** Lightweight, compact, and fast, they can be folded to the size of a sports bag in under a minute",
-            "position": 22
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Good for:** Commuters who need to combine cycling with public transport, as you can take them on the U-bahn or S-bahn (with some restrictions during rush hour)",
-            "position": 23
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**6",
-            "position": 24
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Electric Bikes (E-bikes)**\n*   **Why they're great:** Provide pedal assistance, reducing fatigue, especially for longer commutes or if you want an easier ride",
-            "position": 25
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Good for:** Longer distances, those who want an extra boost, and integrating with public transport",
-            "position": 26
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**Bikes to generally avoid for typical Berlin cycling:**\n*   **Mountain Bikes:** While some people use them, they are generally not recommended for city riding in Berlin as they can be uncomfortable and less efficient on paved surfaces",
-            "position": 27
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**Important Considerations for Cycling in Berlin:**\n*   **Bike Theft:** Bike theft is common in Berlin, with over 30,000 bicycles stolen annually",
-            "position": 28
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "It's advisable not to get a very flashy or expensive bike and to always use a strong lock, locking your bike to something else",
-            "position": 29
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Avoid leaving your bike on the street overnight if possible",
-            "position": 30
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Bike Requirements:** Your bicycle must have lights (white front, red rear, StVZO-compliant), reflectors (white front, red rear, two yellow per wheel/spoke, two yellow on each pedal), a bell, and working brakes",
-            "position": 31
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Road Rules:** You must ride on the street or designated bike paths, not on the sidewalk (unless you are a child up to 8 years old, or up to 10 years old, or accompanying a child)",
-            "position": 32
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Buying a Bike:** You can buy new bikes from independent bike shops (e",
-            "position": 33
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "g",
-            "position": 34
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": ", Little John Bikes) or larger stores like Décathlon",
-            "position": 35
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "For used bikes, consider Berliner Fahrradmarkt, Fietsenbörse, or Kleinanzeigen, but be cautious of stolen bikes, especially at flea markets",
-            "position": 36
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Rentals:** If you're not ready to buy, Berlin has many bike rental options, including daily rentals and bike-sharing programs like Nextbike, Call a Bike, Lime, Dott, and Bolt",
-            "position": 37
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Berlin is a very bike-friendly city with a flat terrain and many bike paths, making it suitable for various types of cycling and bikes",
-            "position": 38
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**Types of Bikes and Their Suitability for Berlin Cycling:**\n\n*   **Hybrid/City Bikes:** These are versatile and perfect for exploring Tempelhofer Feld, which offers varied terrain from runways to wild grass fields",
-            "position": 39
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Touring Bikes:** Ideal for mixed-terrain leisure rides, such as the Grunewald Forest loop, which features lakes, hills, and dunes",
-            "position": 40
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Electric touring bikes are also a good option for this route",
-            "position": 41
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Road Bikes:** Suitable for longer distances and paved routes",
-            "position": 42
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "The Berlin Wall Trail (Berliner Mauerweg) is largely asphalted and can be conquered in a weekend on a road bike",
-            "position": 43
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Other road cycling routes include loops around Treptower Park, Müggelsee, Wuhlheide, Schlosspark Niederschönhausen, Tegeler See, and the Berlin-Spandau Ship Canal",
-            "position": 44
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Gravel Bikes:** Recommended for routes with varied surfaces, including cobblestones, forest paths, and unpaved sections",
-            "position": 45
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "The Berlin Wall Trail, especially sections outside the city center, can be quite bumpy and is well-suited for a gravel bike",
-            "position": 46
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Some routes around Berlin, like those in the Märkische Schweiz, might have slightly hilly sections and unpaved parts where a gravel bike would be beneficial",
-            "position": 47
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Trekking Bikes:** These are sturdy and practical, often equipped with mudguards, dynamo lights, and a rack, making them good for general use and longer distances",
-            "position": 48
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Folding Bikes:** A convenient option for combining cycling with public transport, as they are easy to store and take on trains",
-            "position": 49
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Cargo Bikes:** Useful if you need to transport children or heavy loads",
-            "position": 50
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**Popular Cycling Routes Near Berlin:**\n\n*   **Berlin Wall Trail (Berliner Mauerweg):** This 160 km route traces the former border of West Berlin, offering a journey through history and diverse landscapes",
-            "position": 51
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "It can be ridden in sections, with some parts being more suitable for road bikes and others for gravel bikes due to varying surfaces",
-            "position": 52
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Tempelhofer Feld:** A decommissioned airport now a public park, offering flat terrain perfect for a relaxed ride on a hybrid city bike",
-            "position": 53
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Grunewald Forest:** A 20 km loop with lakes, hills, and dunes, ideal for touring or electric bikes",
-            "position": 54
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Tegeler See Loop:** A 30 km route in Reinickendorf that takes you along the banks of Tegeler See lake and the river Havel",
-            "position": 55
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Spandau Trail:** A relaxed 7 km path through old town Spandau, following the Havel Radweg",
-            "position": 56
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Spreewald, Brandenburg:** A 32 km relaxed cycle trail from Vetschau to Lübbenau, offering diverse animal species and cultural stops",
-            "position": 57
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Dahlem Route:** An 18 km circular route through a charming part of Berlin with quiet paths, lakes (Krumme Lanke and Schlachtensee), museums, and cafes",
-            "position": 58
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Wannsee-Babelsberg Route:** An almost 19 km route through the UNESCO World Heritage Palaces and Parks of Potsdam and Berlin, passing lakes, royal residences, and historic sites",
-            "position": 59
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Berlin-Copenhagen Cycle Route:** You can ride a section of this long-distance route towards Hennigsdorf, passing through Spandauer and Tegeler Forst",
-            "position": 60
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Oder-Spree-Tour:** A nearly 300 km loop through forests, lakes, and canals in Brandenburg, suitable for nature lovers",
-            "position": 61
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Havel Cycle Route:** A long-distance route in Brandenburg",
-            "position": 62
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**Bike Rental in Berlin:**\n\nYou can rent bikes in Berlin from various providers, including:\n*   Bike 44 (offers basic bicycles from €5/day)\n*   Berlin on Bike\n*   Fat Tire Tours\n*   Fahrradstation\n*   Bike-sharing programs like Nextbike and Donkey Republic (for regular bikes), and Tier and Lime (for e-bikes)\n\nMany bike-friendly hotels also offer bike rentals and provide maps and tools",
-            "position": 63
-          }
-        ],
-        "domain_citations": 0,
-        "competitor_citations": 63,
-        "total_citations": 63,
-        "domain_share": 0,
-        "first_mention_position": null,
-        "performance_rating": "absent"
-      },
-      "cycle fast; city bikes; berlin": {
-        "domain_mentions": [],
-        "competitor_mentions": [
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Berlin offers a variety of options for those seeking fast city bikes, whether for purchase or rental",
-            "position": 1
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Several shops specialize in urban and commuter bikes designed for speed and efficiency in the city",
-            "position": 2
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**Bikes for Purchase:**\n\n*   **Veloretti Berlin:** The Veloretti Berlin is highlighted as a light city bike, weighing just 11",
-            "position": 3
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "7 kg due to its aluminum frame, making it easy to handle and fast for city riding",
-            "position": 4
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "It features a retro racing look and is available in various pastel colors",
-            "position": 5
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Brompton P Line:** For commuters and city riders looking for a high-quality, practical, and stylish folding bike, the Brompton P Line is a strong contender",
-            "position": 6
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "It's the lightest Brompton model, featuring an aluminum-titanium frame for excellent riding performance",
-            "position": 7
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **MOD Berlin:** This electric bike is described as a \"king of commuters\" with a minimalist design",
-            "position": 8
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "It boasts a powerful, torque-sensing electric system, a lightweight design, and a dual suspension kit for performance and comfort",
-            "position": 9
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Bike Punk Shop:** This shop offers a wide selection of city, urban, and commuter bikes from manufacturers like 6KU and BLB, emphasizing durability, practical features, and modern design for fast and flexible urban travel",
-            "position": 10
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Fahrradstation Berlin:** As one of Berlin's oldest bike stores, Fahrradstation offers a variety of new and used bikes, including city bikes, touring bikes, and racing bikes",
-            "position": 11
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Bikeopia:** For those interested in quality used bikes, Bikeopia specializes in high-end, vintage bikes from brands like Motobecane, Koga Miyata, and Peugeot, which can offer a great ride at a lower cost",
-            "position": 12
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "They also customize bikes to fit individual needs",
-            "position": 13
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Trek Bicycle Berlin-Mitte:** Trek offers various city and hybrid bikes, including models like the Verve and FX Sport, designed for comfort, active riding, and fitness",
-            "position": 14
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Just Bikes:** This store in Berlin offers Airtracks city bikes for men and women",
-            "position": 15
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**Bike Rental Options:**\n\n*   **Fahrradstation Berlin:** In addition to sales, Fahrradstation provides bike rentals, including high-quality city bikes for exploring Berlin",
-            "position": 16
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Free Berlin Tours:** This rental service, centrally located near Alexanderplatz, offers city bikes, trekking bikes, and e-bikes",
-            "position": 17
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "They provide various rental durations and include locks and helmets",
-            "position": 18
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Swapfiets:** This service offers bike subscriptions in Berlin, providing a high-quality bike (including city bikes and e-bikes) for a fixed monthly fee that covers free check-ups and repairs",
-            "position": 19
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Nextbike:** As the official bike-sharing system of Berlin, Nextbike allows users to rent bikes easily through an app, offering an affordable and sustainable way to get around the city quickly",
-            "position": 20
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Trek Bicycle Berlin-Mitte:** This location also offers bike rentals",
-            "position": 21
-          }
-        ],
-        "domain_citations": 0,
-        "competitor_citations": 21,
-        "total_citations": 21,
-        "domain_share": 0,
-        "first_mention_position": null,
-        "performance_rating": "absent"
-      },
-      "best bikes for cycling in Europe": {
-        "domain_mentions": [],
-        "competitor_mentions": [
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "The best bike for cycling in Europe depends heavily on the type of cycling you plan to do",
-            "position": 1
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Europe offers a diverse range of terrain and cycling experiences, from paved roads and city commutes to gravel paths and challenging mountain trails",
-            "position": 2
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Here's a breakdown of bike types and recommended models suitable for European cycling:\n\n**1",
-            "position": 3
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Touring Bikes**\nTouring bikes are designed for long-distance travel and carrying luggage, making them ideal for multi-day trips across Europe",
-            "position": 4
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "They are built for robustness and reliability, often featuring steel frames for comfort and durability, and multiple mounting points for racks and panniers",
-            "position": 5
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Characteristics:**\n    *   Sturdy frames (often steel) for carrying heavy loads",
-            "position": 6
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   Comfortable geometry for long hours in the saddle",
-            "position": 7
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   Numerous mounts for racks, fenders, and bottle cages",
-            "position": 8
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   Wide gear ranges to handle varied terrain, including hills",
-            "position": 9
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   Disc brakes for reliable stopping power in all weather conditions, especially with luggage",
-            "position": 10
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   Tires that can handle a mix of paved roads, gravel, and cobblestones",
-            "position": 11
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Recommended Models:**\n    *   **Cube Touring Pro:** Considered a great value and widely available in Europe",
-            "position": 12
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Ridgeback Panorama/Expedition:** British-designed, chromoly steel frames with disc brakes and durable components",
-            "position": 13
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Fuji Touring LTD/Disc LTD:** Entry-level options with steel frames, classic touring geometry, and included racks and mudguards",
-            "position": 14
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Surly Disc Trucker:** A popular and legendary touring bike known for its sturdy frame and reliability",
-            "position": 15
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Kona Sutra SE:** A high-end touring bike offering excellent performance and comfort",
-            "position": 16
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Oxford Bike Works Expedition:** Custom-built steel touring bikes with high-end components",
-            "position": 17
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Genesis Tour de Fer 30:** A versatile and durable steel touring bike with disc brakes and wide-ranging gears",
-            "position": 18
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Fairlight Cycles Faran 2",
-            "position": 19
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "0:** A dedicated bikepacking and touring bike that can be customized",
-            "position": 20
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Temple Cycles Classic Tour:** A classic steel touring bike",
-            "position": 21
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**2",
-            "position": 22
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Gravel Bikes**\nGravel bikes are highly versatile, blending features of road and mountain bikes",
-            "position": 23
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "They are excellent for mixed-terrain cycling, including paved roads, gravel paths, and light trails, which are common in many European regions",
-            "position": 24
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Characteristics:**\n    *   Drop bars like road bikes, but with more relaxed geometry for comfort and stability",
-            "position": 25
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   Generous tire clearance to accommodate wider, more comfortable tires with varying tread patterns for different surfaces",
-            "position": 26
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   Disc brakes for effective stopping on varied terrain",
-            "position": 27
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   Mounts for bikepacking bags and fenders",
-            "position": 28
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   Often lighter than traditional touring bikes, making them suitable for faster-paced adventures",
-            "position": 29
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Recommended Models:**\n    *   **Canyon Grizl CF SL 8 1BY:** A versatile adventure gravel bike with ample tire clearance and numerous mounts for bikepacking",
-            "position": 30
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Canyon Grail CF SLX 8 AXS:** A fast and capable gravel bike, also from Canyon",
-            "position": 31
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Ribble Gravel SL Pro:** Offers good value and is fast and forgiving on open gravel roads",
-            "position": 32
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Orbea Terra M21e Team 1X:** A fast and capable gravel bike with a lightweight frame and bikepacking mounts",
-            "position": 33
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Fairlight Secan 2",
-            "position": 34
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "5:** A highly recommended bikepacking bike",
-            "position": 35
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Merida Silex 700:** An aluminum-framed option with a refreshed geometry for stability on tougher gravel",
-            "position": 36
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Rose Backroad/Backroad AL:** Versatile aluminum and carbon options for all-road and adventure cycling",
-            "position": 37
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Specialized S-Works Crux:** An extremely lightweight gravel bike, suitable for racing",
-            "position": 38
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**3",
-            "position": 39
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Hybrid Bikes**\nHybrid bikes offer a comfortable, upright riding position and are versatile for city commuting, leisure rides, and light off-road paths",
-            "position": 40
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Characteristics:**\n    *   Flat handlebars for improved handling and visibility",
-            "position": 41
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   Relaxed geometry for comfort",
-            "position": 42
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   Wider tires than road bikes, providing comfort and grip on various surfaces",
-            "position": 43
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   Often include mounts for mudguards and racks",
-            "position": 44
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   Disc brakes are common for consistent stopping power",
-            "position": 45
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Recommended Models:**\n    *   **Fuji Traverse:** A dual-sport hybrid suitable for city streets and easy trails",
-            "position": 46
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Temple Cycles Classic Lightweight:** A steel-framed hybrid ideal for urban commuting and everyday trail adventures",
-            "position": 47
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Specialized Sirrus X 5",
-            "position": 48
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "0:** A premium hybrid bike",
-            "position": 49
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Trek FX Sport 4/5 or FX 2 Disc Equipped:** Versatile options for fitness, commuting, and light touring",
-            "position": 50
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Ribble Hybrid AL e (electric) or AL (non-assisted):** Offers engaging handling and good value",
-            "position": 51
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Giant Escape:** A sporty hybrid designed mostly for tarmac but capable of light off-road use",
-            "position": 52
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**4",
-            "position": 53
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Road Bikes**\nIf your cycling in Europe will primarily be on paved roads, especially for faster rides or racing, a road bike is suitable",
-            "position": 54
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Characteristics:**\n    *   Lightweight frames for speed and climbing",
-            "position": 55
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   Drop handlebars for aerodynamic riding positions",
-            "position": 56
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   Narrower tires for less rolling resistance on smooth surfaces",
-            "position": 57
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Recommended Models (generally high-performance and often pricier):**\n    *   **Specialized S-Works Tarmac SL8:** An excellent all-around race bike, blending aerodynamics, stiffness, and comfort",
-            "position": 58
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Giant Defy Advanced:** A top endurance bike known for comfort and sensible geometry",
-            "position": 59
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Cervélo Caledonia 5 Ultegra Di2:** Blends endurance comfort with aero features, making it versatile",
-            "position": 60
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Merida Scultura 9000:** A good value race bike",
-            "position": 61
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Canyon Ultimate/Aeroad:** Known for great features and competitive pricing, with the Aeroad excelling in aerodynamics",
-            "position": 62
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "**Key Considerations for Cycling in Europe:**\n\n*   **Terrain:** Consider the types of surfaces you'll be riding on",
-            "position": 63
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "Paved roads, cobblestones, gravel paths, or mountain trails will influence your tire choice and bike type",
-            "position": 64
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Luggage:** If you plan to carry gear for multi-day trips, ensure the bike has appropriate mounting points for racks and panniers, or is suitable for bikepacking bags",
-            "position": 65
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Brakes:** Disc brakes are highly recommended for their consistent performance in all weather conditions, especially when carrying luggage or on varied terrain",
-            "position": 66
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Maintenance:** Knowing how to perform basic repairs, like changing a flat tire, is crucial, as bike shops might not always be readily available in remote areas",
-            "position": 67
-          },
-          {
-            "sentence": "gemini-2.5-flash_response",
-            "domain": "*   **Availability:** Some European brands like Cube, Rose, VSF Fahrradmanufaktur, and Patria are popular and widely distributed within Europe, potentially making it easier to find and test ride bikes",
-            "position": 68
-          }
-        ],
-        "domain_citations": 0,
-        "competitor_citations": 68,
-        "total_citations": 68,
-        "domain_share": 0,
-        "first_mention_position": null,
-        "performance_rating": "absent"
       }
     },
     "gemini_analysis": {
       "poor_performance_analysis": {
-        "cheapest bicycle to buy in berlin": {
-          "performance_rating": "poor",
-          "performance_score": 10,
-          "min_citation_rank": 10,
+        "Are there official tutorials or courses to learn prompt engineering for Claude?": {
+          "performance_rating": "suboptimal",
+          "performance_score": 1,
+          "min_citation_rank": 1,
           "total_citations": 4,
           "all_citations": [
-            10,
-            10,
-            10,
-            10
+            1,
+            17,
+            21,
+            24
           ],
-          "competitor_count": 28,
-          "competitor_info": [
-            "Domain fietsenboerse.de was cited for query 'cheapest bicycle Berlin' with content: \"You can test ride bikes and get independent advice.\"",
-            "Domain berlin.de was cited for query 'cheapest bicycle Berlin' with content: \"You can test ride bikes and get independent advice.\"",
-            "Domain visitberlin.de was cited for query 'cheapest bicycle Berlin' with content: \"They offer a large selection of used bikes and provide free, independent purchasing advice.\"",
-            "Domain allaboutberlin.com was cited for query 'cheapest bicycle Berlin' with content: \"They offer a large selection of used bikes and provide free, independent purchasing advice.\"",
-            "Domain bikeopia.com was cited for query 'cheapest bicycle Berlin' with content: \"Their prices range from 400 to 1500 Euros, and they offer a 6-month warranty on all bikes.\""
-          ],
-          "gemini_analysis": "Just-bikes.de likely lacked specific information about local purchasing options, services like test rides and advice, price ranges, and warranties, which were key elements in the cited competitor content."
+          "competitor_count": 0,
+          "competitor_info": [],
+          "gemini_analysis": "No competitor data available for analysis"
         },
-        "cycle fast; city bikes; berlin": {
-          "performance_rating": "poor",
-          "performance_score": 8,
-          "min_citation_rank": 8,
-          "total_citations": 3,
+        "Which AI research companies specialize in AI safety, alignment science, and Constitutional AI?": {
+          "performance_rating": "suboptimal",
+          "performance_score": 1,
+          "min_citation_rank": 1,
+          "total_citations": 6,
           "all_citations": [
-            8,
-            8,
-            8
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
           ],
-          "competitor_count": 21,
-          "competitor_info": [
-            "Domain veloretti.com was cited for query 'fast city bikes Berlin' with content: \"It features a retro racing look and is available in various pastel colors.\"",
-            "Domain theurbanmobilitystore.com was cited for query 'fast city bikes Berlin' with content: \"It's the lightest Brompton model, featuring an aluminum-titanium frame for excellent riding performance.\"",
-            "Domain mod-bikes.com was cited for query 'fast city bikes Berlin' with content: \"It boasts a powerful, torque-sensing electric system, a lightweight design, and a dual suspension kit for performance and comfort.\"",
-            "Domain bikepunkshop.com was cited for query 'fast city bikes Berlin' with content: \"*   **Bike Punk Shop:** This shop offers a wide selection of city, urban, and commuter bikes from manufacturers like 6KU and BLB, emphasizing durability, practical features, and modern design for fast and flexible urban travel.\"",
-            "Domain fahrradstation.com was cited for query 'fast city bikes Berlin' with content: \"*   **Fahrradstation Berlin:** As one of Berlin's oldest bike stores, Fahrradstation offers a variety of new and used bikes, including city bikes, touring bikes, and racing bikes.\""
-          ],
-          "gemini_analysis": "Just-bikes.de likely lacked specific product descriptions emphasizing speed, lightweight features, electric assistance, or direct mentions of Berlin-specific availability/shops for \"fast city bikes.\""
+          "competitor_count": 0,
+          "competitor_info": [],
+          "gemini_analysis": "No competitor data available for analysis"
         }
       },
       "has_poor_performance": true,
       "total_poor_performance_cases": 2
     },
     "domain_detailed_stats": {
-      "total_appearances": 7,
-      "total_citations": 7,
-      "retrieval_rate": 0.3181818181818182,
+      "total_appearances": 2,
+      "total_citations": 10,
+      "retrieval_rate": 0.3333333333333333,
       "usage_rate": 1,
-      "avg_citation_rank": 9.142857142857142,
-      "min_citation_rank": 8,
+      "avg_citation_rank": 8.4,
+      "min_citation_rank": 1,
       "prompt_appearances": [
-        "cheapest bicycle to buy in berlin",
-        "cycle fast; city bikes; berlin"
+        "Are there official tutorials or courses to learn prompt engineering for Claude?",
+        "Which AI research companies specialize in AI safety, alignment science, and Constitutional AI?"
       ],
       "query_appearances": [
-        "cheapest bicycle Berlin",
-        "used bicycles Berlin",
-        "budget bikes Berlin",
-        "affordable bikes Berlin",
-        "fast city bikes Berlin",
-        "Berlin bike shops fast city bikes",
-        "high-performance city bikes Berlin"
+        "Are there official tutorials or courses to learn prompt engineering for Claude?",
+        "Which AI research companies specialize in AI safety, alignment science, and Constitutional AI?"
       ],
       "citation_positions": [
-        10,
-        10,
-        10,
-        10,
-        8,
-        8,
-        8
+        1,
+        17,
+        21,
+        24,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
       ]
     },
     "intersecting_queries": {},
     "recommendations": [
-      "Just-bikes.de likely lacked specific information about local purchasing options, services like test rides and advice, price ranges, and warranties, which were key elements in the cited competitor content.",
-      "Just-bikes.de likely lacked specific product descriptions emphasizing speed, lightweight features, electric assistance, or direct mentions of Berlin-specific availability/shops for \"fast city bikes.\""
+      "No competitor data available for analysis",
+      "No competitor data available for analysis"
     ],
     "competitive_insights": {
       "market_position": "emerging_player",
       "key_competitors": [
         {
           "domain": "reddit.com",
-          "frequency": 13
+          "frequency": 3
         },
         {
-          "domain": "visitberlin.de",
-          "frequency": 8
+          "domain": "claude.com",
+          "frequency": 2
         },
         {
-          "domain": "allaboutberlin.com",
-          "frequency": 7
+          "domain": "amazon.com",
+          "frequency": 2
         },
         {
-          "domain": "bikeopia.com",
-          "frequency": 7
+          "domain": "medium.com",
+          "frequency": 2
         },
         {
-          "domain": "nextbike.de",
-          "frequency": 7
+          "domain": "skilljar.com",
+          "frequency": 2
         }
       ],
       "competitive_advantages": [
@@ -2254,11 +1795,14 @@
   },
   "error": null,
   "metadata": {
-    "target_domain": "just-bikes.de",
+    "target_domain": "anthropic.com",
     "experiment_files": [
-      "gemini_experiment_results.json"
+      ".cache/analysis/bd4ec9a6536e8e0bf02a7aa8db75e3b0.json"
     ],
-    "total_prompts_analyzed": 5,
+    "total_prompts_analyzed": 6,
+    "data_source": "live_gemini",
+    "cache_hit": false,
+    "has_anthropic_api": true,
     "has_gemini_api": true,
     "has_response_chunks": true,
     "analysis_timestamp": null

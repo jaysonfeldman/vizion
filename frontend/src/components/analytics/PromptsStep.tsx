@@ -1,129 +1,168 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-  CheckCircle2,
-  Circle,
-  ArrowRight,
-  ArrowLeft,
-  Globe,
-} from "lucide-react";
+import { ArrowRight, ArrowLeft, Globe, Plus, Trash2 } from "lucide-react";
 import { GeneratedPrompt } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 interface PromptsStepProps {
   prompts: GeneratedPrompt[];
   onConfirm: (selectedPrompts: GeneratedPrompt[]) => void;
   onBack: () => void;
-  logoUrl?: string;
   domain?: string;
+  loading?: boolean;
+  confirming?: boolean;
+}
+
+function domainIconUrl(domain: string): string {
+  return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=64`;
 }
 
 export default function PromptsStep({
   prompts,
   onConfirm,
   onBack,
-  logoUrl,
   domain,
+  loading = false,
+  confirming = false,
 }: PromptsStepProps) {
-  const [selectedPrompts, setSelectedPrompts] =
-    useState<GeneratedPrompt[]>(prompts);
-  const [logoStep, setLogoStep] = useState(0); // 0: Clearbit, 1: favicon, 2: fallback
+  const [items, setItems] = useState<GeneratedPrompt[]>(prompts);
+  const [iconFailed, setIconFailed] = useState(false);
 
-  let logoSrc = undefined;
-  if (logoStep === 0 && logoUrl) {
-    logoSrc = logoUrl;
-  } else if (logoStep === 1 && domain) {
-    logoSrc = `https://${domain}/favicon.ico`;
-  }
+  useEffect(() => {
+    setItems(prompts);
+  }, [prompts]);
 
-  const togglePrompt = (promptId: string) => {
-    setSelectedPrompts((prev) =>
-      prev.map((p) => (p.id === promptId ? { ...p, selected: !p.selected } : p))
+  useEffect(() => {
+    setIconFailed(false);
+  }, [domain]);
+
+  const updatePrompt = (id: string, text: string) => {
+    setItems((prev) =>
+      prev.map((p) =>
+        p.id === id ? { ...p, prompt: text, queries: [text] } : p
+      )
     );
   };
 
-  const handleConfirm = () => {
-    const selected = selectedPrompts.filter((p) => p.selected);
-    if (selected.length > 0) {
-      onConfirm(selected);
-    }
+  const remove = (id: string) => {
+    setItems((prev) => prev.filter((p) => p.id !== id));
   };
 
-  const selectedCount = selectedPrompts.filter((p) => p.selected).length;
+  const addPrompt = () => {
+    const id = `custom-${Date.now()}`;
+    setItems((prev) => [
+      ...prev,
+      {
+        id,
+        prompt: "",
+        category: "Custom",
+        selected: true,
+        queries: [""],
+      },
+    ]);
+  };
+
+  const ready = items
+    .map((p) => ({ ...p, prompt: p.prompt.trim(), selected: true }))
+    .filter((p) => p.prompt.length > 0);
+
+  const busy = loading || confirming;
 
   return (
-    <div className="w-full max-w-2xl mx-auto flex flex-col items-center justify-start pt-0">
-      {logoStep < 2 && logoSrc ? (
-        <img
-          src={logoSrc}
-          alt="Website logo"
-          className="w-16 h-16 rounded-full mb-2 object-contain bg-white"
-          onError={() => setLogoStep(logoStep + 1)}
-        />
-      ) : (
-        <div className="w-16 h-16 rounded-full mb-2 flex items-center justify-center bg-white">
-          <Globe className="w-8 h-8 text-gray-400" />
-        </div>
-      )}
-      <h2 className="text-3xl md:text-4xl font-light text-black mb-1 text-center">
-        AI Search Prompts for {domain || "your website"}
-      </h2>
-      <p className="mb-4 text-lg text-gray-600 text-center max-w-2xl">
-        We've generated {prompts.length} potential search queries that users
-        might use to find your content. Select the ones you want to analyze.
-      </p>
-      <div className="w-full space-y-3 mb-16">
-        {selectedPrompts.map((prompt, idx) => (
-          <div
-            key={prompt.id}
-            onClick={() => togglePrompt(prompt.id)}
-            className={`
-              p-4 rounded-xl cursor-pointer transition-all flex items-center gap-3 bg-white/80
-              ${prompt.selected ? "border-2 border-[#E6E7EB]" : "border-none"}
-              opacity-0 translate-y-4 animate-fadeInPrompt
-            `}
-            style={{
-              animationDelay: `${idx * 120}ms`,
-              animationFillMode: "forwards",
-            }}
-          >
-            <div className="mt-0.5">
-              {prompt.selected ? (
-                <CheckCircle2 className="w-5 h-5 text-black" />
-              ) : (
-                <Circle className="w-5 h-5 text-gray-400" />
-              )}
-            </div>
-            <div className="flex-1 flex items-center gap-3">
-              <p className="font-semibold text-black mb-0">{prompt.prompt}</p>
-              <Badge variant="secondary" className="ml-2 whitespace-nowrap">
-                {prompt.category}
-              </Badge>
-            </div>
+    <div className="mx-auto flex w-full max-w-xl flex-col pb-10">
+      <div className="mb-8">
+        {domain && !iconFailed ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={domainIconUrl(domain)}
+            alt=""
+            className="mb-5 size-9 rounded-lg bg-white object-contain p-1.5 ring-1 ring-neutral-200"
+            onError={() => setIconFailed(true)}
+          />
+        ) : (
+          <div className="mb-5 flex size-9 items-center justify-center rounded-lg bg-neutral-100 text-neutral-400 ring-1 ring-neutral-200">
+            <Globe className="size-4" />
           </div>
-        ))}
+        )}
+        <h2 className="font-display text-2xl font-semibold tracking-tight text-neutral-900 sm:text-3xl">
+          Prompts to monitor
+        </h2>
+        <p className="mt-2 max-w-md text-[15px] leading-snug text-black/60">
+          Ranking questions buyers ask AI about{" "}
+          <span className="text-black/80">{domain || "your niche"}</span>.
+        </p>
       </div>
-      <div className="flex items-center justify-between w-full gap-4">
-        <Button variant="outline" onClick={onBack} className="flex-1">
-          <ArrowLeft className="mr-2 h-4 w-4" />
+
+      <p className="mb-3 text-sm font-medium text-neutral-800">
+        What do you want to monitor?
+      </p>
+
+      <div className="space-y-2.5">
+        {loading && items.length === 0
+          ? Array.from({ length: 5 }).map((_, i) => (
+              <div
+                key={`skel-${i}`}
+                className="h-[42px] animate-pulse rounded-xl border border-neutral-200 bg-neutral-100/80"
+                style={{ animationDelay: `${i * 80}ms` }}
+              />
+            ))
+          : items.map((prompt) => (
+              <div
+                key={prompt.id}
+                className="group relative flex items-center rounded-xl border border-neutral-200 bg-white shadow-sm transition focus-within:border-neutral-300"
+              >
+                <input
+                  type="text"
+                  value={prompt.prompt}
+                  onChange={(e) => updatePrompt(prompt.id, e.target.value)}
+                  placeholder="e.g. best note taking app for startups"
+                  disabled={confirming}
+                  className={cn(
+                    "min-w-0 flex-1 bg-transparent px-3.5 py-2.5 pr-10 text-sm leading-snug text-neutral-900 outline-none placeholder:text-neutral-400 disabled:opacity-60"
+                  )}
+                />
+                <button
+                  type="button"
+                  onClick={() => remove(prompt.id)}
+                  disabled={confirming}
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-md p-1.5 text-neutral-300 opacity-0 transition hover:bg-neutral-50 hover:text-rose-600 group-hover:opacity-100 group-focus-within:opacity-100 disabled:pointer-events-none"
+                  aria-label="Remove prompt"
+                >
+                  <Trash2 className="size-3.5" />
+                </button>
+              </div>
+            ))}
+      </div>
+
+      <button
+        type="button"
+        className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-neutral-300 py-2.5 text-sm text-neutral-500 transition hover:border-neutral-400 hover:text-neutral-700 disabled:opacity-50"
+        onClick={addPrompt}
+        disabled={busy}
+      >
+        <Plus className="size-4" />
+        Add a prompt
+      </button>
+
+      <div className="mt-8 flex gap-3">
+        <Button
+          variant="outline"
+          onClick={onBack}
+          className="h-11 flex-1"
+          disabled={confirming}
+        >
+          <ArrowLeft className="mr-2 size-4" />
           Back
         </Button>
         <Button
-          onClick={handleConfirm}
-          disabled={selectedCount === 0}
-          className="flex-1 bg-black text-white hover:bg-gray-900"
+          onClick={() => onConfirm(ready)}
+          disabled={ready.length < 1 || busy}
+          className="h-11 flex-1"
         >
-          Analyze Selected
-          <ArrowRight className="ml-2 h-4 w-4" />
+          {confirming ? "Finishing…" : loading ? "Preparing…" : "Run analysis"}
+          {!busy && <ArrowRight className="ml-2 size-4" />}
         </Button>
       </div>
     </div>

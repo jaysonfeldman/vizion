@@ -1,20 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import { TRPCProvider } from "@/lib/trpc";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "AI Search Analytics Platform",
-  description: "Analyze and optimize your website for AI search queries",
+  title: "AI Visibility",
+  description:
+    "See whether AI search mentions your brand on real buyer questions.",
 };
 
 export default function RootLayout({
@@ -24,10 +22,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <head>
+        <link
+          href="https://api.fontshare.com/v2/css?f[]=inter-display@500,600,700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className={`${inter.variable} ${inter.className} antialiased`}>
+        <TRPCProvider>{children}</TRPCProvider>
       </body>
     </html>
   );
