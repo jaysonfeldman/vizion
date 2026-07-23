@@ -26,7 +26,7 @@ from quota_errors import QuotaExhaustedError
 ANALYSIS_CACHE_DIR = os.path.join(".cache", "analysis")
 ANALYSIS_CACHE_TTL_SECONDS = int(os.getenv("ANALYSIS_CACHE_TTL_SECONDS", str(24 * 3600)))
 # ChatGPT + web_search (primary); Gemini grounding as fallback
-FANOUT_VERSION = "v19-gpt4o-mini-flashlite"
+FANOUT_VERSION = "v20-fanout5"
 
 
 def _experiments_have_signal(experiments: List[Dict[str, Any]]) -> bool:

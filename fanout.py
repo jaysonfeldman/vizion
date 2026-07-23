@@ -28,7 +28,7 @@ from gemini_search import run_single_prompt, DEFAULT_MODEL
 from quota_errors import QuotaExhaustedError, is_quota_error, quota_message
 
 # Narrow fan-out: original prompt + close paraphrases (startup-friendly).
-FANOUT_COUNT = int(os.getenv("FANOUT_SUBQUERIES", "3"))
+FANOUT_COUNT = int(os.getenv("FANOUT_SUBQUERIES", "5"))
 FANOUT_WORKERS = int(os.getenv("GEMINI_MAX_WORKERS", "4"))
 USE_LLM_PARAPHRASES = os.getenv("USE_LLM_PARAPHRASES", "0").strip().lower() in {
     "1",

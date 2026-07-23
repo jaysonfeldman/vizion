@@ -25,7 +25,7 @@ from quota_errors import QuotaExhaustedError, is_fatal_model_error, is_quota_err
 DEFAULT_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 CHAT_WORKERS = int(os.getenv("OPENAI_MAX_WORKERS", "4"))
 # Keep fan-out small: web_search is ~$10/1k calls and dominates cost.
-FANOUT_COUNT = int(os.getenv("FANOUT_SUBQUERIES", "3"))
+FANOUT_COUNT = int(os.getenv("FANOUT_SUBQUERIES", "5"))
 # Skip LLM paraphrase calls by default (free templates). Set USE_LLM_PARAPHRASES=1 to enable.
 USE_LLM_PARAPHRASES = os.getenv("USE_LLM_PARAPHRASES", "0").strip().lower() in {
     "1",
