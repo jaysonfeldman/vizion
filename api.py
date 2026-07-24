@@ -412,6 +412,15 @@ async def analyze_domain_performance(request: AnalysisRequest):
             "has_response_chunks": bool(response_chunks),
             "fanout_version": FANOUT_VERSION,
             "provider": provider_used,
+            "model": (
+                os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+                if provider_used == "chatgpt"
+                else os.getenv("GEMINI_MODEL", "gemini-flash-latest")
+            ),
+            "models_available": {
+                "chatgpt": os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
+                "gemini": os.getenv("GEMINI_MODEL", "gemini-flash-latest"),
+            },
         }
 
         return AnalysisResponse(success=True, data=enhanced_report, metadata=metadata)

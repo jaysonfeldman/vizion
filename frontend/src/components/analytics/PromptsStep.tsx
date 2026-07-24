@@ -149,7 +149,7 @@ export default function PromptsStep({
           <img
             src={domainIconUrl(domain)}
             alt=""
-            className="mb-5 size-12 object-contain sm:size-14"
+            className="mb-5 size-12 overflow-hidden rounded-lg object-contain sm:size-14"
             onError={() => setIconFailed(true)}
           />
         ) : (

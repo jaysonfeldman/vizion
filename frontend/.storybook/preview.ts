@@ -5,10 +5,21 @@ const preview: Preview = {
   parameters: {
     controls: { matchers: { color: /(background|color)$/i, date: /Date$/i } },
     layout: "padded",
+    options: {
+      storySort: {
+        order: [
+          "Overview",
+          "Foundation",
+          "UI",
+          "Analytics",
+          "*",
+        ],
+      },
+    },
     backgrounds: {
       default: "app",
       values: [
-        { name: "app", value: "oklch(0.985 0.002 260)" },
+        { name: "app", value: "#f4f4f5" },
         { name: "white", value: "#ffffff" },
       ],
     },

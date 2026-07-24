@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { MentionSource, TopicResult } from "@/lib/types";
-import { ChevronDown, ChevronRight, CornerDownRight, Loader2 } from "lucide-react";
+import { Check, ChevronDown, ChevronRight, Loader2, Minus } from "lucide-react";
 import { cn, formatPromptLabel } from "@/lib/utils";
 import { MentionsStack } from "@/components/analytics/MentionsStack";
 
@@ -86,29 +86,29 @@ function StatusLabel({
   if (status === "cited") {
     return (
       <span
-        className="rounded-md bg-emerald-50 px-1.5 py-0.5 text-[11px] font-medium text-emerald-700"
+        className="inline-flex text-emerald-600"
         title="Named in the AI answer"
       >
-        Cited
+        <Check className="size-3.5" strokeWidth={2.5} aria-label="Cited" />
       </span>
     );
   }
   if (status === "retrieved") {
     return (
       <span
-        className="rounded-md bg-amber-50 px-1.5 py-0.5 text-[11px] font-medium text-amber-700"
+        className="inline-flex text-amber-500"
         title="In sources, but not named in the answer"
       >
-        Found
+        <Check className="size-3.5" strokeWidth={2.5} aria-label="Found" />
       </span>
     );
   }
   return (
     <span
-      className="rounded-md bg-neutral-100 px-1.5 py-0.5 text-[11px] font-medium text-neutral-400"
+      className="inline-flex text-neutral-300"
       title="Not in answer or sources"
     >
-      Missing
+      <Minus className="size-3.5" strokeWidth={2.25} aria-label="Missing" />
     </span>
   );
 }
@@ -116,9 +116,13 @@ function StatusLabel({
 function FanOutPanel({
   topic,
   target,
+  provider,
+  model,
 }: {
   topic: TopicResult;
   target: string;
+  provider?: string;
+  model?: string;
 }) {
   return (
     <div className="border-t border-neutral-100 bg-neutral-50/80">
@@ -131,9 +135,7 @@ function FanOutPanel({
             i > 0 && "border-t border-neutral-100/70"
           )}
         >
-          <span className="flex size-7 items-center justify-center text-neutral-300">
-            <CornerDownRight className="size-3.5" strokeWidth={1.75} />
-          </span>
+          <span className="size-7" aria-hidden />
           <p className="min-w-0 pl-1 text-[13px] leading-snug text-neutral-500">
             {formatPromptLabel(sq.query)}
           </p>
@@ -146,6 +148,8 @@ function FanOutPanel({
               domains={sq.all_domains}
               target={target}
               max={3}
+              provider={provider}
+              model={model}
             />
           </div>
         </div>
@@ -160,12 +164,16 @@ function PromptRow({
   open,
   onToggle,
   loading,
+  provider,
+  model,
 }: {
   topic: TopicResult;
   target: string;
   open: boolean;
   onToggle: () => void;
   loading?: boolean;
+  provider?: string;
+  model?: string;
 }) {
   const sources = useMemo(
     () => topicSources(topic, target),
@@ -227,11 +235,23 @@ function PromptRow({
           {loading ? (
             <span className="text-xs text-neutral-300">…</span>
           ) : (
-            <MentionsStack sources={sources} target={target} />
+            <MentionsStack
+              sources={sources}
+              target={target}
+              provider={provider}
+              model={model}
+            />
           )}
         </div>
       </div>
-      {open && canExpand && <FanOutPanel topic={topic} target={target} />}
+      {open && canExpand && (
+        <FanOutPanel
+          topic={topic}
+          target={target}
+          provider={provider}
+          model={model}
+        />
+      )}
     </div>
   );
 }
@@ -242,12 +262,16 @@ export function PromptTable({
   defaultOpenFirst = false,
   connected = false,
   loading = false,
+  provider,
+  model,
 }: {
   topics: TopicResult[];
   target: string;
   defaultOpenFirst?: boolean;
   connected?: boolean;
   loading?: boolean;
+  provider?: string;
+  model?: string;
 }) {
   const [openPrompt, setOpenPrompt] = useState<string | null>(
     defaultOpenFirst ? topics[0]?.prompt ?? null : null
@@ -284,6 +308,8 @@ export function PromptTable({
             topic={topic}
             target={target}
             loading={loading}
+            provider={provider}
+            model={model}
             open={!loading && openPrompt === topic.prompt}
             onToggle={() =>
               setOpenPrompt(

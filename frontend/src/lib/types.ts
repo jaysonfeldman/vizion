@@ -112,6 +112,12 @@ export interface AnalyzeApiResponse {
     sample_size?: number;
     data_source?: string;
     cache_hit?: boolean;
+    provider?: string;
+    model?: string;
+    models_available?: {
+      chatgpt?: string;
+      gemini?: string;
+    };
     [key: string]: unknown;
   };
   error?: string;

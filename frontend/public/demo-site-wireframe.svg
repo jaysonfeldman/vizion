@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600" fill="none" role="img" aria-label="Demo site preview">
+  <rect width="1200" height="600" fill="#FFFFFF"/>
+
+  <!-- Browser top bar -->
+  <rect x="0" y="0" width="1200" height="56" fill="#FAFAFA"/>
+  <line x1="0" y1="56" x2="1200" y2="56" stroke="#E5E5E5" stroke-width="1"/>
+  <circle cx="28" cy="28" r="6" fill="#E5E5E5"/>
+  <circle cx="48" cy="28" r="6" fill="#E5E5E5"/>
+  <circle cx="68" cy="28" r="6" fill="#E5E5E5"/>
+  <rect x="100" y="18" width="360" height="20" rx="10" fill="#F0F0F0"/>
+
+  <!-- Left: title, subtitle, two buttons -->
+  <rect x="72" y="160" width="320" height="36" rx="6" fill="#E8E8E8"/>
+  <rect x="72" y="220" width="380" height="14" rx="4" fill="#EFEFEF"/>
+  <rect x="72" y="246" width="300" height="14" rx="4" fill="#EFEFEF"/>
+  <rect x="72" y="300" width="128" height="40" rx="10" fill="#D4D4D4"/>
+  <rect x="216" y="300" width="128" height="40" rx="10" fill="#EBEBEB"/>
+
+  <!-- Right: image block -->
+  <rect x="620" y="120" width="508" height="360" rx="16" fill="#F9F9F9"/>
+  <rect x="680" y="240" width="388" height="16" rx="4" fill="#F0F0F0"/>
+  <rect x="740" y="276" width="268" height="12" rx="4" fill="#F3F3F3"/>
+</svg>

@@ -36,25 +36,77 @@ function toSources(
   }));
 }
 
+function placeLabel(index: number): string {
+  const n = index + 1;
+  const mod = n % 100;
+  if (mod >= 11 && mod <= 13) return `${n}th place`;
+  switch (n % 10) {
+    case 1:
+      return `${n}st place`;
+    case 2:
+      return `${n}nd place`;
+    case 3:
+      return `${n}rd place`;
+    default:
+      return `${n}th place`;
+  }
+}
+
+function displayTitle(s: MentionSource): string {
+  const title = (s.title || "").trim();
+  const domain = s.domain.toLowerCase();
+  if (
+    title &&
+    title.toLowerCase() !== domain &&
+    title.toLowerCase() !== `www.${domain}` &&
+    !/^https?:\/\//i.test(title)
+  ) {
+    return title;
+  }
+  return s.domain;
+}
+
+function providerLabel(provider?: string, model?: string): string | null {
+  if (!provider && !model) return null;
+  const name =
+    provider === "chatgpt"
+      ? "ChatGPT"
+      : provider === "gemini"
+        ? "Gemini"
+        : provider === "canned"
+          ? "Demo"
+          : provider || "AI";
+  return model ? `${name} · ${model}` : name;
+}
+
 export function MentionsStack({
   domains,
   sources,
   target,
   max = 5,
   className,
+  provider,
+  model,
+  defaultOpen = false,
 }: {
   domains?: string[];
   sources?: MentionSource[];
   target: string;
   max?: number;
   className?: string;
+  /** e.g. chatgpt | gemini — shown in the popup footer */
+  provider?: string;
+  model?: string;
+  /** Open the panel on mount (useful for Storybook) */
+  defaultOpen?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
   const [pos, setPos] = useState<PanelPos | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
   const items = toSources(domains, sources, target);
+  const via = providerLabel(provider, model);
 
   useLayoutEffect(() => {
     if (!open || !rootRef.current) return;
@@ -62,7 +114,7 @@ export function MentionsStack({
     const place = () => {
       const btn = rootRef.current?.getBoundingClientRect();
       if (!btn) return;
-      const width = 320;
+      const width = 340;
       const gap = 6;
       const pad = 8;
       let left = btn.right - width;
@@ -124,20 +176,21 @@ export function MentionsStack({
           position: "fixed",
           top: pos?.top ?? -9999,
           left: pos?.left ?? 0,
-          width: pos?.width ?? 320,
+          width: pos?.width ?? 340,
           zIndex: 80,
           visibility: pos ? "visible" : "hidden",
         }}
-        className="overflow-hidden rounded-lg border border-neutral-200 bg-white py-1 shadow-lg"
+        className="soft-outline overflow-hidden rounded-2xl py-1.5"
         onClick={(e) => e.stopPropagation()}
       >
-        <p className="border-b border-neutral-100 px-3 py-1.5 text-xs text-neutral-400">
+        <p className="px-3.5 py-2 text-xs text-black/40">
           Ranked mentions ({items.length})
         </p>
-        <ul className="max-h-64 overflow-y-auto">
+        <ul className="max-h-72 overflow-y-auto">
           {items.map((s, i) => {
             const isYou =
               s.is_you || s.domain.toLowerCase() === target.toLowerCase();
+            const isFirst = i === 0;
             return (
               <li key={`${s.domain}-${s.url}`}>
                 <a
@@ -145,39 +198,54 @@ export function MentionsStack({
                   target="_blank"
                   rel="noopener noreferrer"
                   className={cn(
-                    "flex items-start gap-2.5 px-3 py-2 text-sm hover:bg-neutral-50",
-                    isYou && "bg-emerald-50 hover:bg-emerald-50"
+                    "flex items-center gap-3 px-3.5 py-2.5 text-sm transition-colors hover:bg-black/[0.03]",
+                    isYou && "bg-emerald-50/80 hover:bg-emerald-50"
                   )}
                 >
-                  <span className="mt-0.5 w-5 shrink-0 text-[11px] tabular-nums text-neutral-400">
-                    #{i + 1}
+                  <span className="inline-flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white shadow-[0_1px_2px_rgb(0_0_0/0.06)]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={faviconUrl(s.domain)}
+                      alt=""
+                      className="size-5 object-contain"
+                      loading="lazy"
+                    />
                   </span>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={faviconUrl(s.domain)}
-                    alt=""
-                    className="mt-0.5 size-4 shrink-0"
-                    loading="lazy"
-                  />
                   <span className="min-w-0 flex-1">
                     <span
                       className={cn(
-                        "block truncate font-medium",
-                        isYou ? "text-emerald-800" : "text-neutral-800"
+                        "block truncate font-medium tracking-[-0.015em]",
+                        isYou ? "text-emerald-800" : "text-neutral-900"
                       )}
                     >
-                      {s.domain}
+                      {displayTitle(s)}
                       {isYou ? " (you)" : ""}
                     </span>
-                    <span className="mt-0.5 block truncate text-[11px] text-neutral-400">
-                      {s.url.replace(/^https?:\/\//, "")}
+                    <span className="mt-0.5 block text-[11px] tracking-[-0.01em] text-black/40">
+                      {placeLabel(i)}
                     </span>
                   </span>
+                  {isFirst ? (
+                    <span
+                      className="shrink-0 text-lg leading-none"
+                      role="img"
+                      aria-label="1st place"
+                    >
+                      🏆
+                    </span>
+                  ) : (
+                    <span className="size-5 shrink-0" aria-hidden />
+                  )}
                 </a>
               </li>
             );
           })}
         </ul>
+        {via ? (
+          <p className="px-3.5 py-2 text-[11px] tracking-[-0.01em] text-black/35">
+            Analyzed with {via}
+          </p>
+        ) : null}
       </div>,
       document.body
     );

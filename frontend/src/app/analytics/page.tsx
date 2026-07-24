@@ -246,7 +246,12 @@ function AnalyticsContent() {
         setAnalysisResults(analysis);
         setApiResponse({
           success: true,
-          metadata: { data_source: "canned", target_domain: host },
+          metadata: {
+            data_source: "canned",
+            target_domain: host,
+            provider: "canned",
+            model: "demo",
+          },
           data: { visibility: analysis.visibility },
         });
         return;

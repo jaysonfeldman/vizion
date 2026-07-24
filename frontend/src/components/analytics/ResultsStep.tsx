@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { WebsiteAnalysis, VisibilityReport } from "@/lib/types";
+import { WebsiteAnalysis, VisibilityReport, AnalyzeApiResponse } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { RefreshCw, ArrowUpRight } from "lucide-react";
 import { InsightsBar } from "@/components/analytics/InsightsBar";
@@ -22,7 +22,7 @@ type SiteMeta = {
 interface ResultsStepProps {
   analysis: WebsiteAnalysis;
   onNewAnalysis: () => void;
-  apiResponse?: unknown;
+  apiResponse?: AnalyzeApiResponse | unknown;
   initialMeta?: SiteMeta | null;
   metricsLoading?: boolean;
 }
@@ -232,10 +232,25 @@ function BannerBody({
 export default function ResultsStep({
   analysis,
   onNewAnalysis,
+  apiResponse,
   initialMeta = null,
   metricsLoading = false,
 }: ResultsStepProps) {
   const v: VisibilityReport | undefined = analysis.visibility;
+  const metaFromApi =
+    apiResponse &&
+    typeof apiResponse === "object" &&
+    "metadata" in apiResponse
+      ? (apiResponse as AnalyzeApiResponse).metadata
+      : undefined;
+  const analysisProvider =
+    typeof metaFromApi?.provider === "string"
+      ? metaFromApi.provider
+      : metaFromApi?.data_source === "canned"
+        ? "canned"
+        : undefined;
+  const analysisModel =
+    typeof metaFromApi?.model === "string" ? metaFromApi.model : undefined;
   const [meta, setMeta] = useState<SiteMeta | null>(initialMeta);
   const [previewKind, setPreviewKind] = useState<"og" | "shot" | "none">(
     initialMeta?.image ? "og" : "og"
@@ -403,7 +418,27 @@ export default function ResultsStep({
             className="soft-inset mt-6 overflow-hidden rounded-2xl"
           >
             <InsightsBar topics={topics} target={target} kpis={v.kpis} />
-            <PromptTable topics={topics} target={target} connected />
+            <PromptTable
+              topics={topics}
+              target={target}
+              connected
+              provider={analysisProvider}
+              model={analysisModel}
+            />
+            {(analysisProvider || analysisModel) && (
+              <p className="border-t border-black/5 px-5 py-3 text-[11px] tracking-[-0.01em] text-black/35 sm:px-6">
+                Analyzed with{" "}
+                {analysisProvider === "chatgpt"
+                  ? "ChatGPT"
+                  : analysisProvider === "gemini"
+                    ? "Gemini"
+                    : analysisProvider === "canned"
+                      ? "demo data"
+                      : analysisProvider || "AI"}
+                {analysisModel ? ` · ${analysisModel}` : ""}
+                {metaFromApi?.cache_hit ? " · cached" : ""}
+              </p>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

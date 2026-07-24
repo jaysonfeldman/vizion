@@ -122,6 +122,23 @@ export const Mixed: Story = {
     topics: sampleTopics,
     target: "promptwatch.com",
     defaultOpenFirst: true,
+    provider: "gemini",
+    model: "gemini-flash-latest",
+  },
+  decorators: [
+    (Story) => (
+      <div className="mx-auto max-w-5xl p-6">
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const Loading: Story = {
+  args: {
+    topics: sampleTopics,
+    target: "promptwatch.com",
+    loading: true,
   },
   decorators: [
     (Story) => (
@@ -137,6 +154,8 @@ export const AllMissing: Story = {
     topics: [sampleTopics[0]],
     target: "promptwatch.com",
     defaultOpenFirst: true,
+    provider: "chatgpt",
+    model: "gpt-4o-mini",
   },
   decorators: [
     (Story) => (

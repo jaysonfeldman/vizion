@@ -8,6 +8,10 @@ import type {
 /** Free sandbox domain — colorful filled globe mark */
 export const DEMO_DOMAIN = "test.com";
 export const DEMO_ICON_SRC = "/demo-globe.svg";
+/** Gray wireframe thumbnail for the demo banner (not a live screenshot) */
+export const DEMO_PREVIEW_SRC = "/demo-site-wireframe.svg";
+export const DEMO_BLURB =
+  "This is an example company — a demo sandbox product for exploring the UI.";
 
 /** Known-brand pills + demo — skip Gemini / ChatGPT entirely */
 export const CANNED_DOMAINS = [
@@ -102,10 +106,9 @@ const CANNED: Record<CannedDomain, CannedPack> = {
     {
       domain: DEMO_DOMAIN,
       url: `https://${DEMO_DOMAIN}`,
-      title: "Test Co — Demo product",
-      description:
-        "Example SaaS used for free UI testing. No live AI searches are run.",
-      image: null,
+      title: "Demo sandbox",
+      description: DEMO_BLURB,
+      image: DEMO_PREVIEW_SRC,
     },
     [
       "asana.com",
