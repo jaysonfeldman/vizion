@@ -2,6 +2,9 @@
 
 A hackathon project for AI search visibility analysis. Measures and improves domain performance in AI-powered search results through automated query generation, citation analysis, and Gemini-powered competitive insights.
 
+<img width="1410" height="855" alt="Screenshot 2026-07-24 at 06 18 07" src="https://github.com/user-attachments/assets/7cf034d3-1a9a-4fe2-aff2-6730a0a21cb4" />
+
+
 ## Architecture
 
 **Backend (Python)**
