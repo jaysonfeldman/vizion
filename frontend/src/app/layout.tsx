@@ -11,8 +11,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "AI Visibility",
-  description:
-    "See whether AI search mentions your brand on real buyer questions.",
+  description: "Check your AI visibility — see if AI search names your brand.",
 };
 
 export default function RootLayout({

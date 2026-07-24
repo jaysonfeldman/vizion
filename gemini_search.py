@@ -52,7 +52,14 @@ from google.genai import types
 from domain_utils import normalize_domain, is_noise_domain
 from quota_errors import QuotaExhaustedError, is_fatal_model_error, is_quota_error, quota_message
 
-DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash-lite")
+# Prefer stable aliases — pinned 2.5/2.0 IDs often 404 for new API keys.
+DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemini-flash-latest")
+_MODEL_FALLBACKS = (
+    "gemini-flash-latest",
+    "gemini-flash-lite-latest",
+    "gemini-3.5-flash-lite",
+    "gemini-3.5-flash",
+)
 
 
 def _chunk_source(chunk: Any) -> Tuple[str, str]:
@@ -174,49 +181,57 @@ def run_single_prompt(prompt: str, api_key: str, model: str = DEFAULT_MODEL) -> 
         "products, or websites. Question: " + prompt
     )
 
+    models_to_try: List[str] = []
+    for m in (model, *_MODEL_FALLBACKS):
+        if m and m not in models_to_try:
+            models_to_try.append(m)
+
     last_error = None
-    for attempt in range(3):
-        try:
-            config = types.GenerateContentConfig(
-                tools=[grounding_tool],
-                temperature=0.3,
-                max_output_tokens=2048,
-            )
-            response = client.models.generate_content(
-                model=model, contents=instruction, config=config
-            )
-
-            web_searches = _extract_web_searches(response, prompt)
+    for active_model in models_to_try:
+        for attempt in range(2):
             try:
-                text = response.text or ""
-            except Exception:
-                text = ""
+                config = types.GenerateContentConfig(
+                    tools=[grounding_tool],
+                    temperature=0.3,
+                    max_output_tokens=2048,
+                )
+                response = client.models.generate_content(
+                    model=active_model, contents=instruction, config=config
+                )
 
-            return {
-                "prompt": prompt,
-                "results": {
-                    "gemini": [
-                        {
-                            "model": model,
-                            "response": text,
-                            "web_searches": web_searches,
-                            "success": True,
-                            "run_number": 1,
-                        }
-                    ]
-                },
-                "summary": _summarize(web_searches),
-            }
-        except Exception as e:  # noqa: BLE001
-            last_error = e
-            warnings.warn(f"Gemini run failed (attempt {attempt + 1}) for '{prompt}': {e}")
-            if is_quota_error(e):
-                raise QuotaExhaustedError(quota_message("Gemini")) from e
-            if is_fatal_model_error(e):
-                raise RuntimeError(
-                    f"Gemini model config error ({model}): {e}"
-                ) from e
-            time.sleep(2 * (attempt + 1))
+                web_searches = _extract_web_searches(response, prompt)
+                try:
+                    text = response.text or ""
+                except Exception:
+                    text = ""
+
+                return {
+                    "prompt": prompt,
+                    "results": {
+                        "gemini": [
+                            {
+                                "model": active_model,
+                                "response": text,
+                                "web_searches": web_searches,
+                                "success": True,
+                                "run_number": 1,
+                            }
+                        ]
+                    },
+                    "summary": _summarize(web_searches),
+                }
+            except Exception as e:  # noqa: BLE001
+                last_error = e
+                warnings.warn(
+                    f"Gemini run failed (attempt {attempt + 1}) for '{prompt}' "
+                    f"[{active_model}]: {e}"
+                )
+                if is_quota_error(e):
+                    raise QuotaExhaustedError(quota_message("Gemini")) from e
+                if is_fatal_model_error(e):
+                    # Try next model alias instead of retrying a dead id.
+                    break
+                time.sleep(2 * (attempt + 1))
 
     return {
         "prompt": prompt,

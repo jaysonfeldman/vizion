@@ -2,13 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { ArrowRight } from "lucide-react";
+import { DEMO_DOMAIN, brandIconUrl, isCannedDomain } from "@/lib/demo-test";
 
 const EXAMPLES = [
-  { domain: "stripe.com", label: "Stripe" },
+  { domain: "clickup.com", label: "ClickUp" },
   { domain: "notion.so", label: "Notion" },
-  { domain: "linear.app", label: "Linear" },
+  { domain: "figma.com", label: "Figma" },
+  /** Temporary free sandbox — no paid AI calls */
+  { domain: DEMO_DOMAIN, label: "Demo" },
 ] as const;
 
 export default function Home() {
@@ -21,11 +23,7 @@ export default function Home() {
     for (const ex of EXAMPLES) {
       const img = new Image();
       img.decoding = "async";
-      img.src = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(ex.domain)}&sz=64`;
-      // Warm site meta for example brands
-      void fetch(`/api/site-meta?domain=${encodeURIComponent(ex.domain)}`).catch(
-        () => {}
-      );
+      img.src = brandIconUrl(ex.domain, 64);
     }
   }, [router]);
 
@@ -36,12 +34,13 @@ export default function Home() {
       .replace(/^https?:\/\//, "")
       .replace(/\/$/, "")
       .split("/")[0];
-    // Start warming assets before navigation
-    void fetch(`/api/site-meta?domain=${encodeURIComponent(host)}`).catch(
-      () => {}
-    );
+    if (!isCannedDomain(host)) {
+      void fetch(`/api/site-meta?domain=${encodeURIComponent(host)}`).catch(
+        () => {}
+      );
+    }
     const fav = new Image();
-    fav.src = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=64`;
+    fav.src = brandIconUrl(host, 64);
 
     setIsTransitioning(true);
     setTimeout(() => {
@@ -51,32 +50,17 @@ export default function Home() {
 
   return (
     <div
-      className={`relative flex min-h-screen w-full items-center justify-center overflow-hidden transition-opacity duration-300 ${
+      className={`relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#f4f4f5] transition-opacity duration-300 ${
         isTransitioning ? "opacity-0" : "opacity-100"
       }`}
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 60% at 50% -10%, oklch(0.94 0.02 250), transparent 55%), radial-gradient(ellipse 50% 40% at 100% 80%, oklch(0.95 0.015 180), transparent 50%), oklch(0.985 0.002 260)",
-        }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.35]"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E\")",
-        }}
-      />
-
-      <main className="relative z-10 flex w-full max-w-lg flex-col items-center px-6 py-16 text-center">
-        <h1 className="font-display text-4xl leading-[1.1] tracking-tight text-neutral-900 sm:text-5xl">
-          See who AI recommends
+      <main className="relative z-10 flex w-full max-w-md flex-col items-center px-6 py-16 text-center">
+        <h1 className="font-display text-5xl font-bold leading-[1.02] tracking-[-0.045em] text-black sm:text-6xl">
+          Check your
+          <br />
+          AI visibility
         </h1>
-        <p className="mt-4 max-w-md text-base leading-relaxed text-neutral-500">
+        <p className="mt-4 max-w-sm text-[15px] leading-relaxed tracking-[-0.01em] text-black/80">
           Enter a site to see if AI search names the brand.
         </p>
 
@@ -85,35 +69,56 @@ export default function Home() {
             e.preventDefault();
             handleUrlSubmit(url);
           }}
-          className="mt-10 flex w-full flex-col gap-3 sm:flex-row"
+          className="mt-10 flex w-full flex-col gap-3"
         >
-          <Input
+          <input
             name="url"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="yourcompany.com"
-            className="h-12 flex-1 rounded-xl border-neutral-200 bg-white/90 text-base shadow-sm"
             autoComplete="off"
             autoFocus
+            className="soft-inset w-full rounded-2xl px-5 text-base tracking-[-0.01em] text-black"
+            style={{ height: "3.25rem" }}
           />
-          <Button
+          <button
             type="submit"
-            className="h-12 rounded-xl px-6 text-base"
             disabled={!url.trim()}
+            className="soft-cta relative inline-flex w-full items-center justify-center rounded-2xl px-6 text-base font-medium tracking-[-0.015em]"
+            style={{ height: "3.25rem" }}
           >
-            Try it
-          </Button>
+            Continue
+            <ArrowRight
+              className="absolute right-5 size-4"
+              strokeWidth={2.25}
+            />
+          </button>
         </form>
 
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
-          <span className="text-xs text-neutral-400">Try a known brand:</span>
+        <div className="mt-7 flex w-full items-center gap-3">
+          <div className="h-px flex-1 bg-black/10" />
+          <span className="shrink-0 text-xs tracking-[-0.01em] text-black/40">
+            Try a known brand
+          </span>
+          <div className="h-px flex-1 bg-black/10" />
+        </div>
+
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
           {EXAMPLES.map((ex) => (
             <button
               key={ex.domain}
               type="button"
               onClick={() => handleUrlSubmit(ex.domain)}
-              className="rounded-full border border-neutral-200 bg-white/80 px-3 py-1 text-xs text-neutral-700 transition hover:border-neutral-300 hover:bg-white"
+              className="soft-inset inline-flex items-center gap-1.5 rounded-2xl px-3 py-1.5 text-xs font-medium tracking-[-0.01em] text-black"
             >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={brandIconUrl(ex.domain, 32)}
+                alt=""
+                width={14}
+                height={14}
+                className="size-3.5 rounded-[3px]"
+              />
               {ex.label}
             </button>
           ))}

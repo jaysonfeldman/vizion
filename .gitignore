@@ -25,3 +25,4 @@ venv/
 # Local experiment dumps (can be large)
 *_experiment_results.json
 internal_responce_log.json
+.vercel

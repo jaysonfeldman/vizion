@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import type { MentionSource, TopicResult } from "@/lib/types";
 import { ChevronDown, ChevronRight, CornerDownRight, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatPromptLabel } from "@/lib/utils";
 import { MentionsStack } from "@/components/analytics/MentionsStack";
 
 /**
@@ -67,7 +67,7 @@ function MentionFraction({
   const hit = topic.cited_count || 0;
   const pct = total ? Math.round((hit / total) * 100) : 0;
   const tone =
-    total === 0 || hit === 0 ? "text-neutral-400" : "text-emerald-700";
+    total === 0 || hit === 0 ? "text-neutral-400" : "text-emerald-600";
   return (
     <span
       className={cn("text-sm tabular-nums font-medium", tone)}
@@ -135,7 +135,7 @@ function FanOutPanel({
             <CornerDownRight className="size-3.5" strokeWidth={1.75} />
           </span>
           <p className="min-w-0 pl-1 text-[13px] leading-snug text-neutral-500">
-            {sq.query}
+            {formatPromptLabel(sq.query)}
           </p>
           <div className="flex justify-start">
             <StatusLabel status={sq.status} />
@@ -216,7 +216,7 @@ function PromptRow({
         </span>
 
         <p className="min-w-0 text-sm font-medium leading-snug text-neutral-900">
-          {topic.prompt}
+          {formatPromptLabel(topic.prompt)}
         </p>
 
         <div className="flex justify-start">

@@ -6,6 +6,15 @@ import { AnalysisStep, GeneratedPrompt, WebsiteAnalysis } from "@/lib/types";
 import PromptsStep from "@/components/analytics/PromptsStep";
 import ResultsStep from "@/components/analytics/ResultsStep";
 import { buildPendingAnalysis } from "@/lib/pending-analysis";
+import {
+  CANNED_ANALYSIS_MIN_MS,
+  CANNED_PROMPTS_MIN_MS,
+  brandIconUrl,
+  buildCannedAnalysis,
+  getCannedExample,
+  isCannedDomain,
+  sleep,
+} from "@/lib/demo-test";
 import { trpc } from "@/lib/trpc";
 
 type SiteMeta = {
@@ -40,7 +49,7 @@ function promptsKey(prompts: GeneratedPrompt[]): string {
 function warmupAssets(domain: string, meta?: SiteMeta | null) {
   if (typeof window === "undefined" || !domain) return;
   const urls = [
-    `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=64`,
+    brandIconUrl(domain, 64),
     `https://image.thum.io/get/width/1200/crop/600/noanimate/https://${domain}`,
   ];
   if (meta?.image) urls.push(meta.image);
@@ -156,12 +165,23 @@ function AnalyticsContent() {
 
     setWebsiteUrl(urlParam);
     const host = normalizeDomain(urlParam);
+    const canned = getCannedExample(host);
 
     let cancelled = false;
     (async () => {
       try {
         setPromptsLoading(true);
         setError(null);
+
+        if (canned) {
+          // Known-brand / demo pills — hard-coded, no paid APIs
+          await sleep(CANNED_PROMPTS_MIN_MS);
+          if (cancelled) return;
+          setSiteMeta(canned.meta);
+          warmupAssets(host, canned.meta);
+          setGeneratedPrompts(canned.prompts);
+          return;
+        }
 
         // Site meta in parallel with prompt generation
         const metaPromise = fetch(
@@ -220,6 +240,18 @@ function AnalyticsContent() {
     const key = promptsKey(selectedPrompts);
 
     try {
+      if (isCannedDomain(host)) {
+        await sleep(CANNED_ANALYSIS_MIN_MS);
+        const analysis = buildCannedAnalysis(host, selectedPrompts);
+        setAnalysisResults(analysis);
+        setApiResponse({
+          success: true,
+          metadata: { data_source: "canned", target_domain: host },
+          data: { visibility: analysis.visibility },
+        });
+        return;
+      }
+
       let bundle: PreloadBundle;
 
       if (preloadRef.current?.key === key) {
@@ -301,17 +333,17 @@ function AnalyticsContent() {
   }
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-[oklch(0.985_0.002_260)]">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            currentStep === "results"
-              ? "radial-gradient(ellipse 70% 40% at 50% 0%, oklch(0.96 0.01 250), transparent 60%)"
-              : "radial-gradient(ellipse 80% 50% at 50% -5%, oklch(0.94 0.015 250), transparent 55%)",
-        }}
-      />
+    <div className="relative min-h-screen w-full overflow-hidden bg-[#f4f4f5]">
+      {currentStep === "results" && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 70% 40% at 50% 0%, oklch(0.96 0.01 250), transparent 60%)",
+          }}
+        />
+      )}
       <main
         className={`relative z-10 mx-auto flex min-h-screen w-full max-w-4xl flex-col px-4 pb-16 sm:px-6 ${
           currentStep === "results" && metricsLoading
@@ -357,7 +389,7 @@ function AnalyticsContent() {
 
 function AnalyticsFallback() {
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-[oklch(0.985_0.002_260)]">
+    <div className="relative min-h-screen w-full overflow-hidden bg-[#f4f4f5]">
       <main className="relative z-10 mx-auto flex min-h-screen w-full max-w-4xl flex-col px-4 pb-16 pt-10 sm:px-6">
         <PromptsStep
           prompts={[]}

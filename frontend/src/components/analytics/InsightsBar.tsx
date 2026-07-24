@@ -25,7 +25,7 @@ function rateTone(ratio: number): "good" | "neutral" {
 
 function toneClass(tone: "good" | "neutral") {
   return cn(
-    tone === "good" && "text-emerald-700",
+    tone === "good" && "text-emerald-600",
     tone === "neutral" && "text-neutral-400"
   );
 }
@@ -69,8 +69,8 @@ function StatBlock({
   return (
     <div
       className={cn(
-        "flex min-h-[11rem] flex-col bg-white px-5 py-4 sm:min-h-[12rem] sm:px-6 sm:py-5",
-        !last && "border-b border-neutral-100 sm:border-b-0 sm:border-r",
+        "flex min-h-[11rem] flex-col bg-transparent px-5 py-4 sm:min-h-[12rem] sm:px-6 sm:py-5",
+        !last && "border-b border-black/5 sm:border-b-0 sm:border-r",
         className
       )}
     >
@@ -284,7 +284,7 @@ export function InsightsBar({
   const vTone = rateTone(visibility);
 
   return (
-    <div className="grid border-b border-neutral-200 bg-white sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1.7fr)]">
+    <div className="grid border-b border-black/5 bg-transparent sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1.7fr)]">
       <StatBlock label="Visibility" info={VISIBILITY_INFO}>
         <div className="mt-auto">
           {loading ? (

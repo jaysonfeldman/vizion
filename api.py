@@ -26,20 +26,51 @@ from quota_errors import QuotaExhaustedError
 ANALYSIS_CACHE_DIR = os.path.join(".cache", "analysis")
 ANALYSIS_CACHE_TTL_SECONDS = int(os.getenv("ANALYSIS_CACHE_TTL_SECONDS", str(24 * 3600)))
 # ChatGPT + web_search (primary); Gemini grounding as fallback
-FANOUT_VERSION = "v20-fanout5"
+FANOUT_VERSION = "v21-gemini-flash-latest"
 
 
 def _experiments_have_signal(experiments: List[Dict[str, Any]]) -> bool:
-    """True if any subquery returned at least one domain (citation or mention)."""
+    """True if we got any answer text or cited domains worth scoring.
+
+    Empty failed runs (subquery keys with empty maps + errors only) do not count.
+    """
     for exp in experiments or []:
         results = exp.get("results") or {}
         for runs in results.values():
             for run in runs or []:
+                response = (run.get("response") or "").strip()
+                if response:
+                    return True
+                if any(str(r or "").strip() for r in (run.get("responses") or [])):
+                    return True
                 web = run.get("web_searches") or {}
-                for domains in web.values():
-                    if isinstance(domains, dict) and domains:
+                if not isinstance(web, dict):
+                    continue
+                for domain_map in web.values():
+                    if isinstance(domain_map, dict) and len(domain_map) > 0:
                         return True
     return False
+
+
+def _signal_failure_message(
+    *,
+    openai_quota: bool,
+    last_err: Optional[Exception],
+) -> str:
+    if openai_quota:
+        return (
+            "OpenAI credits are depleted and Gemini returned no usable answers. "
+            "Add OpenAI billing credits, or check GEMINI_MODEL / GEMINI_API_KEY."
+        )
+    if last_err:
+        return (
+            f"Analysis returned no AI search sources or mentions ({last_err}). "
+            "Try again in a moment, or use fewer prompts."
+        )
+    return (
+        "Analysis returned no AI search sources or mentions. "
+        "Try again in a moment, or use fewer prompts."
+    )
 
 
 def _analysis_cache_path(target_domain: str, prompts: List[str]) -> str:
@@ -196,8 +227,7 @@ def _run_live_fanout(
 
     if not _experiments_have_signal(experiments):
         raise RuntimeError(
-            "Analysis returned no AI search sources or mentions. "
-            "Try again in a moment, or use fewer prompts."
+            _signal_failure_message(openai_quota=openai_quota, last_err=last_err)
         )
 
     return experiments, topic_to_subs, provider_used, data_source

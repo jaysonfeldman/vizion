@@ -295,44 +295,368 @@
   }
 }
 
-@property --shine-angle {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
+/* Loading banner — one fluid mass that visibly shifts around the card */
+.banner-glow {
+  position: relative;
+  isolation: isolate;
 }
 
-@keyframes banner-shine-spin {
-  to {
-    --shine-angle: 360deg;
+.banner-glow-aura {
+  pointer-events: none;
+  position: absolute;
+  /* Tighter sides, more room top/bottom */
+  inset: -40px -18px -42px;
+  z-index: 0;
+  overflow: visible;
+  filter: blur(24px);
+}
+
+/* Core membrane — weight visibly travels around the silhouette */
+.banner-glow-bubble {
+  position: absolute;
+  inset: 0;
+  border-radius: 48% 52% 50% 50% / 50% 50% 50% 50%;
+  background:
+    radial-gradient(
+      95% 85% at 50% 45%,
+      rgb(186 230 253 / 0.58) 0%,
+      rgb(125 211 252 / 0.45) 32%,
+      rgb(96 165 250 / 0.38) 55%,
+      rgb(59 130 246 / 0.28) 78%,
+      transparent 88%
+    );
+  animation: banner-glow-wave 11s ease-in-out infinite;
+}
+
+.banner-glow-air {
+  position: absolute;
+  display: block;
+  will-change: transform, border-radius, opacity;
+}
+
+/* Soft lobes that follow the same circulating weight shift */
+.banner-glow-air-a {
+  width: 75%;
+  height: 80%;
+  left: -5%;
+  top: -8%;
+  border-radius: 55% 45% 50% 50% / 50% 50% 50% 50%;
+  background: radial-gradient(
+    ellipse 65% 60% at 45% 45%,
+    rgb(56 189 248 / 0.5) 0%,
+    rgb(14 165 233 / 0.22) 48%,
+    transparent 72%
+  );
+  animation: banner-glow-lobe-a 9.4s ease-in-out infinite;
+}
+
+.banner-glow-air-b {
+  width: 78%;
+  height: 82%;
+  right: -6%;
+  bottom: -10%;
+  border-radius: 45% 55% 50% 50% / 50% 50% 50% 50%;
+  background: radial-gradient(
+    ellipse 65% 60% at 55% 55%,
+    rgb(59 130 246 / 0.48) 0%,
+    rgb(37 99 235 / 0.2) 50%,
+    transparent 72%
+  );
+  animation: banner-glow-lobe-b 12.2s ease-in-out infinite;
+}
+
+.banner-glow-air-c {
+  width: 70%;
+  height: 75%;
+  right: -4%;
+  top: -6%;
+  border-radius: 50% 50% 45% 55% / 50% 48% 52% 50%;
+  background: radial-gradient(
+    ellipse 65% 60% at 50% 45%,
+    rgb(34 211 238 / 0.38) 0%,
+    rgb(6 182 212 / 0.16) 50%,
+    transparent 72%
+  );
+  animation: banner-glow-lobe-c 7.6s ease-in-out infinite;
+}
+
+.banner-glow-air-d {
+  width: 72%;
+  height: 76%;
+  left: -4%;
+  bottom: -8%;
+  border-radius: 52% 48% 50% 50% / 48% 52% 48% 52%;
+  background: radial-gradient(
+    ellipse 65% 60% at 45% 55%,
+    rgb(99 102 241 / 0.34) 0%,
+    rgb(37 99 235 / 0.16) 50%,
+    transparent 72%
+  );
+  animation: banner-glow-lobe-d 13.5s ease-in-out infinite;
+}
+
+/* Irregular morph — not a clean R→B→L→T loop */
+@keyframes banner-glow-wave {
+  0% {
+    transform: translate(0, -6%) scale(1.02, 1.06);
+    border-radius: 58% 52% 45% 48% / 58% 50% 48% 42%;
+    opacity: 0.92;
+  }
+  18% {
+    transform: translate(6%, 2%) scale(1.06, 0.96);
+    border-radius: 42% 62% 50% 40% / 48% 55% 45% 50%;
+    opacity: 1;
+  }
+  31% {
+    transform: translate(-3%, 8%) scale(0.97, 1.1);
+    border-radius: 50% 48% 60% 55% / 40% 42% 58% 55%;
+    opacity: 0.95;
+  }
+  47% {
+    transform: translate(-7%, -2%) scale(1.08, 0.95);
+    border-radius: 65% 38% 42% 52% / 55% 45% 50% 42%;
+    opacity: 0.98;
+  }
+  58% {
+    transform: translate(2%, -8%) scale(1.01, 1.08);
+    border-radius: 55% 58% 42% 45% / 60% 55% 40% 45%;
+    opacity: 1;
+  }
+  72% {
+    transform: translate(5%, 6%) scale(1.05, 1.04);
+    border-radius: 45% 55% 58% 48% / 48% 50% 55% 52%;
+    opacity: 0.94;
+  }
+  86% {
+    transform: translate(-5%, 4%) scale(1.04, 0.98);
+    border-radius: 58% 42% 48% 55% / 52% 48% 50% 45%;
+    opacity: 0.97;
+  }
+  100% {
+    transform: translate(0, -6%) scale(1.02, 1.06);
+    border-radius: 58% 52% 45% 48% / 58% 50% 48% 42%;
+    opacity: 0.92;
   }
 }
 
-.banner-shine {
-  isolation: isolate;
-  overflow: hidden;
-  background: oklch(0.82 0.03 245);
+@keyframes banner-glow-lobe-a {
+  0% {
+    transform: translate(2%, -10%) scale(1.04, 1.08);
+    border-radius: 58% 50% 45% 48% / 58% 50% 45% 42%;
+    opacity: 0.9;
+  }
+  22% {
+    transform: translate(10%, 4%) scale(1.1, 0.92);
+    border-radius: 40% 62% 50% 42% / 48% 55% 45% 50%;
+    opacity: 0.65;
+  }
+  41% {
+    transform: translate(-2%, 12%) scale(0.92, 1.14);
+    border-radius: 48% 50% 58% 55% / 42% 44% 56% 54%;
+    opacity: 0.75;
+  }
+  63% {
+    transform: translate(-12%, 2%) scale(1.12, 0.94);
+    border-radius: 62% 40% 45% 52% / 55% 45% 50% 42%;
+    opacity: 1;
+  }
+  81% {
+    transform: translate(4%, -8%) scale(1.02, 1.1);
+    border-radius: 52% 55% 42% 48% / 58% 52% 42% 45%;
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate(2%, -10%) scale(1.04, 1.08);
+    border-radius: 58% 50% 45% 48% / 58% 50% 45% 42%;
+    opacity: 0.9;
+  }
 }
 
-.banner-shine-spin {
-  position: absolute;
-  inset: -40%;
-  z-index: 0;
-  background: conic-gradient(
-    from var(--shine-angle),
-    transparent 0%,
-    transparent 58%,
-    oklch(0.48 0.14 245 / 0.2) 64%,
-    oklch(0.42 0.16 250) 70%,
-    oklch(0.62 0.14 240) 74%,
-    oklch(0.42 0.16 250) 78%,
-    oklch(0.48 0.14 245 / 0.2) 84%,
-    transparent 90%,
-    transparent 100%
-  );
-  animation: banner-shine-spin 4.2s linear infinite;
+@keyframes banner-glow-lobe-b {
+  0% {
+    transform: translate(-2%, 10%) scale(0.96, 1.08);
+    border-radius: 48% 50% 58% 55% / 45% 48% 55% 52%;
+    opacity: 0.7;
+  }
+  15% {
+    transform: translate(8%, 4%) scale(1.08, 0.94);
+    border-radius: 42% 58% 52% 45% / 48% 52% 48% 50%;
+    opacity: 0.85;
+  }
+  38% {
+    transform: translate(0, 14%) scale(0.9, 1.18);
+    border-radius: 45% 48% 65% 60% / 40% 42% 58% 55%;
+    opacity: 1;
+  }
+  55% {
+    transform: translate(-10%, 2%) scale(1.06, 0.96);
+    border-radius: 58% 42% 45% 52% / 52% 48% 50% 45%;
+    opacity: 0.6;
+  }
+  78% {
+    transform: translate(4%, -6%) scale(1.02, 1.06);
+    border-radius: 50% 55% 48% 50% / 55% 50% 45% 48%;
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-2%, 10%) scale(0.96, 1.08);
+    border-radius: 48% 50% 58% 55% / 45% 48% 55% 52%;
+    opacity: 0.7;
+  }
 }
 
-.banner-shine > *:not(.banner-shine-spin) {
+@keyframes banner-glow-lobe-c {
+  0% {
+    transform: translate(4%, -8%) scale(1.04, 1.05);
+    border-radius: 55% 58% 45% 48% / 55% 55% 45% 45%;
+    opacity: 0.85;
+  }
+  27% {
+    transform: translate(12%, 0) scale(1.12, 0.9);
+    border-radius: 40% 65% 50% 42% / 48% 58% 42% 50%;
+    opacity: 1;
+  }
+  49% {
+    transform: translate(2%, 12%) scale(0.94, 1.12);
+    border-radius: 48% 50% 58% 55% / 42% 44% 55% 52%;
+    opacity: 0.55;
+  }
+  68% {
+    transform: translate(-8%, -2%) scale(1.06, 0.95);
+    border-radius: 58% 42% 48% 52% / 52% 48% 50% 45%;
+    opacity: 0.75;
+  }
+  88% {
+    transform: translate(6%, 6%) scale(1.04, 1.04);
+    border-radius: 48% 55% 52% 48% / 50% 52% 50% 48%;
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(4%, -8%) scale(1.04, 1.05);
+    border-radius: 55% 58% 45% 48% / 55% 55% 45% 45%;
+    opacity: 0.85;
+  }
+}
+
+@keyframes banner-glow-lobe-d {
+  0% {
+    transform: translate(-4%, 8%) scale(0.96, 1.06);
+    border-radius: 50% 48% 55% 58% / 48% 45% 55% 52%;
+    opacity: 0.75;
+  }
+  20% {
+    transform: translate(6%, 2%) scale(1.05, 0.95);
+    border-radius: 45% 55% 52% 48% / 48% 52% 48% 50%;
+    opacity: 0.65;
+  }
+  42% {
+    transform: translate(0, 14%) scale(0.92, 1.16);
+    border-radius: 46% 48% 65% 60% / 40% 42% 58% 55%;
+    opacity: 1;
+  }
+  61% {
+    transform: translate(-12%, 0) scale(1.1, 0.92);
+    border-radius: 62% 40% 45% 52% / 55% 45% 50% 42%;
+    opacity: 0.85;
+  }
+  83% {
+    transform: translate(2%, -8%) scale(1.02, 1.08);
+    border-radius: 52% 55% 45% 48% / 58% 52% 42% 45%;
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(-4%, 8%) scale(0.96, 1.06);
+    border-radius: 50% 48% 55% 58% / 48% 45% 55% 52%;
+    opacity: 0.75;
+  }
+}
+
+.banner-glow > .soft-inset {
   position: relative;
   z-index: 1;
+}
+
+/* Soft raised/flat field — near-white surface so top highlight reads clearly */
+.soft-inset {
+  border: none;
+  background: #fbfbfc;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 1),
+    inset 0 1.5px 0 rgb(255 255 255 / 0.65),
+    inset 0 -1px 1.5px rgb(0 0 0 / 0.07),
+    0 1px 2px rgb(0 0 0 / 0.05),
+    0 3px 8px rgb(0 0 0 / 0.04);
+}
+
+.soft-inset::placeholder {
+  color: rgb(0 0 0 / 0.35);
+}
+
+.soft-inset:focus,
+.soft-inset:focus-visible {
+  outline: none;
+}
+
+.soft-cta {
+  border: none;
+  background: #111;
+  color: #fff;
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.2),
+    0 4px 12px rgb(0 0 0 / 0.14);
+}
+
+.soft-cta:hover:not(:disabled) {
+  background: #1a1a1a;
+}
+
+.soft-cta:disabled {
+  opacity: 1;
+  color: rgb(255 255 255 / 0.35);
+  cursor: not-allowed;
+}
+
+.soft-outline {
+  border: none;
+  background: #fbfbfc;
+  color: #111;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 1),
+    inset 0 1.5px 0 rgb(255 255 255 / 0.8),
+    inset 0 -1px 1.5px rgb(0 0 0 / 0.08),
+    0 -1px 2px rgb(0 0 0 / 0.035),
+    0 1px 3px rgb(0 0 0 / 0.06),
+    0 4px 12px rgb(0 0 0 / 0.055);
+}
+
+.soft-outline:hover:not(:disabled) {
+  background: #f7f7f8;
+}
+
+.soft-outline:disabled {
+  opacity: 0.45;
+}
+
+/* Prompts page fields — white, simple border, soft drop only */
+.prompt-field {
+  border: 1px solid rgb(0 0 0 / 0.1);
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+}
+
+.prompt-field:focus-within {
+  border-color: rgb(0 0 0 / 0.16);
+}
+
+/* Banner site thumbnail — soft inset + light outer lift */
+.soft-thumb {
+  border: none;
+  background: #f4f4f5;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.85),
+    inset 0 1px 0 rgb(255 255 255 / 0.4),
+    inset 0 -1px 2px rgb(0 0 0 / 0.04),
+    0 -1px 4px rgb(0 0 0 / 0.03),
+    0 2px 6px rgb(0 0 0 / 0.04),
+    0 6px 14px rgb(0 0 0 / 0.035);
 }

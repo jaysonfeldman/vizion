@@ -4,9 +4,10 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
 import type { MentionSource } from "@/lib/types";
+import { brandIconUrl } from "@/lib/demo-test";
 
 export function faviconUrl(domain: string): string {
-  return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=32`;
+  return brandIconUrl(domain, 32);
 }
 
 type PanelPos = { top: number; left: number; width: number };

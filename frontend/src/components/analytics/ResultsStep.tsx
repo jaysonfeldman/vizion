@@ -4,10 +4,11 @@ import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from
 import { motion, AnimatePresence } from "framer-motion";
 import { WebsiteAnalysis, VisibilityReport } from "@/lib/types";
 import { Button } from "@/components/ui/button";
-import { Loader2, RefreshCw } from "lucide-react";
+import { RefreshCw, ArrowUpRight } from "lucide-react";
 import { InsightsBar } from "@/components/analytics/InsightsBar";
 import { PromptTable } from "@/components/analytics/PromptTable";
 import { faviconUrl } from "@/components/analytics/MentionsStack";
+import { WaveDotLoader } from "@/components/dot-matrix/WaveDotLoader";
 import { cn } from "@/lib/utils";
 
 type SiteMeta = {
@@ -131,16 +132,36 @@ function BannerBody({
   return (
     <div className="flex flex-col sm:flex-row sm:items-stretch">
       <div className="flex min-w-0 flex-1 flex-col p-5 sm:p-6">
-        <h1 className="font-display text-2xl tracking-tight text-neutral-900 sm:text-3xl">
-          {target}
-        </h1>
+        <a
+          href={`https://${target}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group inline-flex max-w-full items-center gap-1.5"
+        >
+          <h1 className="font-display min-w-0 truncate text-2xl tracking-tight text-neutral-900 transition group-hover:text-neutral-700 sm:text-3xl">
+            {target}
+          </h1>
+          <ArrowUpRight
+            className="size-5 shrink-0 text-black/35 opacity-0 transition group-hover:opacity-100 sm:size-6"
+            strokeWidth={2}
+            aria-hidden
+          />
+          <span className="sr-only">Visit site</span>
+        </a>
         <p className="mt-2 max-w-[17.5rem] text-balance text-sm leading-relaxed text-neutral-500">
           {blurb}
         </p>
         <div className="mt-auto flex flex-wrap items-center gap-2.5 pt-10">
           {metricsLoading ? (
             <div className="flex items-center gap-2.5 text-sm text-neutral-600">
-              <Loader2 className="size-4 shrink-0 animate-spin text-sky-600" />
+              <WaveDotLoader
+                variant="scan"
+                size={18}
+                color="#0369a1"
+                speedMultiplier={1.1}
+                className="shrink-0"
+                aria-label="Loading"
+              />
               <AnimatePresence mode="wait">
                 <motion.span
                   key={loadingMsgIdx}
@@ -155,26 +176,14 @@ function BannerBody({
               </AnimatePresence>
             </div>
           ) : (
-            <>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={onNewAnalysis}
-                className="h-9 gap-2"
-              >
-                <RefreshCw className="size-3.5" />
-                New analysis
-              </Button>
-              <Button variant="outline" size="sm" asChild className="h-9">
-                <a
-                  href={`https://${target}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Visit site
-                </a>
-              </Button>
-            </>
+            <button
+              type="button"
+              onClick={onNewAnalysis}
+              className="soft-outline inline-flex h-9 items-center gap-2 rounded-lg px-3.5 text-sm font-medium tracking-[-0.015em] text-black"
+            >
+              <RefreshCw className="size-3.5" />
+              New analysis
+            </button>
           )}
         </div>
       </div>
@@ -184,7 +193,7 @@ function BannerBody({
           href={`https://${target}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="relative block aspect-[2/1] w-full min-w-0 overflow-hidden rounded-t-xl border-[0.5px] border-neutral-200/90 bg-neutral-100 shadow-[0_-1px_6px_rgba(0,0,0,0.04)]"
+          className="soft-thumb relative block aspect-[2/1] w-full min-w-0 overflow-hidden rounded-t-xl"
         >
           <div className="absolute inset-0 flex items-center justify-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -205,6 +214,15 @@ function BannerBody({
               }
             />
           )}
+          {/* Mimics soft-inset bottom edge over the photo (CSS inset sits under content) */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-2 bg-gradient-to-t from-black/[0.04] to-transparent"
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-gradient-to-b from-white/35 to-transparent"
+          />
         </a>
       </div>
     </div>
@@ -333,11 +351,17 @@ export default function ResultsStep({
         transition={{ layout: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } }}
       >
         {metricsLoading ? (
-          <div className="banner-shine relative rounded-2xl p-[1.5px]">
-            <div className="banner-shine-spin" aria-hidden />
+          <div className="banner-glow relative">
+            <div className="banner-glow-aura" aria-hidden>
+              <span className="banner-glow-bubble" />
+              <span className="banner-glow-air banner-glow-air-a" />
+              <span className="banner-glow-air banner-glow-air-b" />
+              <span className="banner-glow-air banner-glow-air-c" />
+              <span className="banner-glow-air banner-glow-air-d" />
+            </div>
             <motion.div
               layout
-              className="relative overflow-hidden rounded-[14.5px] bg-white shadow-[0_1px_0_rgba(0,0,0,0.02)]"
+              className="soft-inset relative z-10 overflow-hidden rounded-2xl"
             >
               <BannerBody
                 target={target}
@@ -353,7 +377,7 @@ export default function ResultsStep({
         ) : (
           <motion.div
             layout
-            className="relative overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-[0_1px_0_rgba(0,0,0,0.02)]"
+            className="soft-inset relative overflow-hidden rounded-2xl"
           >
             <BannerBody
               target={target}
@@ -376,7 +400,7 @@ export default function ResultsStep({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 12 }}
             transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
-            className="mt-6 overflow-hidden rounded-2xl border border-neutral-200 bg-white"
+            className="soft-inset mt-6 overflow-hidden rounded-2xl"
           >
             <InsightsBar topics={topics} target={target} kpis={v.kpis} />
             <PromptTable topics={topics} target={target} connected />

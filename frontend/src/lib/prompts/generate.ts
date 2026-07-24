@@ -3,16 +3,16 @@ import fs from "fs/promises";
 import path from "path";
 import crypto from "crypto";
 
-const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
+const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-flash-latest";
 const CACHE_DIR = path.join(process.cwd(), ".cache", "prompts");
 const CACHE_EXPIRY_HOURS = 24;
-/** Realistic category buyer questions (Notion=notes, PromptWatch=AI search, etc.). */
-export const PROMPT_CACHE_VERSION = "v18-buyer-questions";
+/** Realistic category buyer questions for any company type (SaaS, consumer, etc.). */
+export const PROMPT_CACHE_VERSION = "v23-universal-prompts";
 const TARGET_COUNT = 5;
 const MAX_WORDS = 22;
 const MIN_WORDS = 5;
-const META_TIMEOUT_MS = 5000;
-const GEMINI_TIMEOUT_MS = 12000;
+const META_TIMEOUT_MS = 8000;
+const GEMINI_TIMEOUT_MS = 14000;
 
 const TOO_GENERIC = [
   /^best (ai |saas |online |software )?tools?$/i,
@@ -26,6 +26,9 @@ const TOO_GENERIC = [
   /^best (software|saas) (solutions?|tools?) for (a )?(small business|companies|teams)$/i,
   /^(top|best) (software|saas) solutions?\b/i,
   /^software (tools?|solutions?) for (startups?|businesses)$/i,
+  /\bspecialized software\b/i,
+  /\bbest .+ tools for companies\b/i,
+  /\bhow (do|can) i choose a .+ solution\b/i,
   /\balternatives?\s+to\s+(semrush|ahrefs|moz|hubspot|salesforce|similarweb|google analytics)\b/i,
 ];
 
@@ -35,7 +38,21 @@ const AI_VISIBILITY_PROMPT =
 
 const BROAD_ONLY = /\b(software|saas|platform|solution|tool|app|product)s?\b/i;
 const SPECIFIC_SIGNAL =
-  /\b(note[- ]?tak|wiki|docs?|knowledge base|payment|checkout|billing|crm|seo|analytics|email|newsletter|design|figma|hosting|devops|visibility|geo|citation|project|task|kanban|productivity|work.?os|spreadsheet|database|auth|invoice|accounting|hr|recruit|support|chat|video|meeting|calendar|storage|cdn|cms|e-?commerce|shopify|stripe|notion|slack|asana|monday\.com|trello|jira|chatgpt|perplexity|brand mention|prompt|workflow|roadmap|sprint|issue track|insurance|claims?|agentic|ai agents?|underwrit|mga|broker)\b/i;
+  /\b(note[- ]?tak|wiki|docs?|knowledge base|payment|checkout|billing|crm|seo|analytics|email|newsletter|design|figma|hosting|devops|visibility|geo|citation|project|task|kanban|productivity|work.?os|spreadsheet|database|auth|invoice|accounting|hr|recruit|support|chat|video|meeting|calendar|storage|cdn|cms|e-?commerce|shopify|stripe|notion|slack|asana|monday\.com|trello|jira|chatgpt|perplexity|brand mention|prompt|workflow|roadmap|sprint|issue track|insurance|claims?|agentic|ai agents?|underwrit|mga|broker|smartphone|iphone|android|laptop|macbook|tablet|ipad|smartwatch|wearable|headphones?|earbuds?|camera|tv|gaming|console|sneaker|running shoes|apparel|skincare|makeup|furniture|mattress|coffee|grocery|restaurant|hotel|flight|banking|investing|insurance|dentist|lawyer|agency|branding)\b/i;
+
+type CompanyType =
+  | "saas"
+  | "consumer"
+  | "ecommerce"
+  | "agency"
+  | "services"
+  | "media"
+  | "unknown";
+
+type CompanyProfile = {
+  category: string;
+  companyType: CompanyType;
+};
 
 const PROJECT_MGMT_PROMPT =
   /\b(project management|productivity apps?|monday\.com|asana|task tracking|work across tasks docs)\b/i;
@@ -46,6 +63,8 @@ type SiteSignals = {
   ogTitle: string;
   headings: string[];
   bodySnippet: string;
+  /** Short offering phrases mined from JSON-LD / meta (not brand names). */
+  offerings: string[];
 };
 
 function generateCacheKey(url: string): string {
@@ -130,13 +149,14 @@ async function fetchSiteSignals(rawUrl: string): Promise<SiteSignals> {
     ogTitle: "",
     headings: [],
     bodySnippet: "",
+    offerings: [],
   };
   try {
     const response = await fetch(url, {
       headers: {
         "User-Agent":
-          "Mozilla/5.0 (compatible; VizionBot/1.0; +https://localhost)",
-        Accept: "text/html",
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+        Accept: "text/html,application/xhtml+xml",
       },
       redirect: "follow",
       signal: AbortSignal.timeout(META_TIMEOUT_MS),
@@ -146,16 +166,19 @@ async function fetchSiteSignals(rawUrl: string): Promise<SiteSignals> {
     const reader = response.body?.getReader();
     let html = "";
     if (!reader) {
-      html = (await response.text()).slice(0, 120_000);
+      html = (await response.text()).slice(0, 160_000);
     } else {
       const decoder = new TextDecoder();
-      while (html.length < 120_000) {
+      while (html.length < 160_000) {
         const { done, value } = await reader.read();
         if (done) break;
         html += decoder.decode(value, { stream: true });
-        // Prefer stopping once head meta is available (Framer sites are huge)
-        if (/<\/head>/i.test(html) && /<title[\s>]/i.test(html)) break;
-        if (html.length > 80_000 && /<\/h[1-3]>/i.test(html)) break;
+        // Need body/JSON-LD for unknown brands — don't stop at </head> alone
+        const hasMeta = /<title[\s>]/i.test(html);
+        const hasJsonLd = /application\/ld\+json/i.test(html);
+        const hasBodyText = /<h[1-3][\s>]/i.test(html) || /<\/p>/i.test(html);
+        if (html.length > 40_000 && hasMeta && (hasJsonLd || hasBodyText)) break;
+        if (html.length > 120_000) break;
       }
       reader.cancel().catch(() => {});
     }
@@ -208,13 +231,52 @@ function parseSiteSignals(html: string): SiteSignals {
   }
 
   const stripped = html
-    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<script(?![^>]*ld\+json)[\s\S]*?<\/script>/gi, " ")
     .replace(/<style[\s\S]*?<\/style>/gi, " ")
     .replace(/<[^>]+>/g, " ")
     .replace(/\s+/g, " ");
   const bodySnippet = decodeEntities(stripped).slice(0, 900);
 
-  return { title, description, ogTitle, headings, bodySnippet };
+  const offerings = extractJsonLdOfferings(html);
+
+  return { title, description, ogTitle, headings, bodySnippet, offerings };
+}
+
+function extractJsonLdOfferings(html: string): string[] {
+  const out: string[] = [];
+  const re =
+    /<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(html)) !== null && out.length < 8) {
+    try {
+      const parsed = JSON.parse(m[1].trim());
+      const nodes = Array.isArray(parsed)
+        ? parsed
+        : parsed?.["@graph"]
+          ? parsed["@graph"]
+          : [parsed];
+      for (const node of nodes) {
+        if (!node || typeof node !== "object") continue;
+        const type = String(node["@type"] || "").toLowerCase();
+        const candidates = [
+          node.category,
+          node.applicationCategory,
+          node.description,
+          node.slogan,
+          Array.isArray(node.knowsAbout) ? node.knowsAbout.join(" ") : null,
+          node.name && type.includes("product") ? node.name : null,
+        ];
+        for (const c of candidates) {
+          if (typeof c !== "string") continue;
+          const cleaned = decodeEntities(c).replace(/\s+/g, " ").trim();
+          if (cleaned.length >= 8 && cleaned.length <= 80) out.push(cleaned);
+        }
+      }
+    } catch {
+      /* ignore bad JSON-LD */
+    }
+  }
+  return out.slice(0, 6);
 }
 
 function brandTokensFromUrl(url: string): string[] {
@@ -233,18 +295,29 @@ function wordCount(text: string): number {
   return text.trim().split(/\s+/).filter(Boolean).length;
 }
 
+const QUESTION_START =
+  /^(how|what|which|why|when|where|who|whom|whose|do|does|did|is|are|was|were|can|could|should|would|will|may|might|am|have|has|had)\b/i;
+
 function normalizePromptText(raw: string): string {
-  return raw
+  let t = raw
     .replace(/\s+/g, " ")
     .replace(/[“”]/g, '"')
     .trim()
-    .replace(/\?+$/, "");
+    .replace(/[?.!]+$/, "");
+  if (!t) return "";
+  t = t.charAt(0).toUpperCase() + t.slice(1);
+  if (QUESTION_START.test(t)) t += "?";
+  return t;
 }
 
 export function isValidBuyerPrompt(
   prompt: string,
   brandTokens: string[],
-  options?: { allowAiVisibility?: boolean; allowProjectManagement?: boolean }
+  options?: {
+    allowAiVisibility?: boolean;
+    allowProjectManagement?: boolean;
+    companyType?: CompanyType;
+  }
 ): boolean {
   const t = normalizePromptText(prompt);
   if (!t) return false;
@@ -268,6 +341,17 @@ export function isValidBuyerPrompt(
   ) {
     return false;
   }
+  // Non-software companies should not get SaaS shopping language
+  if (
+    options?.companyType &&
+    options.companyType !== "saas" &&
+    options.companyType !== "unknown" &&
+    /\b(saas|for (startups?|teams|companies)|software tools?|platform for teams)\b/i.test(
+      t
+    )
+  ) {
+    return false;
+  }
   const hasSpecific = SPECIFIC_SIGNAL.test(t);
   const onlyBroad =
     BROAD_ONLY.test(t) &&
@@ -275,6 +359,134 @@ export function isValidBuyerPrompt(
     /\b(startup|business|company|team|enterprise)s?\b/i.test(t);
   if (onlyBroad) return false;
   return true;
+}
+
+/** Content tokens from the live site — used to keep prompts on-category. */
+function contextTokens(
+  profile: CompanyProfile,
+  signals: SiteSignals,
+  brandTokens: string[]
+): string[] {
+  const stop = new Set([
+    "the",
+    "and",
+    "for",
+    "with",
+    "from",
+    "your",
+    "our",
+    "this",
+    "that",
+    "into",
+    "over",
+    "best",
+    "more",
+    "than",
+    "about",
+    "their",
+    "have",
+    "will",
+    "just",
+    "like",
+    "make",
+    "made",
+    "using",
+    "online",
+    "official",
+    "home",
+    "page",
+    "website",
+    "site",
+    "company",
+    "brand",
+    "world",
+    "discover",
+    "shop",
+    "everything",
+  ]);
+  const blob = [
+    profile.category,
+    ...signals.offerings,
+    signals.title,
+    signals.ogTitle,
+    signals.description,
+    ...signals.headings.slice(0, 6),
+    signals.bodySnippet.slice(0, 400),
+  ]
+    .join(" ")
+    .toLowerCase();
+
+  const toks = blob
+    .replace(/[^a-z0-9\s-]/g, " ")
+    .split(/\s+/)
+    .map((t) => t.trim())
+    .filter(
+      (t) =>
+        t.length >= 4 &&
+        !stop.has(t) &&
+        !brandTokens.some((b) => b && (t.includes(b) || b.includes(t)))
+    );
+
+  return Array.from(new Set(toks)).slice(0, 40);
+}
+
+function promptFitsContext(
+  prompt: string,
+  tokens: string[],
+  profile: CompanyProfile
+): boolean {
+  if (!tokens.length) return true; // no signals — rely on Gemini/heuristics only
+  const lower = prompt.toLowerCase();
+  const hits = tokens.filter((t) => lower.includes(t)).length;
+  if (hits >= 1) return true;
+  // SaaS banks often use category synonyms already validated elsewhere
+  if (profile.companyType === "saas" && SPECIFIC_SIGNAL.test(prompt)) return true;
+  // Hardcoded high-quality banks for known categories
+  if (!isWeakCategory(profile.category)) {
+    const catBits = profile.category
+      .toLowerCase()
+      .split(/\s+/)
+      .filter((w) => w.length >= 4);
+    if (catBits.some((w) => lower.includes(w))) return true;
+  }
+  return false;
+}
+
+/** Turn a long/awkward phrase into a short noun buyers would type. */
+function shortOfferingNoun(
+  profile: CompanyProfile,
+  signals: SiteSignals,
+  brandTokens: string[]
+): string {
+  const candidates = [
+    profile.category,
+    ...signals.offerings,
+    ...signals.headings.slice(0, 4),
+    signals.description.split(/[.|•·]/)[0] || "",
+  ]
+    .map((s) =>
+      s
+        .toLowerCase()
+        .replace(/\b(the|our|we|a|an|official|website|home)\b/gi, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+    )
+    .filter((s) => s.length >= 4 && s.length <= 48)
+    .filter((s) => !brandTokens.some((b) => b && s.includes(b)))
+    .filter((s) => !isWeakCategory(s));
+
+  for (const c of candidates) {
+    const words = c.split(/\s+/);
+    if (words.length <= 5) return c;
+    // Prefer trailing noun-ish chunk: "innovative world of phones" → keep last 3-4
+    return words.slice(-4).join(" ");
+  }
+  if (profile.companyType === "saas") return "software for teams";
+  if (profile.companyType === "agency") return "creative agency";
+  if (profile.companyType === "services") return "professional service";
+  if (profile.companyType === "ecommerce") return "products online";
+  if (profile.companyType === "consumer") return "products";
+  return "this category";
 }
 
 function extractJson(text: string): unknown {
@@ -303,19 +515,100 @@ function extractJson(text: string): unknown {
   }
 }
 
-type GeminiPromptRow = { prompt?: string; category?: string };
+type GeminiPromptRow = {
+  prompt?: string;
+  category?: string;
+};
 
-/** Well-known domains → product category (beats flaky title parsing). */
-const DOMAIN_CATEGORY: Array<[RegExp, string]> = [
-  [/clickup\.com|asana\.com|monday\.com|linear\.app|basecamp\.com|jira|atlassian\.com|trello\.com|wrike\.com|smartsheet\.com|height\.app|shortcut\.com/, "project management"],
-  [/notion\.so|coda\.io|evernote\.com|obsidian\.md|roamresearch/, "note-taking"],
-  [/stripe\.com|paddle\.com|braintree|adyen\.com|square\.com/, "payment"],
-  [/hubspot\.com|salesforce\.com|pipedrive\.com|close\.com|attio\.com/, "CRM"],
-  [/mailchimp\.com|klaviyo\.com|convertkit\.com|beehiiv\.com|substack\.com/, "email marketing"],
-  [/figma\.com|canva\.com|sketch\.com|framer\.com/, "design"],
-  [/ahrefs\.com|semrush\.com|moz\.com|surfer\.com/, "SEO"],
-  [/promptwatch|peec\.ai|otterly|goodie\.ai|rankscale|athena.?hq/, "AI visibility"],
+type GeminiPromptResult = {
+  category?: string;
+  companyType?: CompanyType;
+  prompts: GeminiPromptRow[];
+};
+
+/** Well-known domains → product category + company type. */
+const DOMAIN_PROFILE: Array<[RegExp, CompanyProfile]> = [
+  [
+    /clickup\.com|asana\.com|monday\.com|linear\.app|basecamp\.com|jira|atlassian\.com|trello\.com|wrike\.com|smartsheet\.com|height\.app|shortcut\.com/,
+    { category: "project management", companyType: "saas" },
+  ],
+  [
+    /notion\.so|coda\.io|evernote\.com|obsidian\.md|roamresearch/,
+    { category: "note-taking", companyType: "saas" },
+  ],
+  [
+    /stripe\.com|paddle\.com|braintree|adyen\.com|square\.com/,
+    { category: "payment", companyType: "saas" },
+  ],
+  [
+    /hubspot\.com|salesforce\.com|pipedrive\.com|close\.com|attio\.com/,
+    { category: "CRM", companyType: "saas" },
+  ],
+  [
+    /mailchimp\.com|klaviyo\.com|convertkit\.com|beehiiv\.com|substack\.com/,
+    { category: "email marketing", companyType: "saas" },
+  ],
+  [
+    /figma\.com|canva\.com|sketch\.com|framer\.com/,
+    { category: "design", companyType: "saas" },
+  ],
+  [
+    /ahrefs\.com|semrush\.com|moz\.com|surfer\.com/,
+    { category: "SEO", companyType: "saas" },
+  ],
+  [
+    /promptwatch|peec\.ai|otterly|goodie\.ai|rankscale|athena.?hq/,
+    { category: "AI visibility", companyType: "saas" },
+  ],
+  [
+    /apple\.com/,
+    { category: "consumer electronics", companyType: "consumer" },
+  ],
+  [
+    /samsung\.com/,
+    { category: "consumer electronics", companyType: "consumer" },
+  ],
+  [
+    /google\.com|store\.google\.com/,
+    { category: "consumer electronics", companyType: "consumer" },
+  ],
+  [
+    /sony\.com|lg\.com|dell\.com|lenovo\.com|hp\.com|asus\.com|microsoft\.com/,
+    { category: "consumer electronics", companyType: "consumer" },
+  ],
+  [
+    /nike\.com|adidas\.com|newbalance\.com|puma\.com/,
+    { category: "athletic shoes and apparel", companyType: "consumer" },
+  ],
+  [
+    /ikea\.com|wayfair\.com|westelm\.com/,
+    { category: "home furniture", companyType: "ecommerce" },
+  ],
+  [
+    /amazon\.com|ebay\.com|walmart\.com|target\.com/,
+    { category: "online shopping", companyType: "ecommerce" },
+  ],
+  [
+    /airbnb\.com|booking\.com|expedia\.com|vrbo\.com/,
+    { category: "vacation rentals and travel stays", companyType: "ecommerce" },
+  ],
 ];
+
+const SAAS_CATEGORIES = new Set([
+  "project management",
+  "note-taking",
+  "payment",
+  "crm",
+  "email marketing",
+  "design",
+  "seo",
+  "ai visibility",
+  "ai agents",
+  "insurance claims ai",
+  "analytics",
+  "cloud",
+  "productivity software",
+]);
 
 function signalBlob(url: string, signals: SiteSignals): string {
   return [
@@ -330,7 +623,64 @@ function signalBlob(url: string, signals: SiteSignals): string {
     .toLowerCase();
 }
 
-function heuristicCategory(url: string, signals: SiteSignals): string {
+function inferCompanyType(
+  category: string,
+  blob: string,
+  hinted?: CompanyType
+): CompanyType {
+  if (hinted && hinted !== "unknown") return hinted;
+  const c = category.toLowerCase();
+  if (SAAS_CATEGORIES.has(c) || /\b(saas|software|platform|api|crm|seo)\b/.test(c)) {
+    return "saas";
+  }
+  if (
+    /\b(smartphone|iphone|android|laptop|tablet|ipad|macbook|smartwatch|electronics|headphones?|earbuds?|camera|console|gaming)\b/.test(
+      `${c} ${blob}`
+    )
+  ) {
+    return "consumer";
+  }
+  if (
+    /\b(shop|store|buy online|free shipping|cart|checkout|ecommerce|e-commerce)\b/.test(
+      blob
+    )
+  ) {
+    return "ecommerce";
+  }
+  if (/\b(agency|studio|consultancy|consulting)\b/.test(`${c} ${blob}`)) {
+    return "agency";
+  }
+  if (/\b(news|magazine|blog|publisher|media)\b/.test(`${c} ${blob}`)) {
+    return "media";
+  }
+  if (
+    /\b(dentist|lawyer|clinic|hotel|restaurant|booking|insurance|bank|service)\b/.test(
+      `${c} ${blob}`
+    )
+  ) {
+    return "services";
+  }
+  return "unknown";
+}
+
+function isWeakCategory(category: string): boolean {
+  const c = category.trim().toLowerCase();
+  return (
+    !c ||
+    c === "specialized software" ||
+    c === "this product" ||
+    c === "product" ||
+    c === "software" ||
+    c === "productivity software" ||
+    c === "company" ||
+    c === "website"
+  );
+}
+
+function heuristicCompanyProfile(
+  url: string,
+  signals: SiteSignals
+): CompanyProfile {
   const host = (() => {
     try {
       return new URL(url.startsWith("http") ? url : `https://${url}`).hostname
@@ -341,42 +691,73 @@ function heuristicCategory(url: string, signals: SiteSignals): string {
     }
   })();
 
-  for (const [re, cat] of DOMAIN_CATEGORY) {
-    if (re.test(host) || re.test(url.toLowerCase())) return cat;
+  for (const [re, profile] of DOMAIN_PROFILE) {
+    if (re.test(host) || re.test(url.toLowerCase())) return profile;
   }
 
   const blob = signalBlob(url, signals);
-  const rules: Array<[RegExp, string]> = [
+  const rules: Array<[RegExp, CompanyProfile]> = [
     [
       /\b(prompt.?watch|peec\.ai|generative engine optimization|\bgeo\b|llm.?monitor|brand.?mention|ai search visibility)\b/,
-      "AI visibility",
+      { category: "AI visibility", companyType: "saas" },
     ],
     [
       /\b(insurance|claims? processing|claims? agent|mga|tpa|policyholder|loss adjust)\b/,
-      "insurance claims AI",
+      { category: "insurance claims AI", companyType: "saas" },
     ],
     [
       /\b(agentic ai|ai agents?|autonomous agents?|llm agents?)\b/,
-      "AI agents",
+      { category: "AI agents", companyType: "saas" },
     ],
     [
       /\b(project management|task management|work os|kanban board|sprint planning|issue track)\b/,
-      "project management",
+      { category: "project management", companyType: "saas" },
     ],
     [
       /\b(note.?tak|wiki|knowledge.?base|team docs|second brain)\b/,
-      "note-taking",
+      { category: "note-taking", companyType: "saas" },
     ],
-    [/\b(payment|checkout|billing|invoice|subscription billing)\b/, "payment"],
-    [/\b(seo|search.?engine|backlink|keyword research)\b/, "SEO"],
-    [/\b(crm|sales.?pipeline|deal pipeline)\b/, "CRM"],
-    [/\b(email.?market|newsletter|drip campaign)\b/, "email marketing"],
-    [/\b(analytics|bi dashboard|product analytics)\b/, "analytics"],
-    [/\b(ui design|product design|prototyping|figma)\b/, "design"],
-    [/\b(hosting|cloud infra|devops|vercel|aws)\b/, "cloud"],
+    [
+      /\b(payment|checkout|billing|invoice|subscription billing)\b/,
+      { category: "payment", companyType: "saas" },
+    ],
+    [/\b(seo|search.?engine|backlink|keyword research)\b/, { category: "SEO", companyType: "saas" }],
+    [/\b(crm|sales.?pipeline|deal pipeline)\b/, { category: "CRM", companyType: "saas" }],
+    [
+      /\b(email.?market|newsletter|drip campaign)\b/,
+      { category: "email marketing", companyType: "saas" },
+    ],
+    [
+      /\b(analytics|bi dashboard|product analytics)\b/,
+      { category: "analytics", companyType: "saas" },
+    ],
+    [
+      /\b(ui design|product design|prototyping|figma)\b/,
+      { category: "design", companyType: "saas" },
+    ],
+    [
+      /\b(hosting|cloud infra|devops|vercel|aws)\b/,
+      { category: "cloud", companyType: "saas" },
+    ],
+    [
+      /\b(iphone|ipad|macbook|smartphone|android phone|laptop|tablet|smartwatch|airpods|consumer electronics)\b/,
+      { category: "consumer electronics", companyType: "consumer" },
+    ],
+    [
+      /\b(running shoes|sneakers|athletic wear|streetwear|apparel)\b/,
+      { category: "athletic shoes and apparel", companyType: "consumer" },
+    ],
+    [
+      /\b(furniture|sofa|mattress|home decor)\b/,
+      { category: "home furniture", companyType: "ecommerce" },
+    ],
+    [
+      /\b(branding agency|design agency|marketing agency|creative studio)\b/,
+      { category: "branding and design agency", companyType: "agency" },
+    ],
   ];
-  for (const [re, cat] of rules) {
-    if (re.test(blob)) return cat;
+  for (const [re, profile] of rules) {
+    if (re.test(blob)) return profile;
   }
 
   // "Brand | Specific category" / "Brand - Specific category"
@@ -392,11 +773,36 @@ function heuristicCategory(url: string, signals: SiteSignals): string {
       if (brand.some((tok) => tok && lower.includes(tok))) return false;
       return p.split(/\s+/).length >= 2 && p.length >= 8 && p.length <= 60;
     });
-    if (niche) return niche.toLowerCase();
+    if (niche) {
+      const category = niche.toLowerCase();
+      return {
+        category,
+        companyType: inferCompanyType(category, blob),
+      };
+    }
   }
 
   // Phrase from description — never use the brand/domain label alone
   const brand = brandTokensFromUrl(url);
+  for (const offering of signals.offerings) {
+    const clipped = offering
+      .replace(/\b(the|our|we|a|an)\b/gi, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
+    if (
+      clipped.length >= 8 &&
+      clipped.length <= 64 &&
+      !isWeakCategory(clipped) &&
+      !brand.some((tok) => tok && clipped.includes(tok))
+    ) {
+      return {
+        category: clipped,
+        companyType: inferCompanyType(clipped, blob),
+      };
+    }
+  }
+
   const fromDesc = signals.description
     .split(/[.|•·]/)
     .map((s) => s.trim())
@@ -412,10 +818,30 @@ function heuristicCategory(url: string, signals: SiteSignals): string {
       .replace(/\s+/g, " ")
       .trim()
       .toLowerCase();
-    if (clipped.length >= 8 && clipped.length <= 64) return clipped;
+    if (clipped.length >= 8 && clipped.length <= 64 && !isWeakCategory(clipped)) {
+      return {
+        category: clipped,
+        companyType: inferCompanyType(clipped, blob),
+      };
+    }
   }
 
-  return "specialized software";
+  // Offering words from headings / body when meta is brand-only (Apple-style)
+  const offeringBlob = `${signals.headings.join(" ")} ${signals.bodySnippet}`
+    .toLowerCase()
+    .replace(/[^a-z0-9\s+/&-]/g, " ");
+  const offeringMatch = offeringBlob.match(
+    /\b((smartphones?|phones?|laptops?|tablets?|computers?|watches?|headphones?|earbuds?|cameras?|tvs?|consoles?|sneakers?|shoes?|apparel|furniture|mattress(?:es)?|skincare|makeup)(?:\s+(?:and|&)\s+(?:computers?|electronics|accessories|apparel|tablets?))?)\b/
+  );
+  if (offeringMatch?.[1]) {
+    const category = offeringMatch[1].replace(/\s+/g, " ").trim();
+    return {
+      category,
+      companyType: inferCompanyType(category, blob, "consumer"),
+    };
+  }
+
+  return { category: "this category", companyType: "unknown" };
 }
 
 function isAiVisibilityCategory(category: string): boolean {
@@ -430,13 +856,11 @@ function isProjectManagementCategory(category: string): boolean {
 
 /** Build content-native seed prompts from title/description when Gemini fails. */
 function contentSeedPrompts(
-  category: string,
-  signals: SiteSignals
+  profile: CompanyProfile,
+  signals: SiteSignals,
+  brandTokens: string[] = []
 ): GeneratedPrompt[] {
-  const niche =
-    category.trim().toLowerCase() ||
-    signals.description.split(/[.|]/)[0]?.trim().toLowerCase() ||
-    "specialized software";
+  const niche = shortOfferingNoun(profile, signals, brandTokens);
 
   function pack(list: string[]): GeneratedPrompt[] {
     const cats = ["What", "How", "Best", "How", "Alternatives"];
@@ -449,7 +873,7 @@ function contentSeedPrompts(
     }));
   }
 
-  const blob = `${signals.title} ${signals.description} ${category}`.toLowerCase();
+  const blob = `${signals.title} ${signals.description} ${profile.category} ${signals.offerings.join(" ")}`.toLowerCase();
   if (/\binsurance\b|\bclaims?\b/.test(blob)) {
     return pack([
       "best AI tools for insurance claims processing",
@@ -491,28 +915,127 @@ function contentSeedPrompts(
     ]);
   }
 
+  if (
+    profile.companyType === "consumer" &&
+    /\b(electronics|smartphone|phone|laptop|tablet|computer|watch|headphone)\b/.test(
+      `${niche} ${blob}`
+    )
+  ) {
+    return pack([
+      "best smartphones for everyday use",
+      "how do I choose a laptop for work and school",
+      "best tablets for students and note taking",
+      "what is the best smartwatch for fitness tracking",
+      "Android vs iPhone which phone should I buy",
+    ]);
+  }
+
+  // Type-aware templates using a short noun — works for ANY inferred category
+  if (profile.companyType === "consumer" || profile.companyType === "ecommerce") {
+    return pack([
+      `best ${niche} for everyday use`,
+      `how do I choose the right ${niche}`,
+      `what should I look for when buying ${niche}`,
+      `popular ${niche} alternatives worth considering`,
+      `how to compare ${niche} before buying`,
+    ]);
+  }
+
+  if (profile.companyType === "agency") {
+    return pack([
+      `best ${niche} for growing brands`,
+      `how do I hire a ${niche}`,
+      `what to look for in a ${niche}`,
+      `${niche} alternatives for small brands`,
+      `how much does a good ${niche} usually cost`,
+    ]);
+  }
+
+  if (profile.companyType === "services") {
+    // Professionals/providers vs platforms — avoid "hire a travel booking"
+    if (/\b(dentist|lawyer|plumber|electrician|clinic|agency|consultant|coach)\b/.test(niche)) {
+      return pack([
+        `how do I choose a good ${niche}`,
+        `what should I ask before hiring a ${niche}`,
+        `best ${niche} for first time customers`,
+        `${niche} alternatives worth comparing`,
+        `how much does ${niche} usually cost`,
+      ]);
+    }
+    return pack([
+      `how do I choose the right ${niche}`,
+      `what should I look for in ${niche}`,
+      `best ${niche} for first time customers`,
+      `${niche} alternatives worth comparing`,
+      `how much does ${niche} usually cost`,
+    ]);
+  }
+
+  if (profile.companyType === "media") {
+    return pack([
+      `best places to read about ${niche}`,
+      `how do I stay up to date on ${niche}`,
+      `what are reliable sources for ${niche}`,
+      `${niche} newsletters worth following`,
+      `how to learn the basics of ${niche}`,
+    ]);
+  }
+
+  if (profile.companyType === "saas") {
+    return pack([
+      `what is the best ${niche} for startups`,
+      `how do I get better results with ${niche}`,
+      `best ${niche} for small teams`,
+      `how can I choose a ${niche} for my team`,
+      `${niche} alternatives for growing teams`,
+    ]);
+  }
+
+  // Unknown type: still grounded in the extracted offering noun
   return pack([
-    `what is the best ${niche} for teams`,
-    `how do I get better results with ${niche}`,
-    `best tools for ${niche}`,
-    `how can I choose a ${niche} solution`,
-    `${niche} alternatives for growing companies`,
+    `best ${niche} for everyday use`,
+    `how do I choose the right ${niche}`,
+    `what is the best ${niche} right now`,
+    `popular ${niche} alternatives worth considering`,
+    `how to compare options for ${niche}`,
   ]);
 }
 
 /** Category-aware fallbacks when Gemini fails. */
-function fillTemplates(category: string): GeneratedPrompt[] {
-  let c = category.trim().toLowerCase() || "specialized software";
-  if (
-    c === "this product" ||
-    c === "product" ||
-    c === "software" ||
-    c === "productivity software"
-  ) {
-    c = "specialized software";
+function fillTemplates(profile: CompanyProfile): GeneratedPrompt[] {
+  let c = profile.category.trim().toLowerCase();
+  if (isWeakCategory(c)) {
+    c =
+      profile.companyType === "saas"
+        ? "productivity software"
+        : profile.companyType === "consumer"
+          ? "consumer electronics"
+          : "this category";
   }
 
   const banks: Record<string, Array<{ prompt: string; category: string }>> = {
+    "consumer electronics": [
+      {
+        prompt: "best smartphones for everyday use",
+        category: "Best",
+      },
+      {
+        prompt: "how do I choose a laptop for work and school",
+        category: "How",
+      },
+      {
+        prompt: "best tablets for students and note taking",
+        category: "Best",
+      },
+      {
+        prompt: "what is the best smartwatch for fitness tracking",
+        category: "What",
+      },
+      {
+        prompt: "Android vs iPhone which phone should I buy",
+        category: "Alternatives",
+      },
+    ],
     "ai visibility": [
       {
         prompt: "how can I optimize my brand for AI search",
@@ -768,14 +1291,31 @@ function fillTemplates(category: string): GeneratedPrompt[] {
     }));
   }
 
-  // Unknown niche: synthesize from the category phrase — never dump PM templates
-  const seeds = [
-    { prompt: `best ${c} tools for companies`, category: "Best" },
-    { prompt: `how do I choose a ${c} solution`, category: "How" },
-    { prompt: `what is the best ${c} platform for teams`, category: "What" },
-    { prompt: `${c} alternatives for growing teams`, category: "Alternatives" },
-    { prompt: `how to get better results with ${c}`, category: "How" },
-  ];
+  // Unknown niche: synthesize from the real category — never invent SaaS filler
+  const seeds =
+    profile.companyType === "saas"
+      ? [
+          { prompt: `best ${c} for startups`, category: "Best" },
+          { prompt: `how do I choose a ${c} for my team`, category: "How" },
+          { prompt: `what is the best ${c} for small teams`, category: "What" },
+          { prompt: `${c} alternatives for growing teams`, category: "Alternatives" },
+          { prompt: `how to get better results with ${c}`, category: "How" },
+        ]
+      : profile.companyType === "agency" || profile.companyType === "services"
+        ? [
+            { prompt: `how do I choose a good ${c}`, category: "How" },
+            { prompt: `what should I look for in a ${c}`, category: "What" },
+            { prompt: `best ${c} for first time customers`, category: "Best" },
+            { prompt: `${c} alternatives worth comparing`, category: "Alternatives" },
+            { prompt: `how much does ${c} usually cost`, category: "How" },
+          ]
+        : [
+            { prompt: `best ${c} for everyday use`, category: "Best" },
+            { prompt: `how do I choose the right ${c}`, category: "How" },
+            { prompt: `what should I look for when buying ${c}`, category: "What" },
+            { prompt: `popular ${c} alternatives worth considering`, category: "Alternatives" },
+            { prompt: `how to compare ${c} before buying`, category: "How" },
+          ];
 
   return seeds.map((s, i) => ({
     id: String(i + 1),
@@ -787,73 +1327,95 @@ function fillTemplates(category: string): GeneratedPrompt[] {
 }
 
 /**
- * One Gemini call: infer what the product does, then write fitting buyer questions.
+ * One Gemini call: infer what the company sells, then write fitting buyer questions.
+ * When forceInfer is true (unknown/weak heuristic), Gemini must decide category from
+ * the URL + page — ignore weak hints like "this category".
  */
 async function askGeminiForProductPrompts(args: {
   apiKey: string;
   url: string;
   signals: SiteSignals;
-  categoryHint: string;
+  profile: CompanyProfile;
   brandTokens: string[];
-}): Promise<GeminiPromptRow[]> {
-  const { apiKey, url, signals, categoryHint, brandTokens } = args;
+  forceInfer?: boolean;
+}): Promise<GeminiPromptResult> {
+  const { apiKey, url, signals, profile, brandTokens, forceInfer } = args;
   const brandHint = brandTokens[1] || "the brand";
+  const categoryHint = forceInfer || isWeakCategory(profile.category)
+    ? "(infer from the website — do not invent software)"
+    : profile.category;
+  const typeHint =
+    forceInfer || profile.companyType === "unknown"
+      ? "(infer: saas|consumer|ecommerce|agency|services|media)"
+      : profile.companyType;
   const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
-  const system = `You write the questions real buyers type into ChatGPT / Perplexity / Gemini when shopping a product category.
+  const system = `You write the questions real buyers type into ChatGPT / Perplexity / Gemini when researching ANY kind of company — SaaS, consumer brands, ecommerce, agencies, local services, media, etc.
 
-Goal: category-intent questions (NOT brand-name questions). Infer what the product IS, then ask like a buyer who does not know this brand yet.
+Goal: category-intent questions (NOT brand-name questions). First decide what the company actually sells or does, THEN ask like a buyer who does not know this brand yet.
 
 CRITICAL:
 1. Category hint: "${categoryHint}"
-2. Every prompt must be a natural question or comparison about THAT category / job-to-be-done
-3. Unbranded: never use "${brandHint}" or the domain
-4. NEVER invent an unrelated niche (e.g. do not suggest productivity apps for an insurance AI product)
-5. NEVER write GEO / ChatGPT-mention prompts unless the product IS an AI-visibility tool
+2. Company type hint: "${typeHint}"
+3. If hints are weak/missing, INFER from the URL, title, description, headings, and offerings. Prefer real-world knowledge of the domain when the page is sparse.
+4. Every prompt must match that real category / job-to-be-done
+5. Unbranded: never use "${brandHint}" or the domain
+6. NEVER invent an unrelated niche (especially never invent "specialized software" for non-software brands)
+7. NEVER write GEO / ChatGPT-mention prompts unless the product IS an AI-visibility tool
+8. Match language to company type:
+   - saas: tools, workflows, teams, startups OK
+   - consumer / ecommerce: products people buy — NOT "software tools for companies"
+   - agency / services: hiring, pricing, how to choose a provider
+   - media: topics people read / learn about
+9. Prompts must sound like something a real person would type (natural grammar)
 
-Write a MIX of these buyer intents (exactly ${TARGET_COUNT} total):
-- Category pick: "what is the best note taking app for teams"
-- Job to be done: "how do I organize company knowledge in one place"
-- Comparison: "Notion alternatives for documentation" (only a known rival in THIS category)
-- Outcome: "how can I get recommended in ChatGPT answers" (only if AI visibility)
-- Short discovery: "best tools for tracking brand mentions in AI search"
+Write exactly ${TARGET_COUNT} buyer questions mixing:
+- Category pick ("best …")
+- How-to / job-to-be-done
+- Comparison / alternatives
+- Outcome or buying criteria
 
 Rules:
 - ${MIN_WORDS}-${MAX_WORDS} words, everyday English
-- Sound like something a person would actually type
-- Specific category words required (note-taking, insurance claims, AI search visibility, payments, CRM, …)
-- No year spam, no keyword stuffing, no "best software for startups"
+- Specific category words required
+- No year spam, no keyword stuffing
+- No "best software for startups" unless the company is software
+- No "specialized software", "tools for companies", or "platform for teams" for non-software brands
 
-Examples — note-taking / docs workspace (Notion-like):
+Examples — consumer electronics:
+Good: "best smartphones for everyday use"
+Good: "how do I choose a laptop for creative work"
+Bad: "best specialized software tools for companies"
+
+Examples — athletic apparel:
+Good: "best running shoes for beginners"
+Good: "how do I choose training shoes for the gym"
+Bad: "best tools for specialized software"
+
+Examples — note-taking SaaS:
 Good: "what is the best note taking software for teams"
 Good: "how can I organize my company knowledge"
-Good: "best wiki tools for remote teams"
 Bad: "best software for startups"
-Bad: "best productivity apps for startups" (too vague if the product is docs/notes)
 
-Examples — AI search visibility (PromptWatch-like):
-Good: "how can I optimize my brand for AI search"
-Good: "how do I get mentioned in ChatGPT answers"
-Good: "best tools to track AI search visibility"
+Examples — local service:
+Good: "how do I choose a reliable dentist near me"
+Good: "what should I ask before hiring a plumber"
 Bad: "best project management tools"
 
-Examples — insurance claims AI:
-Good: "how do I automate insurance claims with AI"
-Good: "best AI tools for claims processing"
-Bad: "Monday.com alternatives for project tracking"
-
 Return ONLY JSON:
-{"category":"2-5 word product category","prompts":[{"prompt":"...","category":"Best|How|What|Alternatives"}]}`;
+{"category":"2-6 word real product/service category","companyType":"saas|consumer|ecommerce|agency|services|media|unknown","prompts":[{"prompt":"...","category":"Best|How|What|Alternatives"}]}`;
 
   const user = `Website: ${url}
 Inferred category hint: ${categoryHint}
+Inferred company type: ${typeHint}
 Title: ${signals.title || signals.ogTitle || "(unknown)"}
 OG title: ${signals.ogTitle || "(none)"}
 Description: ${signals.description || "(none)"}
+Offerings / JSON-LD: ${signals.offerings.slice(0, 4).join(" | ") || "(none)"}
 Headings: ${signals.headings.slice(0, 6).join(" | ") || "(none)"}
 Page snippet: ${signals.bodySnippet.slice(0, 400) || "(none)"}
 
-Write ${TARGET_COUNT} natural buyer questions ONLY about this product's real category (${categoryHint}). Think: what would someone ask ChatGPT before discovering this brand?`;
+Write ${TARGET_COUNT} natural buyer questions ONLY about what this company actually sells or does.`;
 
   const response = await fetch(endpoint, {
     method: "POST",
@@ -865,7 +1427,7 @@ Write ${TARGET_COUNT} natural buyer questions ONLY about this product's real cat
       systemInstruction: { parts: [{ text: system }] },
       contents: [{ role: "user", parts: [{ text: user }] }],
       generationConfig: {
-        temperature: 0.35,
+        temperature: forceInfer ? 0.4 : 0.35,
         maxOutputTokens: 900,
         responseMimeType: "application/json",
       },
@@ -884,13 +1446,58 @@ Write ${TARGET_COUNT} natural buyer questions ONLY about this product's real cat
       .join("") || "";
   if (!text) throw new Error("Empty Gemini response");
 
-  const parsed = extractJson(text) as { prompts?: GeminiPromptRow[] };
+  const parsed = extractJson(text) as {
+    category?: string;
+    companyType?: string;
+    prompts?: GeminiPromptRow[];
+  };
   if (!Array.isArray(parsed.prompts)) throw new Error("Invalid prompts JSON");
-  return parsed.prompts;
+
+  const allowedTypes: CompanyType[] = [
+    "saas",
+    "consumer",
+    "ecommerce",
+    "agency",
+    "services",
+    "media",
+    "unknown",
+  ];
+  const companyType = allowedTypes.includes(parsed.companyType as CompanyType)
+    ? (parsed.companyType as CompanyType)
+    : undefined;
+
+  return {
+    category: typeof parsed.category === "string" ? parsed.category.trim() : undefined,
+    companyType,
+    prompts: parsed.prompts,
+  };
+}
+
+function applyGeminiProfile(
+  current: CompanyProfile,
+  result: GeminiPromptResult,
+  url: string,
+  signals: SiteSignals
+): CompanyProfile {
+  if (result.category && !isWeakCategory(result.category)) {
+    return {
+      category: result.category.toLowerCase(),
+      companyType: inferCompanyType(
+        result.category,
+        signalBlob(url, signals),
+        result.companyType || current.companyType
+      ),
+    };
+  }
+  if (result.companyType && result.companyType !== "unknown") {
+    return { ...current, companyType: result.companyType };
+  }
+  return current;
 }
 
 /**
  * Generate product-fit buyer prompts (unbranded, natural, specific to the site).
+ * Works for any company type: Gemini infers category; heuristics/templates are backup.
  */
 export async function generateBuyerPrompts(
   url: string,
@@ -903,14 +1510,18 @@ export async function generateBuyerPrompts(
 
   const brandTokens = brandTokensFromUrl(url);
   const signals = await fetchSiteSignals(url);
-  const category = heuristicCategory(url, signals);
-  const allowAiVisibility = isAiVisibilityCategory(category);
-  const allowProjectManagement = isProjectManagementCategory(category);
+  let profile = heuristicCompanyProfile(url, signals);
+  let allowAiVisibility = isAiVisibilityCategory(profile.category);
+  let allowProjectManagement = isProjectManagementCategory(profile.category);
+  const tokens = () => contextTokens(profile, signals, brandTokens);
 
   const cleaned: GeneratedPrompt[] = [];
   const seen = new Set<string>();
 
-  const pushRow = (row: GeminiPromptRow | GeneratedPrompt) => {
+  const pushRow = (
+    row: GeminiPromptRow | GeneratedPrompt,
+    opts?: { requireContext?: boolean }
+  ) => {
     const text = normalizePromptText(
       "prompt" in row ? row.prompt || "" : ""
     );
@@ -918,8 +1529,12 @@ export async function generateBuyerPrompts(
       !isValidBuyerPrompt(text, brandTokens, {
         allowAiVisibility,
         allowProjectManagement,
+        companyType: profile.companyType,
       })
     ) {
+      return;
+    }
+    if (opts?.requireContext !== false && !promptFitsContext(text, tokens(), profile)) {
       return;
     }
     const key = text.toLowerCase();
@@ -935,37 +1550,58 @@ export async function generateBuyerPrompts(
   };
 
   const apiKey = process.env.GEMINI_API_KEY;
+  const weakHeuristic =
+    isWeakCategory(profile.category) || profile.companyType === "unknown";
+
   if (apiKey) {
-    try {
-      const rows = await askGeminiForProductPrompts({
-        apiKey,
-        url,
-        signals,
-        categoryHint: category,
-        brandTokens,
-      });
-      for (const row of rows) pushRow(row);
-    } catch (e) {
-      console.warn("Product prompt generation failed, using fallback:", e);
+    const attempts: Array<{ forceInfer: boolean }> = weakHeuristic
+      ? [{ forceInfer: true }, { forceInfer: false }]
+      : [{ forceInfer: false }, { forceInfer: true }];
+
+    for (const attempt of attempts) {
+      if (cleaned.length >= TARGET_COUNT) break;
+      try {
+        const result = await askGeminiForProductPrompts({
+          apiKey,
+          url,
+          signals,
+          profile,
+          brandTokens,
+          forceInfer: attempt.forceInfer,
+        });
+        profile = applyGeminiProfile(profile, result, url, signals);
+        allowAiVisibility = isAiVisibilityCategory(profile.category);
+        allowProjectManagement = isProjectManagementCategory(profile.category);
+        // Gemini answers are trusted more than keyword overlap (it saw the page)
+        for (const row of result.prompts) {
+          pushRow(row, { requireContext: false });
+        }
+      } catch (e) {
+        console.warn("Product prompt generation failed, using fallback:", e);
+      }
     }
   }
 
   if (cleaned.length < 4) {
     for (const seed of [
-      ...contentSeedPrompts(category, signals),
-      ...fillTemplates(category),
+      ...contentSeedPrompts(profile, signals, brandTokens),
+      ...fillTemplates({
+        ...profile,
+        category: shortOfferingNoun(profile, signals, brandTokens),
+      }),
     ]) {
-      pushRow(seed);
+      // Fallbacks must stay on-category when we have site tokens
+      pushRow(seed, { requireContext: tokens().length > 0 });
       if (cleaned.length >= TARGET_COUNT) break;
     }
   }
 
-  // Last resort: content-native seeds only — never force project-management dumps
+  // Last resort: drop context gate so we still return editable prompts
   if (cleaned.length === 0) {
     const seeds = allowAiVisibility
-      ? fillTemplates("ai visibility")
-      : contentSeedPrompts(category, signals);
-    for (const seed of seeds) pushRow(seed);
+      ? fillTemplates({ category: "ai visibility", companyType: "saas" })
+      : contentSeedPrompts(profile, signals, brandTokens);
+    for (const seed of seeds) pushRow(seed, { requireContext: false });
   }
 
   const finalPrompts = cleaned.slice(0, TARGET_COUNT).map((p, i) => ({

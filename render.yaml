@@ -15,7 +15,7 @@ services:
       - key: OPENAI_MODEL
         value: gpt-4o-mini
       - key: GEMINI_MODEL
-        value: gemini-2.5-flash-lite
+        value: gemini-flash-latest
       - key: FANOUT_SUBQUERIES
         value: "5"
       - key: USE_LLM_PARAPHRASES
